@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "393861303101",
+    "firebase_url": "https://steamedboat-1172c.firebaseio.com",
+    "project_id": "steamedboat-1172c",
+    "storage_bucket": "steamedboat-1172c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:393861303101:android:4799886a41b4439de4d354",
+        "android_client_info": {
+          "package_name": "com.SE.steamedboat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "393861303101-p4dbnqfqr5krpeehrv4hnkckgt48nmu2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyJ56gNh1tUVnDUXpxh3CL9dH9Rp7rnS4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "393861303101-p4dbnqfqr5krpeehrv4hnkckgt48nmu2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
