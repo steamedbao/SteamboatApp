@@ -7,7 +7,7 @@
     tools:context=".createORjoin">
 
     <Button
-        android:id="@+id/create"
+        android:id="@+id/createtrip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
@@ -35,6 +35,17 @@
         android:text="Join Trip"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/create"
+        app:layout_constraintStart_toEndOf="@+id/createtrip"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/sb"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:text="Steamboat Trip Helper"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

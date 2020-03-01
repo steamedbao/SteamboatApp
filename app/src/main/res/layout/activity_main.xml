@@ -45,7 +45,7 @@
         android:layout_height="47dp"
         android:layout_below="@id/mainTitle"
         android:layout_centerInParent="true"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="22dp"
         android:layout_marginEnd="80dp"
         android:layout_marginRight="80dp"
         android:layout_marginBottom="325dp"
@@ -56,7 +56,7 @@
         android:fadingEdge="horizontal|vertical"
         android:fadingEdgeLength="@android:dimen/dialog_min_width_major"
         android:fontFamily="@font/roboto"
-        android:inputType="textPersonName"
+        android:inputType="text"
         android:text="Username"
         android:textColor="#CCFFFFFF"
         android:textSize="20dp" />
@@ -103,29 +103,6 @@
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="290dp" />
-
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="94dp"
-        android:layout_marginEnd="124dp"
-        android:layout_marginRight="124dp"
-        android:layout_marginBottom="49dp"
-        android:alpha="0.87"
-        android:background="#000000"
-        android:ems="10"
-        android:fontFamily="@font/roboto"
-        android:inputType="textPersonName"
-        android:singleLine="false"
-        android:text="New User"
-        android:textAlignment="center"
-        android:textColor="#99FFFFFF"
-        android:textSize="14dp" />
 
 
 </RelativeLayout>
