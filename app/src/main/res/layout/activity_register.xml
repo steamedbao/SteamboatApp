@@ -40,7 +40,7 @@
         android:textSize="30dp" />
 
     <EditText
-        android:id="@+id/email"
+        android:id="@+id/email1"
         android:layout_width="wrap_content"
         android:layout_height="47dp"
         android:layout_below="@id/mainTitle"
@@ -56,14 +56,14 @@
         android:fadingEdge="horizontal|vertical"
         android:fadingEdgeLength="@android:dimen/dialog_min_width_major"
         android:fontFamily="@font/roboto"
-        android:inputType="textEmailAddress"
+        android:inputType="text"
         android:hint="Email"
         android:textColorHint="#CCFFFFFF"
         android:textColor="#CCFFFFFF"
         android:textSize="20dp" />
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/password1"
         android:layout_width="wrap_content"
         android:layout_height="44dp"
         android:layout_alignParentTop="true"
@@ -84,7 +84,7 @@
         android:textSize="20dp" />
 
     <Button
-        android:id="@+id/login"
+        android:id="@+id/register1"
         style="@android:style/Widget.Button"
         android:layout_width="297dp"
         android:layout_height="79dp"
@@ -100,13 +100,13 @@
         android:ellipsize="none"
         android:fontFamily="@font/roboto_condensed_bold"
         android:radius="10dp"
-        android:text="LOGIN"
+        android:text="SIGN UP"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="290dp" />
 
     <TextView
-        android:id="@+id/register"
+        android:id="@+id/login1"
         android:layout_width="243dp"
         android:layout_height="57dp"
         android:layout_alignParentStart="true"
@@ -120,8 +120,7 @@
         android:layout_marginEnd="86dp"
         android:layout_marginRight="86dp"
         android:layout_marginBottom="10dp"
-        android:text="New user? Register here."
-        android:clickable="true"
+        android:text="Already has an account? Login here."
         android:textAlignment="center"
         android:textColor="#CCFFFFFF" />
 

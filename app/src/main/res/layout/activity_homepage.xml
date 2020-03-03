@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Homepage">
+    tools:context=".Homepage"
+
+    >
 
     <CalendarView
         android:id="@+id/tripCalendar"
@@ -24,7 +26,8 @@
         android:id="@+id/addActivity"
         android:layout_width="58dp"
         android:layout_height="29dp"
-        android:background="#E2CC3838"
+        android:background="#E57373"
+        android:fontFamily="@font/roboto"
         android:text="ADD"
         app:layout_constraintBottom_toTopOf="@+id/activity"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,8 +38,8 @@
 
     <Button
         android:id="@+id/editTrip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="126dp"
+        android:layout_height="40dp"
         android:layout_marginBottom="4dp"
         android:text="Edit"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -48,10 +51,8 @@
 
     <Button
         android:id="@+id/deleteTrip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_width="143dp"
+        android:layout_height="42dp"
         android:layout_marginBottom="4dp"
         android:text="DELETE"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -61,10 +62,8 @@
 
     <Button
         android:id="@+id/checkFinance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
+        android:layout_width="131dp"
+        android:layout_height="40dp"
         android:layout_marginBottom="4dp"
         android:text="CHECK FINANCE"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -136,6 +135,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
+    <Button
+        app:layout_constraintLeft_toRightOf="@+id/tripName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        tools:layout_editor_absoluteX="332dp"
+        tools:layout_editor_absoluteY="3dp" />
+
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="109dp"
@@ -151,5 +162,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" />
     </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
