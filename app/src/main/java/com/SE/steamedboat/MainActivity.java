@@ -18,19 +18,21 @@ public class MainActivity extends AppCompatActivity {
 
         Button butt1 = (Button)findViewById(R.id.login);
 
-
-
         butt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText num1 = (EditText) findViewById(R.id.username);
                 EditText num2 = (EditText) findViewById(R.id.password);
-
+                TextView message = (TextView) findViewById(R.id.message);
 
                 int numone = Integer.parseInt(num1.getText().toString());
                 int numtwo = Integer.parseInt(num2.getText().toString());
+
                 if (numone == numtwo) {
                     GoTo_createORjoin();
+                }
+                else {
+                    message.setText("Please make sure your Username and Password match \n");
                 }
 
 
