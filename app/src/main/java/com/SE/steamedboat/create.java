@@ -1,20 +1,66 @@
 package com.SE.steamedboat;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
 
 public class create extends AppCompatActivity {
+    private FirebaseDatabase FD;
+    private FirebaseAuth Auth;
+    private FirebaseAuth.AuthStateListener AuthListen;
+    private DatabaseReference myRef;
+    private String userID;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+
+        Auth = FirebaseAuth.getInstance();
+        FD = FirebaseDatabase.getInstance();
+        myRef = FD.getReference();
+        FirebaseUser user = Auth.getCurrentUser();
+        userID = user.getUid();
+
+
+        AuthListen = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser mFirebaseUser = Auth.getCurrentUser();
+                if (mFirebaseUser != null) {
+                    Toast.makeText(create.this, "You are logged in", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(create.this, "Please login", Toast.LENGTH_SHORT).show();
+                    GoTo_main();
+                }
+
+            }
+        };
 
 
         Button create_done = (Button) findViewById(R.id.create_done);
@@ -28,18 +74,39 @@ public class create extends AppCompatActivity {
                 EditText creater = (EditText) findViewById(R.id.creater);
                 TextView message = (TextView) findViewById(R.id.textView6);
 
-
                 String name = tripname.getText().toString();
                 String pw = password.getText().toString();
                 String create = creater.getText().toString();
 
-                if( pw.length()>2 && name.length()>2 && create.length()>2){
-                    // Trip t1 = new Trip(name, pw, create);
-                    // testing --> does not work
+                if( !pw.equals("") && !name.equals("") && !create.equals("")){
+                    Trip t1 = new Trip(name, pw, create);
+                    int ID = t1.getTripID();
+                    final String id = Integer.toString(ID);
+                    com.SE.steamedboat.Member m1 = new Member(create);
+                    t1.addMember(m1);
+                    myRef.child("Trips").child(id).setValue(t1);
+
+                    /* testing if this member is saved
+                    myRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            showData(dataSnapshot, id);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                    */
+
+
+
                     GoTo_home();}
 
                 else{
                     message.setText("Make sure all fields are entered");
+                    Toast.makeText(create.this, "Make sure all fields are entered", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -52,4 +119,15 @@ public class create extends AppCompatActivity {
     public void GoTo_home(){
         Intent gohome = new Intent (this, Homepage.class);
         startActivity(gohome);}
+
+    public void GoTo_main(){
+        Intent gologin = new Intent (this, MainActivity.class);
+        startActivity(gologin);}
+
+    private void showData(DataSnapshot dataSnapshot, String id) {       // i want this to show user's existing trips, but failed
+        for (DataSnapshot ds:dataSnapshot.getChildren()){
+            System.out.println("added member name is "+ds.child(id).getValue(Member.class).getMemberName()+"\n");
+            //listview.setAdapter(adpter);
+        }
+    }
 }

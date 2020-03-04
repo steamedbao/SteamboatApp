@@ -42,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
                 if (mFirebaseUser != null) {
                     Toast.makeText(MainActivity.this, "You are logged in", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(MainActivity.this, Homepage.class);
-                    startActivity(i);
+                    Intent intTocreateORjoin = new Intent(MainActivity.this, createORjoin.class);
+                    startActivity(intTocreateORjoin);
                 } else {
                     Toast.makeText(MainActivity.this, "Please login", Toast.LENGTH_SHORT).show();
                 }
@@ -71,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
                             if (!task.isSuccessful()) {
                                 Toast.makeText(MainActivity.this, "Login unsuccessful, please try again!", Toast.LENGTH_SHORT).show();
                             } else {
-                                Intent intToHome = new Intent(MainActivity.this, Homepage.class);
-                                startActivity(intToHome);
+                                Intent intTocreateORjoin = new Intent(MainActivity.this, createORjoin.class);
+                                startActivity(intTocreateORjoin);
                             }
                         }
                     });

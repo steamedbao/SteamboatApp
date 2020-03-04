@@ -9,19 +9,23 @@ public class Trip {
     private String createrName;
     private boolean ongoing;
     private String homeCurrency; // TBC if we use ENUM
-    private ArrayList<com.SE.steamedboat.Member> members;
-    private ArrayList<com.SE.steamedboat.Activity> activities;
+    private ArrayList<Member> members = null;
+    private ArrayList<com.SE.steamedboat.Activity> activities=null;
 
+    public Trip(){}
 
     public Trip (String name, String pw, String creater){
         setPassWord(pw);
         setTripName(name);
         setCreaterName(creater);
-        tripID = (int)(Math.random()*(50000))+10000;
+        tripID = (int)(Math.random()*(500000))+100000;
         System.out.println("ID is " + tripID +"\n");
+        members = new ArrayList<Member>();
+        activities = new ArrayList<Activity>();
         // checking only
-        com.SE.steamedboat.Member mem1 = new com.SE.steamedboat.Member(creater);
-        members.add(mem1);
+        // the code below got error !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+       // Member mem1 = new Member(creater);
+       // members.add(mem1);
     }
 
 
@@ -62,5 +66,5 @@ public class Trip {
         return homeCurrency;
     }
 
-
+    public void addMember(Member M) {members.add(M);}
 }
