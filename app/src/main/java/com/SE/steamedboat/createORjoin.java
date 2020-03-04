@@ -94,6 +94,7 @@ public class createORjoin extends AppCompatActivity {
         });
 
 
+
     }
 
     private void showData(DataSnapshot dataSnapshot) {       // i want this to show user's existing trips, but failed
