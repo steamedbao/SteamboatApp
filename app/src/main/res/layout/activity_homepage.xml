@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Homepage"
-
+    android:background="#313131"
     >
 
     <CalendarView
@@ -13,14 +13,20 @@
         android:layout_width="259dp"
         android:layout_height="297dp"
         android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginBottom="340dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.789"
         app:layout_constraintStart_toEndOf="@+id/scrollView2"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.787" />
+        app:layout_constraintVertical_bias="0.787"
+        android:background="#414141"
+        android:dateTextAppearance="@style/CalenderViewDateCustomText"
+        android:weekDayTextAppearance="@style/CalenderViewWeekCustomText"
+        android:theme="@style/CalenderViewCustom"
+        />
 
     <Button
         android:id="@+id/addActivity"
@@ -31,7 +37,7 @@
         android:text="ADD"
         app:layout_constraintBottom_toTopOf="@+id/activity"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.909"
+        app:layout_constraintHorizontal_bias="0.957"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
@@ -73,24 +79,28 @@
 
     <TextView
         android:id="@+id/tripName"
-        android:layout_width="109dp"
+        android:layout_width="147dp"
         android:layout_height="30dp"
         android:layout_marginTop="16dp"
+        android:fontFamily="@font/montserrat"
         android:text="TripName"
+        android:textAlignment="center"
+        android:textColor="#CCFFFFFF"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.419"
+        app:layout_constraintHorizontal_bias="0.268"
         app:layout_constraintStart_toEndOf="@+id/back"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.002" />
 
     <ScrollView
         android:id="@+id/activity"
-        android:layout_width="365dp"
-        android:layout_height="229dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_width="379dp"
+        android:layout_height="265dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginRight="24dp"
+        android:background="#414141"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -107,7 +117,9 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Recorded Activities: " />
+                android:fontFamily="@font/roboto"
+                android:text="Recorded Activities: "
+                android:textColor="#CCFFFFFF" />
         </LinearLayout>
     </ScrollView>
 
@@ -130,10 +142,13 @@
         android:layout_marginRight="328dp"
         android:clickable="false"
         android:text="Members: "
+        android:textColor="#CCFFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        android:fontFamily="@font/roboto"
+        />
 
     <Button
         app:layout_constraintLeft_toRightOf="@+id/tripName"
@@ -155,7 +170,9 @@
         android:layout_marginLeft="16dp"
         android:layout_marginBottom="360dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="#414141"
+        android:textColor="#CCFFFFFF">
 
         <LinearLayout
             android:layout_width="match_parent"
