@@ -8,11 +8,12 @@ public class Trip {
     private String passWord;
     private String createrName;
     private String createrUID;
-    private boolean ongoing;
+    private boolean ongoing=true;
     private String homeCurrency; // TBC if we use ENUM
     private ArrayList<String> UIDinvolved = null;
     private ArrayList<Member> members = null;
     private ArrayList<com.SE.steamedboat.Activity> activities=null;
+
 
     public String getCreaterUID() {
         return createrUID;
@@ -85,4 +86,5 @@ public class Trip {
     }
 
     public void addMember(Member M) {members.add(M);}
+
 }
