@@ -83,8 +83,10 @@ public class create extends AppCompatActivity {
                     int ID = t1.getTripID();
                     final String id = Integer.toString(ID);
                     com.SE.steamedboat.Member m1 = new Member(create);
+                    m1.setUID(userID);
                     t1.addMember(m1);
                     myRef.child("Trips").child(id).setValue(t1);
+                    myRef.child("Trips").child(id).child("members").setValue(m1);
 
                     /* testing if this member is saved
                     myRef.addValueEventListener(new ValueEventListener() {

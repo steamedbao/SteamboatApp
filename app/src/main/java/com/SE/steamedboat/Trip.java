@@ -7,8 +7,27 @@ public class Trip {
     private String tripName;
     private String passWord;
     private String createrName;
+
+    public String getCreaterUID() {
+        return createrUID;
+    }
+
+    public void setCreaterUID(String createrUID) {
+        this.createrUID = createrUID;
+    }
+
+    public boolean isOngoing() {
+        return ongoing;
+    }
+
+    public void setOngoing(boolean ongoing) {
+        this.ongoing = ongoing;
+    }
+
+    private String createrUID;
     private boolean ongoing;
     private String homeCurrency; // TBC if we use ENUM
+    private ArrayList<String> UIDinvolved = null;
     private ArrayList<Member> members = null;
     private ArrayList<com.SE.steamedboat.Activity> activities=null;
 
@@ -28,6 +47,7 @@ public class Trip {
        // members.add(mem1);
     }
 
+    public void addUID (String uid){UIDinvolved.add(uid);}
 
     public int getTripID(){
        return tripID;
@@ -56,7 +76,6 @@ public class Trip {
     public String getCreaterName(){
         return createrName;
     }
-
 
     public void setHomeCurrency(String currency){
         homeCurrency = currency;

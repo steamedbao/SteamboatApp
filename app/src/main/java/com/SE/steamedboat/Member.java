@@ -2,6 +2,7 @@ package com.SE.steamedboat;
 
 public class Member {
     private String memberName;
+    private String UID=null;
 
     public Member (String name) {
         setMemberName(name);
@@ -13,4 +14,12 @@ public class Member {
     }
 
     public String getMemberName(){return memberName;}
+
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
+    }
 }
