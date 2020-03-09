@@ -7,6 +7,12 @@ public class Trip {
     private String tripName;
     private String passWord;
     private String createrName;
+    private String createrUID;
+    private boolean ongoing;
+    private String homeCurrency; // TBC if we use ENUM
+    private ArrayList<String> UIDinvolved = null;
+    private ArrayList<Member> members = null;
+    private ArrayList<com.SE.steamedboat.Activity> activities=null;
 
     public String getCreaterUID() {
         return createrUID;
@@ -23,13 +29,6 @@ public class Trip {
     public void setOngoing(boolean ongoing) {
         this.ongoing = ongoing;
     }
-
-    private String createrUID;
-    private boolean ongoing;
-    private String homeCurrency; // TBC if we use ENUM
-    private ArrayList<String> UIDinvolved = null;
-    private ArrayList<Member> members = null;
-    private ArrayList<com.SE.steamedboat.Activity> activities=null;
 
     public Trip(){}
 
