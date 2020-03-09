@@ -7,7 +7,7 @@ public class Member {
     private float amountPaid;
     private float amountIncurred;
     private boolean host;
-
+    public Member () {};
     public Member (String name) {
         setMemberName(name);
         System.out.println("Member created, name is "+name +"\n");

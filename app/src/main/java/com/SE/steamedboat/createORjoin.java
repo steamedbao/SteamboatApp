@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,6 +38,7 @@ public class createORjoin extends AppCompatActivity {
     private ListView LV;
     private ArrayList<SimpleTrip> trips = new ArrayList<>();
     private ArrayList<String> toshow = new ArrayList<>();
+    private ArrayList<Integer> IDlist= new ArrayList<>();
     private ArrayAdapter<SimpleTrip> tripArrayAdapter;
     private SimpleTrip ST;
 
@@ -67,7 +69,6 @@ public class createORjoin extends AppCompatActivity {
         userID = user.getUid();
         myRef = FD.getReference().child("Users").child(userID).child("trips");
         LV = (ListView) findViewById(R.id.triplist);
-        final ArrayAdapter<SimpleTrip> adapter = new ArrayAdapter<SimpleTrip>(this, R.layout.trips_layout, trips);
         final ArrayAdapter<String> name_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, toshow);
         ST = new SimpleTrip();
         LV.setAdapter(name_adapter);
@@ -120,6 +121,11 @@ public class createORjoin extends AppCompatActivity {
                 Log.v("E_VALUE", "-------------------Trip Name read: "+ trip.getTripName() +"  ---------------------------");
 
                 Log.v("E_VALUE", "------------------- Line 110   ---------------------------");
+                    IDlist.add(trip.getID());
+                    for (int i = 1; i<=IDlist.size();i++){
+                        Log.v("E_VALUE", "------------------- "+ IDlist.get(i-1) +"---------------------------");
+
+                    }
                     trips.add(trip);
                     toshow.add("Trip: "+trip.getTripName()+"    ID: "+Integer.toString(trip.getID())+"    Ongoing: "+Boolean.toString(trip.isOngoing()));
 
@@ -150,7 +156,14 @@ public class createORjoin extends AppCompatActivity {
             }
         });
 
+        LV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.v("E_VALUE", "-------------------CLICKED AT POS: "+ position +" ---------------------------");
 
+                GoTo_home(IDlist.get(position));
+            }
+        });
 
         Button createbut = (Button) findViewById(R.id.createtrip);
 
@@ -196,6 +209,11 @@ public class createORjoin extends AppCompatActivity {
     public void GoTo_join(){
         Intent gojoin = new Intent (this, join.class);
         startActivity(gojoin);}
+
+    public void GoTo_home(int id){
+        Intent gohome = new Intent (this, Homepage.class);
+        gohome.putExtra("TripID", id);
+        startActivity(gohome);}
 
     /*                                                         FK this if involved APP will always quit and quit
     @Override
