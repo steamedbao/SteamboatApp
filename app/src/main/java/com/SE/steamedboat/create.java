@@ -86,7 +86,10 @@ public class create extends AppCompatActivity {
                     m1.setUID(userID);
                     t1.addMember(m1);
                     myRef.child("Trips").child(id).setValue(t1);
-                    myRef.child("Trips").child(id).child("members").setValue(m1);
+                    myRef.child("Trips").child(id).child("members").child(name).setValue(m1);
+                    myRef.child("Users").child(userID).child("trips").child(id).child("trip name").setValue(create);
+                    myRef.child("Users").child(userID).child("trips").child(id).child("trip ID").setValue(ID);
+                    myRef.child("Users").child(userID).child("trips").child(id).child("ongoing").setValue(t1.isOngoing());
 
                     /* testing if this member is saved
                     myRef.addValueEventListener(new ValueEventListener() {
