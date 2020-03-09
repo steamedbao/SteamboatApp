@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -34,8 +35,6 @@ public class create extends AppCompatActivity {
     private String userID;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +61,27 @@ public class create extends AppCompatActivity {
             }
         };
 
+        final long[] tripcount = new long[1];
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                long No_of_trips = dataSnapshot.child("Users").child(userID).child("trips").getChildrenCount();
+                // Map<String,String> map = dataSnapshot.child("Users").child(userID).getValue(Map.class);
+                Log.v("E_VALUE","--------  Data : "+ No_of_trips + "---------------------------");
+                tripcount[0] = No_of_trips;
+                Log.v("E_VALUE","--------  Data : "+ tripcount[0] + "---------------------------");
+
+            }
+
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
         Button create_done = (Button) findViewById(R.id.create_done);
 
@@ -69,10 +89,16 @@ public class create extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+
                 EditText tripname = (EditText) findViewById(R.id.tripname);
                 EditText password = (EditText) findViewById(R.id.pw);
                 EditText creater = (EditText) findViewById(R.id.creater);
                 TextView message = (TextView) findViewById(R.id.textView6);
+
+                Log.v("E_VALUE","--------  Data : "+ tripcount[0] + "---------------------------");
+
+                String trip_count = Long.toString(tripcount[0]);
+                Log.v("E_VALUE","--------  Data : "+ trip_count + "---------------------------");
 
                 String name = tripname.getText().toString();
                 String pw = password.getText().toString();
@@ -85,11 +111,15 @@ public class create extends AppCompatActivity {
                     com.SE.steamedboat.Member m1 = new Member(create);
                     m1.setUID(userID);
                     t1.addMember(m1);
+                    t1.setCreaterUID(userID);
+                    com.SE.steamedboat.SimpleTrip s1 = new SimpleTrip (name,ID,true);
                     myRef.child("Trips").child(id).setValue(t1);
                     myRef.child("Trips").child(id).child("members").child(name).setValue(m1);
-                    myRef.child("Users").child(userID).child("trips").child(id).child("trip name").setValue(create);
-                    myRef.child("Users").child(userID).child("trips").child(id).child("trip ID").setValue(ID);
-                    myRef.child("Users").child(userID).child("trips").child(id).child("ongoing").setValue(t1.isOngoing());
+                    myRef.child("Users").child(userID).child("trips").child(trip_count).setValue(s1);
+
+                    //myRef.child("Users").child(userID).child("trips").child(trip_count).child("TripName").setValue(create);
+                    //myRef.child("Users").child(userID).child("trips").child(trip_count).child("ID").setValue(id);
+                    //myRef.child("Users").child(userID).child("trips").child(trip_count).child("Ongoing").setValue("true");
 
                     /* testing if this member is saved
                     myRef.addValueEventListener(new ValueEventListener() {
