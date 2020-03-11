@@ -12,7 +12,6 @@
         android:id="@+id/tripCalendar"
         android:layout_width="227dp"
         android:layout_height="290dp"
-        android:layout_marginLeft="15dp"
         android:layout_marginEnd="20dp"
         android:layout_marginRight="15dp"
         android:background="#414141"
@@ -22,8 +21,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="@id/addActivity"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.789"
-        app:layout_constraintStart_toEndOf="@+id/scrollView2"
         app:layout_constraintTop_toBottomOf="@id/logout"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.787" />
@@ -44,6 +41,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/addmember"
+        android:layout_width="42dp"
+        android:layout_height="30dp"
+        android:layout_margin="4dp"
+        android:layout_marginBottom="51dp"
+        android:background="#E57373"
+        android:fontFamily="@font/roboto"
+        android:text="ADD"
+        app:layout_constraintBottom_toTopOf="@+id/membersLV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.299"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/random"
@@ -155,10 +166,8 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:text="BACK"
-        app:layout_constraintBottom_toTopOf="@id/scrollView2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/logout"
@@ -172,42 +181,38 @@
         app:layout_constraintLeft_toRightOf="@+id/hometripname"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="127dp"
-        android:layout_height="288dp"
-        android:layout_margin="24dp"
+    <ListView
+        android:id="@+id/membersLV"
+        android:layout_width="146dp"
+        android:layout_height="273dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="76dp"
+        android:background="#3E3E46"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toStartOf="@+id/tripCalendar"
+        app:layout_constraintHorizontal_bias="0.285"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/back" >
+
+    </ListView>
+
+    <TextView
+        android:id="@+id/membersTV"
+        android:layout_width="87dp"
+        android:layout_height="38dp"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
-        android:background="#414141"
-        android:textColor="#CCFFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/random"
-        app:layout_constraintEnd_toStartOf="@id/tripCalendar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/back"
-        app:layout_constraintVertical_bias="0.92">
+        android:layout_marginEnd="22dp"
+        android:layout_marginRight="22dp"
+        android:layout_marginBottom="10dp"
+        android:text="Members: tap to edit"
+        android:textColor="#FFFFFF"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/membersLV"
+        app:layout_constraintEnd_toStartOf="@+id/tripCalendar"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="93dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="328dp"
-                android:layout_marginRight="328dp"
-                android:clickable="false"
-                android:fontFamily="@font/roboto"
-                android:text="Members: "
-                android:textColor="#CCFFFFFF"
-                app:layout_constraintBottom_toTopOf="@+id/scrollView2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0" />
-        </LinearLayout>
-    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,7 @@ import android.util.Log;
 
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -41,8 +42,10 @@ public class Homepage extends AppCompatActivity {
     private ArrayList<Member> ALmember = new ArrayList<>();
     private ArrayList<String> ALmembernames = new ArrayList<>();
     private TextView TVtripname;
+    private ListView LV;
     private ScrollView SV;
-    private ScrollView SV2;
+    private Button addMember;
+    private Button addActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +53,7 @@ public class Homepage extends AppCompatActivity {
         setContentView(R.layout.activity_homepage);
         Intent from_createORjoin = getIntent();
         int TripID = from_createORjoin.getIntExtra("TripID",100000);
-
+        addMember = findViewById(R.id.addmember);
         btnLogout = findViewById(R.id.logout);
 
         btnLogout.setOnClickListener(new View.OnClickListener(){
@@ -68,8 +71,9 @@ public class Homepage extends AppCompatActivity {
         myRef = FD.getReference();
         FirebaseUser user = Auth.getCurrentUser();
         userID = user.getUid();
-        SV2 = (ScrollView) findViewById(R.id.scrollView2);
-        ArrayAdapter<String> memAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ALmembernames);
+        LV = (ListView) findViewById(R.id.membersLV);
+        final ArrayAdapter<String> memAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ALmembernames);
+        LV.setAdapter(memAdapter);
         TVtripname = (TextView) findViewById(R.id.hometripname);
         TripRef = myRef.child("Trips").child(Integer.toString(TripID));
         currentTrip = new Trip();
@@ -120,6 +124,7 @@ public class Homepage extends AppCompatActivity {
                     TVtripname.setText(currentTrip.getTripName());
                 }
 
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -133,6 +138,8 @@ public class Homepage extends AppCompatActivity {
                     Member mm = new Member();
                     mm = dataSnapshot.getValue(Member.class);
                     ALmember.add(mm);
+                    ALmembernames.add(mm.getMemberName());
+                    memAdapter.notifyDataSetChanged();
                     Log.v("E_VALUE", "-------------------ADDED MEMBER: "+ mm.getMemberName() +"  ---------------------------");
 
                 }
@@ -158,6 +165,8 @@ public class Homepage extends AppCompatActivity {
                 }
             });
         }
+
+
 
 
 
@@ -189,5 +198,11 @@ public class Homepage extends AppCompatActivity {
         }
 
     };
+
+    public void Goto_addMember(){
+            Intent addM = new Intent(this, AddMember.class);
+            //addM.putExtra("TripID", id);
+            startActivity(addM);
+    }
 
 }
