@@ -93,7 +93,6 @@ public class create extends AppCompatActivity {
                 EditText tripname = (EditText) findViewById(R.id.tripname);
                 EditText password = (EditText) findViewById(R.id.pw);
                 EditText creater = (EditText) findViewById(R.id.creater);
-                TextView message = (TextView) findViewById(R.id.textView6);
 
                 Log.v("E_VALUE","--------  Data : "+ tripcount[0] + "---------------------------");
 
@@ -114,7 +113,7 @@ public class create extends AppCompatActivity {
                     t1.setCreaterUID(userID);
                     com.SE.steamedboat.SimpleTrip s1 = new SimpleTrip (name,ID,true);
                     myRef.child("Trips").child(id).setValue(t1);
-                    myRef.child("Trips").child(id).child("members").child(name).setValue(m1);
+                    myRef.child("Trips").child(id).child("members").child(create).setValue(m1);
                     myRef.child("Users").child(userID).child("trips").child(trip_count).setValue(s1);
 
                     //myRef.child("Users").child(userID).child("trips").child(trip_count).child("TripName").setValue(create);
@@ -140,7 +139,6 @@ public class create extends AppCompatActivity {
                     GoTo_home();}
 
                 else{
-                    message.setText("Make sure all fields are entered");
                     Toast.makeText(create.this, "Make sure all fields are entered", Toast.LENGTH_SHORT).show();
                 }
 
