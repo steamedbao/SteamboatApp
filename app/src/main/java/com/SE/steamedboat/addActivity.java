@@ -37,6 +37,7 @@ public class addActivity extends AppCompatActivity {
 
     private Button but_add;
     private EditText activity_name;
+    private int TripID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,24 +45,36 @@ public class addActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add);
 
         Intent from_home = getIntent();
-        int TripID = from_home.getIntExtra("TripID",100000);
+        TripID = from_home.getIntExtra("TripID",100000);
 
         but_add = (Button) findViewById(R.id.Button_add);
-        activity_name = (EditText) findViewById(R.id.activityname);
 
         Auth = FirebaseAuth.getInstance();
         FD = FirebaseDatabase.getInstance();
         final FirebaseUser user = Auth.getCurrentUser();
         userID = user.getUid();
+        activity_name = (EditText) findViewById(R.id.activityname);
 
 
-        String name = activity_name.getText().toString();
+        but_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        Activity a1 = new Activity(name);
 
-        myRef = FD.getReference().child("Trips").child(Integer.toString(TripID)).child("activities").child(name);
+                String name = activity_name.getText().toString();
 
-        myRef.setValue(a1);
+                Activity a1 = new Activity(name);
+
+                Log.v("E_VALUE","--------  Activity Name : "+ a1.getName() + "---------------------------");
+
+                Log.v("E_VALUE","--------  Activity Name : "+ a1.getName() + "---------------------------");
+
+
+                myRef = FD.getReference().child("Trips").child(Integer.toString(TripID)).child("activities").child(name);
+
+                myRef.setValue(a1);
+            }
+        });
 
     }
 }

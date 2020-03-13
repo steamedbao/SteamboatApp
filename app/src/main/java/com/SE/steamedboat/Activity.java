@@ -5,26 +5,38 @@ import android.view.SurfaceControl;
 import java.util.ArrayList;
 import java.util.Date;
 
+enum status_choice {
+    SETTLED, PENDING;
+}
+
+enum split_chioce {
+    SPLIT_EVEN, CUSTOMISE;
+}
+
 public class Activity {
+
     private String name;
     private int id;
-    private Date dateTime;
-    private float activityExpense;
-    private ArrayList<Transaction> transactions;
-    private ArrayList<Integer> participant;
-    private ArrayList<Float> individualExpense;
-    private Enum status;
-    private Enum split;
-    private String activityCurrency;
-    private float exchangeRate;
-    private float homeWorth;
+    private Date dateTime = new Date();
+    private float activityExpense = 0;
+    private ArrayList<Transaction> transactions = new ArrayList<>();
+    private ArrayList<Integer> participant = new ArrayList<>();
+    private ArrayList<Float> individualExpense= new ArrayList<>();
+    private Enum status = status_choice.PENDING;
+    private Enum split = split_chioce.SPLIT_EVEN;
+    private String activityCurrency = "SGD";
+    private float exchangeRate = 1;
+    private float homeWorth = 0;
 
     public Activity(String n) {
         name = n;
+        id = (int)(Math.random()*(500000))+100000;
     }
 
     public void updateMember(){};
+
     public void updateActivity(){};
+
     public ArrayList getActivityInfo(){
         ArrayList<Object> activityInfo = new ArrayList<Object>();
         activityInfo.add(this.name);
@@ -52,6 +64,30 @@ public class Activity {
 
     public ArrayList<Transaction> getTransactions() {
         return transactions;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Date getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(Date dateTime) {
+        this.dateTime = dateTime;
     }
 
     public void setTransactions(ArrayList<Transaction> transactions) {

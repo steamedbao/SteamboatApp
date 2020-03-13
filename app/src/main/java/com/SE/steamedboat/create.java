@@ -113,7 +113,7 @@ public class create extends AppCompatActivity {
                     t1.setCreaterUID(userID);
                     com.SE.steamedboat.SimpleTrip s1 = new SimpleTrip (name,ID,true);
                     myRef.child("Trips").child(id).setValue(t1);
-                    myRef.child("Trips").child(id).child("members").child(name).setValue(m1);
+                    myRef.child("Trips").child(id).child("members").child(create).setValue(m1);
                     myRef.child("Users").child(userID).child("trips").child(trip_count).setValue(s1);
 
                     //myRef.child("Users").child(userID).child("trips").child(trip_count).child("TripName").setValue(create);
