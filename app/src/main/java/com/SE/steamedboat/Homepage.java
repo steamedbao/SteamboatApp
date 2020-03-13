@@ -85,6 +85,8 @@ public class Homepage extends AppCompatActivity {
         TVtripname = (TextView) findViewById(R.id.hometripname);
         TripRef = myRef.child("Trips").child(Integer.toString(TripID));
 
+
+
         currentTrip = new Trip();
 
         Log.v("E_VALUE", "-------------------AL size is: "+ ALtrip.size()+"  ---------------------------");
@@ -179,9 +181,16 @@ public class Homepage extends AppCompatActivity {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
+
+
+                    // ------ use for loop to find activity of that date if the calender is clicked
                     Activity a = new Activity();
                     a = dataSnapshot.getValue(Activity.class);
+
                     AL_activity_names.add(a.getName()+ " " + a.getActivityCurrency() +": " + a.getActivityExpense() +"  " + a.getSplit() );
+
+                    // -----------------------------------------------------------
+
                     actAdapter.notifyDataSetChanged();
 
                 }
