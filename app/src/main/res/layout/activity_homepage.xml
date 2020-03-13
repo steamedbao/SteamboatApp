@@ -73,10 +73,9 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="24dp"
         android:fontFamily="@font/montserrat"
-        android:text="TripName"
         android:textAlignment="center"
         android:textColor="#CCFFFFFF"
-        android:textSize="24sp" />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/hometripid"
@@ -86,9 +85,8 @@
         android:gravity="start"
         android:fontFamily="@font/montserrat"
         android:layout_marginTop="16dp"
-        android:text="ID"
         android:textColor="#CCFFFFFF"
-        android:textSize="24sp" />
+        android:textSize="20sp" />
 //id needs to be replaced with actual trip id read from database
 
     <Button
@@ -146,6 +144,8 @@
         android:text="Members: "
         android:textColor="#FFFFFF"
         android:visibility="visible" />
+
+
 
     <ListView
         android:id="@+id/LVactivity"

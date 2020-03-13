@@ -182,7 +182,6 @@
         android:paddingVertical="10dp"
         android:background="@drawable/textbox"
         android:paddingHorizontal="10dp"
-        android:hint=""
         android:textColor="#242424"
         android:textColorHint="#242424"/>
 

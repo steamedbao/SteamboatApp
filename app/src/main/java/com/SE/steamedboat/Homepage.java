@@ -14,9 +14,11 @@ import android.util.Log;
 
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.app.AlertDialog;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -29,7 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.sql.Ref;
 import java.util.ArrayList;
 
-public class Homepage extends AppCompatActivity {
+public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMemberDialogListener {
     Button btnLogout;
     FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -51,6 +53,9 @@ public class Homepage extends AppCompatActivity {
     private Button addMember;
     private Button addActivity;
     private int TripID;
+    private TextView TripIDDisplay;
+    private TextView TripNameDisplay;
+    private String TripName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +65,11 @@ public class Homepage extends AppCompatActivity {
         TripID = from_createORjoin.getIntExtra("TripID",100000);
         addMember = findViewById(R.id.addmember);
         btnLogout = findViewById(R.id.logout);
+        TripIDDisplay = findViewById(R.id.hometripid);
+        TripIDDisplay.setText(String.valueOf(TripID));
+        TripNameDisplay = findViewById(R.id.hometripname);
+        TripName = from_createORjoin.getStringExtra("TripName");
+        TripNameDisplay.setText(TripName);
 
         btnLogout.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -151,7 +161,7 @@ public class Homepage extends AppCompatActivity {
                     ALmember.add(mm);
                     ALmembernames.add(mm.getMemberName());
                     memAdapter.notifyDataSetChanged();
-                    Log.v("E_VALUE", "-------------------ADDED MEMBER: "+ mm.getMemberName() +"  ---------------------------");
+                    Log.v("E_lVALUE", "-------------------ADDED MEMBER: "+ mm.getMemberName() +"  ---------------------------");
 
                 }
 
@@ -218,9 +228,10 @@ public class Homepage extends AppCompatActivity {
         }
 
 
+        addMember=findViewById(R.id.addmember);
+
 
         addActivity = findViewById(R.id.addActivity);
-        addMember = findViewById(R.id.addmember);
 
         addActivity.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -232,7 +243,7 @@ public class Homepage extends AppCompatActivity {
         addMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Goto_addMember(TripID);
+                openDialog();
             }
         });
 
@@ -251,6 +262,25 @@ public class Homepage extends AppCompatActivity {
         }
 
     }
+    public void openDialog(){
+        AddMemberDialog addMemberDialog = new AddMemberDialog();
+        addMemberDialog.show(getSupportFragmentManager(),"Add Member");
+    }
+
+    @Override
+    public void applyTexts(String username)
+    {
+        Intent from_home = getIntent();
+        TripID = from_home.getIntExtra("TripID",100000);
+        Auth = FirebaseAuth.getInstance();
+        FD = FirebaseDatabase.getInstance();
+        final FirebaseUser user = Auth.getCurrentUser();
+        userID = user.getUid();
+        Member mem = new Member(username);
+        myRef = FD.getReference().child("Trips").child(Integer.toString(TripID)).child("members").child(username);
+        myRef.setValue(mem);
+
+    }
 
     public void Action(){
 
@@ -263,12 +293,6 @@ public class Homepage extends AppCompatActivity {
 
         }
 
-    };
-
-    public void Goto_addMember(int id){
-            Intent addM = new Intent(this, AddMember.class);
-            addM.putExtra("TripID", id);
-            startActivity(addM);
     }
 
     public void Goto_addActivity(int id){
