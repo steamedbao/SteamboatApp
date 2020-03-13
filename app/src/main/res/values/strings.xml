@@ -2,4 +2,22 @@
     <string name="app_name">Steamedboat</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_add_member">AddMember</string>
+
+    <string-array name="currency">
+        <item>CNY</item>
+        <item>USD</item>
+        <item>SGD</item>
+        <item>JPY</item>
+        <item>KRW</item>
+        <item>EUR</item>
+        <item>GBP</item>
+        <item>QAR</item>
+    </string-array>
+
+    <string-array name="splitmethods">
+        <item>Evenly</item>
+        <item>Others</item>
+    </string-array>
+
+
 </resources>

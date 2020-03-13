@@ -1,53 +1,233 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".addActivity">
+    android:background="#000000"
+    tools:context=".create">
 
-    <TextView
-        android:id="@+id/TVaddactivity"
+    <Button
+        android:id="@+id/discardactivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="176dp"
-        android:layout_marginLeft="176dp"
-        android:layout_marginTop="37dp"
-        android:layout_marginEnd="177dp"
-        android:layout_marginRight="177dp"
-        android:text="Add Activity"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Back"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        />
+
+    <TextView
+        android:id="@+id/add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="60dp"
+        android:text="Add"
+        android:textColor="#FFFFFF"
+        android:fontFamily="@font/montserrat"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/activity"
+        android:layout_width="400dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="75dp"
+        android:fontFamily="@font/montserrat"
+        android:text="New Activity"
+        android:textColor="#FFAB91"
+        android:textSize="34sp" />
+
+    <TextView
+        android:id="@+id/textviewactivityname"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="150dp"
+        android:fontFamily="@font/roboto"
+        android:paddingVertical="10dp"
+        android:text="Activity Name :"
+        android:textColor="#CCFFFFFF"
+        android:textSize="16sp"
+        />
 
     <EditText
         android:id="@+id/activityname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="115dp"
-        android:layout_marginLeft="115dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="83dp"
-        android:layout_marginRight="83dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TVaddactivity" />
+        android:layout_width="235dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="145dp"
+        android:layout_marginTop="150dp"
+        android:fontFamily="@font/roboto"
+        android:paddingVertical="10dp"
+        android:background="@drawable/textbox"
+        android:paddingHorizontal="10dp"
+        android:hint="Tap to enter"
+        android:textColor="#242424"
+        android:textColorHint="#242424"/>
+
+    <TextView
+        android:id="@+id/textviewdatetime"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="210dp"
+        android:fontFamily="@font/roboto"
+        android:paddingVertical="10dp"
+        android:text="Date :"
+        android:textColor="#CCFFFFFF"
+        android:textSize="16sp"
+        />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="210dp"
+        android:background="@drawable/calendar" />
+
+
+    <TextView
+        android:id="@+id/textviewpayername"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="270dp"
+        android:layout_marginLeft="31dp"
+        android:fontFamily="@font/roboto"
+        android:paddingVertical="10dp"
+        android:text="Payer :"
+        android:textColor="#CCFFFFFF"
+        android:textSize="16sp"
+        />
+
+    <EditText
+        android:id="@+id/payername"
+        android:layout_width="235dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="145dp"
+        android:layout_marginTop="270dp"
+        android:fontFamily="@font/roboto"
+        android:paddingVertical="10dp"
+        android:background="@drawable/textbox"
+        android:paddingHorizontal="10dp"
+        android:hint="Tap to enter"
+        android:textColor="#242424"
+        android:textColorHint="#242424"/>
+
+
 
     <Button
         android:id="@+id/Button_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="257dp"
-        android:layout_marginLeft="257dp"
-        android:layout_marginTop="152dp"
-        android:layout_marginEnd="66dp"
-        android:layout_marginRight="66dp"
-        android:text="Add"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activityname" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="310dp"
+        android:layout_marginLeft="310dp"
+        android:layout_marginBottom="328dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:textColor="#000000"
+        android:background="#FFAB91"
+        android:text="Save"
+        android:ellipsize="none"
+        android:padding="5dp"
+        android:radius="30dp"
+        android:textSize="24sp"
+        android:fontFamily="@font/roboto_condensed_bold"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+    <TextView
+        android:id="@+id/memberselecttextview"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="330dp"
+        android:layout_marginLeft="31dp"
+        android:fontFamily="@font/roboto"
+        android:paddingVertical="10dp"
+        android:text="Select Members :"
+        android:textColor="#CCFFFFFF"
+        android:textSize="16sp"
+        />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="350dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="375dp"
+        android:layout_marginLeft="31dp"
+        android:background="#242424"/>
+
+
+    <TextView
+        android:id="@+id/textviewexpense"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="550dp"
+        android:layout_marginLeft="31dp"
+        android:fontFamily="@font/roboto"
+        android:paddingVertical="10dp"
+        android:text="Expense :"
+        android:textColor="#CCFFFFFF"
+        android:textSize="16sp"
+        />
+
+    <EditText
+        android:id="@+id/expense"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="145dp"
+        android:layout_marginTop="550dp"
+        android:fontFamily="@font/roboto"
+        android:paddingVertical="10dp"
+        android:background="@drawable/textbox"
+        android:paddingHorizontal="10dp"
+        android:hint="Tap to enter"
+        android:textColor="#242424"
+        android:textColorHint="#242424"/>
+
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="280dp"
+        android:layout_marginLeft="280dp"
+        android:layout_marginTop="550dp"
+        android:entries="@array/currency"
+        android:backgroundTint="#FFFFFF"
+        android:theme="@style/Spinner"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+
+        />
+
+    <TextView
+        android:id="@+id/split"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="600dp"
+        android:layout_marginLeft="31dp"
+        android:fontFamily="@font/roboto"
+        android:paddingVertical="10dp"
+        android:text="Split :"
+        android:textColor="#CCFFFFFF"
+        android:textSize="16sp"
+        />
+
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="140dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="145dp"
+        android:layout_marginLeft="145dp"
+        android:layout_marginTop="600dp"
+        android:entries="@array/splitmethods"
+        android:backgroundTint="#FFFFFF"
+        android:theme="@style/Spinner"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+
+        />
+
+
+
+
+</RelativeLayout>

@@ -1,35 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
     tools:context=".create">
 
+    <Button
+        android:id="@+id/discardtrip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        />
+
     <TextView
         android:id="@+id/textView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:layout_marginStart="60dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginStart="30dp"
         android:layout_marginLeft="60dp"
         android:text="Create"
-        android:layout_centerHorizontal="true"
         android:textColor="#FFFFFF"
-        android:fontFamily="@font/open_sans_semibold"
+        android:fontFamily="@font/montserrat"
         android:textSize="30sp" />
 
     <TextView
         android:id="@+id/textViewNewTrip"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:layout_marginLeft="275dp"
+        android:layout_width="400dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="135dp"
+        android:layout_marginLeft="135dp"
+        android:layout_marginTop="75dp"
+        android:fontFamily="@font/montserrat"
         android:text="New Trip"
-        android:layout_centerHorizontal="true"
         android:textColor="#FFAB91"
-        android:fontFamily="@font/roboto_condensed_bold"
         android:textSize="34sp" />
 
     <EditText

@@ -45,6 +45,7 @@ public class create extends AppCompatActivity {
         myRef = FD.getReference();
         FirebaseUser user = Auth.getCurrentUser();
         userID = user.getUid();
+        Button backButton=findViewById(R.id.discardtrip);
 
 
         AuthListen = new FirebaseAuth.AuthStateListener() {
