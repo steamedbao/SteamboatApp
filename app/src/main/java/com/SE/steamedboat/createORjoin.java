@@ -35,6 +35,7 @@ public class createORjoin extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener AuthListen;
     private DatabaseReference myRef;
     private String userID;
+
     private ListView LV;
     private ArrayList<SimpleTrip> trips = new ArrayList<>();
     private ArrayList<String> toshow = new ArrayList<>();
@@ -68,6 +69,7 @@ public class createORjoin extends AppCompatActivity {
         final FirebaseUser user = Auth.getCurrentUser();
         userID = user.getUid();
         myRef = FD.getReference().child("Users").child(userID).child("trips");
+        // ---------------------------------------------
         LV = (ListView) findViewById(R.id.triplist);
         final ArrayAdapter<String> name_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, toshow);
         ST = new SimpleTrip();

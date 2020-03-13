@@ -46,13 +46,14 @@ public class Homepage extends AppCompatActivity {
     private ScrollView SV;
     private Button addMember;
     private Button addActivity;
+    private int TripID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
         Intent from_createORjoin = getIntent();
-        int TripID = from_createORjoin.getIntExtra("TripID",100000);
+        TripID = from_createORjoin.getIntExtra("TripID",100000);
         addMember = findViewById(R.id.addmember);
         btnLogout = findViewById(R.id.logout);
 
@@ -168,7 +169,14 @@ public class Homepage extends AppCompatActivity {
 
 
 
+        addActivity = findViewById(R.id.addActivity);
 
+        addActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Goto_addActivity(TripID);
+            }
+        });
 
         //Log.v("E_VALUE", "-------------------Outside listener AL Trip Name is: "+ ALtrip.get(0).getTripName() +"  ---------------------------");
 
@@ -203,6 +211,12 @@ public class Homepage extends AppCompatActivity {
             Intent addM = new Intent(this, AddMember.class);
             //addM.putExtra("TripID", id);
             startActivity(addM);
+    }
+
+    public void Goto_addActivity(int id){
+        Intent gotoadd = new Intent(this, addActivity.class);
+        gotoadd.putExtra("TripID", id);
+        startActivity(gotoadd);
     }
 
 }

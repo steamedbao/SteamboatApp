@@ -19,7 +19,10 @@ public class Activity {
     private float exchangeRate;
     private float homeWorth;
 
-    public Activity() {}
+    public Activity(String n) {
+        name = n;
+    }
+
     public void updateMember(){};
     public void updateActivity(){};
     public ArrayList getActivityInfo(){
