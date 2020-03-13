@@ -5,13 +5,13 @@ import android.view.SurfaceControl;
 import java.util.ArrayList;
 import java.util.Date;
 
-enum status_choice {
+/*enum status_choice {
     SETTLED, PENDING;
 }
 
 enum split_chioce {
     SPLIT_EVEN, CUSTOMISE;
-}
+}*/
 
 public class Activity {
 
@@ -22,8 +22,8 @@ public class Activity {
     private ArrayList<Transaction> transactions = new ArrayList<>();
     private ArrayList<Integer> participant = new ArrayList<>();
     private ArrayList<Float> individualExpense= new ArrayList<>();
-    private Enum status = status_choice.PENDING;
-    private Enum split = split_chioce.SPLIT_EVEN;
+    private boolean status = true;
+    private boolean split = true;
     private String activityCurrency = "SGD";
     private float exchangeRate = 1;
     private float homeWorth = 0;
@@ -32,6 +32,8 @@ public class Activity {
         name = n;
         id = (int)(Math.random()*(500000))+100000;
     }
+
+    public Activity(){}
 
     public void updateMember(){};
 
@@ -110,19 +112,19 @@ public class Activity {
         this.individualExpense = individualExpense;
     }
 
-    public Enum getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    public void setStatus(Enum status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 
-    public Enum getSplit() {
+    public boolean getSplit() {
         return split;
     }
 
-    public void setSplit(Enum split) {
+    public void setSplit(boolean split) {
         this.split = split;
     }
 

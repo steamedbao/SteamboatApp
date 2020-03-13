@@ -109,6 +109,7 @@ public class create extends AppCompatActivity {
                     final String id = Integer.toString(ID);
                     com.SE.steamedboat.Member m1 = new Member(create);
                     m1.setUID(userID);
+                    m1.setHost(true);
                     t1.addMember(m1);
                     t1.setCreaterUID(userID);
                     com.SE.steamedboat.SimpleTrip s1 = new SimpleTrip (name,ID,true);

@@ -5,6 +5,7 @@ import android.view.View;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Ref;
 import java.util.ArrayList;
 
 public class Homepage extends AppCompatActivity {
@@ -41,9 +43,11 @@ public class Homepage extends AppCompatActivity {
     private ArrayList<Trip> ALtrip = new ArrayList<>();
     private ArrayList<Member> ALmember = new ArrayList<>();
     private ArrayList<String> ALmembernames = new ArrayList<>();
+    private ArrayList<String> AL_activity_names = new ArrayList<>();
+
     private TextView TVtripname;
     private ListView LV;
-    private ScrollView SV;
+    private ListView LVactivity;
     private Button addMember;
     private Button addActivity;
     private int TripID;
@@ -73,10 +77,14 @@ public class Homepage extends AppCompatActivity {
         FirebaseUser user = Auth.getCurrentUser();
         userID = user.getUid();
         LV = (ListView) findViewById(R.id.membersLV);
+        LVactivity = (ListView) findViewById(R.id.LVactivity);
+        final ArrayAdapter<String> actAdapter = new ArrayAdapter<String>(this, R.layout.cust_list_view, AL_activity_names);
         final ArrayAdapter<String> memAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ALmembernames);
         LV.setAdapter(memAdapter);
+        LVactivity.setAdapter(actAdapter);
         TVtripname = (TextView) findViewById(R.id.hometripname);
         TripRef = myRef.child("Trips").child(Integer.toString(TripID));
+
         currentTrip = new Trip();
 
         Log.v("E_VALUE", "-------------------AL size is: "+ ALtrip.size()+"  ---------------------------");
@@ -157,6 +165,39 @@ public class Homepage extends AppCompatActivity {
 
                 @Override
                 public void onChildMoved(@NonNull DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+
+            TripRef.child("activities").addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    Activity a = new Activity();
+                    a = dataSnapshot.getValue(Activity.class);
+                    AL_activity_names.add(a.getName()+ " " + a.getActivityCurrency() +": " + a.getActivityExpense() +"  " + a.getSplit() );
+                    actAdapter.notifyDataSetChanged();
+
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
                 }
 

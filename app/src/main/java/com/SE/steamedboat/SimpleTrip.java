@@ -5,6 +5,7 @@ public class SimpleTrip{
     private String TripName = "NoName";
     private int ID=100000;
     private boolean Ongoing = false;
+
     public SimpleTrip(){};
     public SimpleTrip(String name, int id, boolean on)
         {TripName = name; ID =id; Ongoing = on;}

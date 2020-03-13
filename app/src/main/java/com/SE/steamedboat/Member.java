@@ -49,6 +49,10 @@ public class Member {
         return host;
     }
 
+    public void setHost(boolean host) {
+        this.host = host;
+    }
+
     public void removeMember(){} //need edit..........................
 
     public boolean verifyMember(){return true;}  //need edit..........................
