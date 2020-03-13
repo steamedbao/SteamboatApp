@@ -120,7 +120,7 @@
         android:layout_marginEnd="86dp"
         android:layout_marginRight="86dp"
         android:layout_marginBottom="10dp"
-        android:text="Already has an account? Login here."
+        android:text="Already has an account? Login here now."
         android:textAlignment="center"
         android:textColor="#CCFFFFFF" />
 

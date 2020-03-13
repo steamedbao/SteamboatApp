@@ -67,8 +67,6 @@ public class addActivity extends AppCompatActivity {
 
                 Log.v("E_VALUE","--------  Activity Name : "+ a1.getName() + "---------------------------");
 
-                Log.v("E_VALUE","--------  Activity Name : "+ a1.getName() + "---------------------------");
-
 
                 myRef = FD.getReference().child("Trips").child(Integer.toString(TripID)).child("activities").child(name);
 
