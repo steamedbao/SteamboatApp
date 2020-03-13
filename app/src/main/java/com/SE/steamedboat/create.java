@@ -93,7 +93,6 @@ public class create extends AppCompatActivity {
                 EditText tripname = (EditText) findViewById(R.id.tripname);
                 EditText password = (EditText) findViewById(R.id.pw);
                 EditText creater = (EditText) findViewById(R.id.creater);
-                TextView message = (TextView) findViewById(R.id.textView6);
 
                 Log.v("E_VALUE","--------  Data : "+ tripcount[0] + "---------------------------");
 
@@ -140,7 +139,6 @@ public class create extends AppCompatActivity {
                     GoTo_home();}
 
                 else{
-                    message.setText("Make sure all fields are entered");
                     Toast.makeText(create.this, "Make sure all fields are entered", Toast.LENGTH_SHORT).show();
                 }
 

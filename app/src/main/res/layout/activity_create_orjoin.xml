@@ -65,7 +65,6 @@
         android:layout_width="358dp"
         android:layout_height="300dp"
         android:ellipsize="end"
-        android:theme="@style/ListFont"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="2dp"
         android:layout_marginLeft="2dp"
