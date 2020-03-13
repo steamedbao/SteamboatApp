@@ -170,11 +170,19 @@ public class Homepage extends AppCompatActivity {
 
 
         addActivity = findViewById(R.id.addActivity);
+        addMember = findViewById(R.id.addmember);
 
         addActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Goto_addActivity(TripID);
+            }
+        });
+
+        addMember.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Goto_addMember(TripID);
             }
         });
 
@@ -207,9 +215,9 @@ public class Homepage extends AppCompatActivity {
 
     };
 
-    public void Goto_addMember(){
+    public void Goto_addMember(int id){
             Intent addM = new Intent(this, AddMember.class);
-            //addM.putExtra("TripID", id);
+            addM.putExtra("TripID", id);
             startActivity(addM);
     }
 
