@@ -33,11 +33,12 @@ public class Trip {
 
     public Trip(){}
 
-    public Trip (String name, String pw, String creater){
+    public Trip (String name, String pw, String creater, int id){
         setPassWord(pw);
         setTripName(name);
         setCreaterName(creater);
-        tripID = (int)(Math.random()*(500000))+100000;
+        tripID = id;
+        //tripID = (int)(Math.random()*(500000))+100000;
         System.out.println("ID is " + tripID +"\n");
         members = new ArrayList<Member>();
         activities = new ArrayList<Activity>();

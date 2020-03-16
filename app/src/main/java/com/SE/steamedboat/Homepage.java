@@ -96,9 +96,6 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         TripRef = myRef.child("Trips").child(Integer.toString(TripID));
 
 
-
-        currentTrip = new Trip();
-
         Log.v("E_VALUE", "-------------------AL size is: "+ ALtrip.size()+"  ---------------------------");
 
         if (ALtrip.size()==0){
@@ -136,11 +133,12 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
             TripRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    currentTrip = new Trip();
                     currentTrip=dataSnapshot.getValue(Trip.class);
                     ALtrip.add(currentTrip);
                     Log.v("E_VALUE", "-------------AFTER ADD ------AL size is: "+ ALtrip.size()+"  ---------------------------");
 
-                    Log.v("E_VALUE", "-------------------Trip Name is: "+ currentTrip.getTripName() +"  ---------------------------");
+                    //Log.v("E_VALUE", "-------------------Trip Name is: "+ currentTrip.getTripName() +"  ---------------------------");
                     Log.v("E_VALUE", "-------------------dataSnapshot.getValue() is: "+ dataSnapshot.getValue() +"  ---------------------------");
                     TVtripname.setText(currentTrip.getTripName());
                 }
@@ -192,13 +190,13 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
 
-
                     // ------ use for loop to find activity of that date if the calender is clicked
                     Activity a = new Activity();
-                    a = dataSnapshot.getValue(Activity.class);
+                    if (dataSnapshot.hasChildren())
+                    {   a = dataSnapshot.getValue(Activity.class);
 
-                    AL_activity_names.add(a.getName()+ " " + a.getActivityCurrency() +": " + a.getActivityExpense() +"  " + a.getSplit() );
-
+                    AL_activity_names.add(a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
+                    }
                     // -----------------------------------------------------------
 
                     actAdapter.notifyDataSetChanged();
