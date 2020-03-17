@@ -212,7 +212,9 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
 
                             if (adate.compareTo(cvdate)==0) {
                                 Log.v("date", "------------------- " + "true" + "  ---------------------------");
+
                                 AL_activity_names.add(a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
+
                             }
                         }
                     });
