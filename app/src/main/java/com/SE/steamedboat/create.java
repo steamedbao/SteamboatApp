@@ -33,6 +33,7 @@ public class create extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener AuthListen;
     private DatabaseReference myRef;
     private String userID;
+    private int TripID;
 
 
     @Override
@@ -103,9 +104,10 @@ public class create extends AppCompatActivity {
                 String name = tripname.getText().toString();
                 String pw = password.getText().toString();
                 String create = creater.getText().toString();
+                TripID = Integer.parseInt(trip_count)+100000;
 
                 if( !pw.equals("") && !name.equals("") && !create.equals("")){
-                    Trip t1 = new Trip(name, pw, create);
+                    Trip t1 = new Trip(name, pw, create,TripID);
                     int ID = t1.getTripID();
                     final String id = Integer.toString(ID);
                     com.SE.steamedboat.Member m1 = new Member(create);
@@ -153,6 +155,7 @@ public class create extends AppCompatActivity {
 
     public void GoTo_home(){
         Intent gohome = new Intent (this, Homepage.class);
+        gohome.putExtra("TripID", TripID);
         startActivity(gohome);}
 
     public void GoTo_main(){

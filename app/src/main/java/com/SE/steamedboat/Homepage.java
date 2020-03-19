@@ -1,5 +1,6 @@
 package com.SE.steamedboat;
 
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.View;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.util.Log;
 
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -28,7 +30,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Date;
 import java.sql.Ref;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMemberDialogListener {
@@ -96,9 +100,6 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         TripRef = myRef.child("Trips").child(Integer.toString(TripID));
 
 
-
-        currentTrip = new Trip();
-
         Log.v("E_VALUE", "-------------------AL size is: "+ ALtrip.size()+"  ---------------------------");
 
         if (ALtrip.size()==0){
@@ -136,11 +137,12 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
             TripRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    currentTrip = new Trip();
                     currentTrip=dataSnapshot.getValue(Trip.class);
                     ALtrip.add(currentTrip);
                     Log.v("E_VALUE", "-------------AFTER ADD ------AL size is: "+ ALtrip.size()+"  ---------------------------");
 
-                    Log.v("E_VALUE", "-------------------Trip Name is: "+ currentTrip.getTripName() +"  ---------------------------");
+                    //Log.v("E_VALUE", "-------------------Trip Name is: "+ currentTrip.getTripName() +"  ---------------------------");
                     Log.v("E_VALUE", "-------------------dataSnapshot.getValue() is: "+ dataSnapshot.getValue() +"  ---------------------------");
                     TVtripname.setText(currentTrip.getTripName());
                 }
@@ -189,16 +191,40 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
 
             TripRef.child("activities").addChildEventListener(new ChildEventListener() {
                 @Override
-                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                public void onChildAdded(@NonNull final DataSnapshot dataSnapshot, @Nullable String s) {
 
+                    CalendarView cv=(CalendarView)findViewById(R.id.tripCalendar);
 
+                    cv.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                        @Override
+                        public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+
+                            Activity a = new Activity();
+                            if (dataSnapshot.hasChildren())
+                                a = dataSnapshot.getValue(Activity.class);
+
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+                            String adate = sdf.format(a.getDateTime());
+                            Log.v("date", "------------------- "+ adate +"  ---------------------------");
+
+                            String cvdate = dayOfMonth+"/"+(month+1)+"/"+year;
+                            Log.v("date", "------------------- "+ cvdate +"  ---------------------------");
+
+                            if (adate.compareTo(cvdate)==0) {
+                                Log.v("date", "------------------- " + "true" + "  ---------------------------");
+
+                                AL_activity_names.add(a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
+
+                            }
+                        }
+                    });
 
                     // ------ use for loop to find activity of that date if the calender is clicked
-                    Activity a = new Activity();
-                    a = dataSnapshot.getValue(Activity.class);
-
-                    AL_activity_names.add(a.getName()+ " " + a.getActivityCurrency() +": " + a.getActivityExpense() +"  " + a.getSplit() );
-
+                    /*Activity a = new Activity();
+                    if (dataSnapshot.hasChildren())
+                    {   a = dataSnapshot.getValue(Activity.class);
+                        AL_activity_names.add(a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
+                    }*/
                     // -----------------------------------------------------------
 
                     actAdapter.notifyDataSetChanged();
