@@ -77,15 +77,15 @@ public class join extends AppCompatActivity {
                 PW = pw.getText().toString();
                 Joiner = joiner.getText().toString();
 
-                myRef.child(IDstring).child("passWord").addValueEventListener(new ValueEventListener() {
+                myRef.child(IDstring).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.getValue()==null) {
                             Toast.makeText(join.this, "Invalid TripID, try again", Toast.LENGTH_SHORT).show();                        }
 
-                        correctpw[0] = dataSnapshot.getValue(String.class);
-                        String temp = dataSnapshot.getValue(String.class);
-                        Log.v("E_VALUE","--------  Data in : "+ dataSnapshot.getValue() + "---------------------------");
+                        correctpw[0] = dataSnapshot.child("passWord").getValue(String.class);
+                        String temp = dataSnapshot.child("passWord").getValue(String.class);
+                        Log.v("E_VALUE","--------  Data in : "+ dataSnapshot.child("passWord").getValue() + "---------------------------");
                         Log.v("E_VALUE","--------  temp : "+ temp + "---------------------------");
                         Log.v("E_VALUE","--------  correctpw : "+ correctpw[0] + "---------------------------");
                         correct = PW.equals(temp);
@@ -97,8 +97,10 @@ public class join extends AppCompatActivity {
 
                         else{
                             Toast.makeText(join.this, "correct", Toast.LENGTH_SHORT).show();
-                            SimpleTrip st = new SimpleTrip(Joiner,Integer.parseInt(IDstring),true);
+                            String tripname = dataSnapshot.child("tripName").getValue(String.class);
+                            SimpleTrip st = new SimpleTrip(tripname,Integer.parseInt(IDstring),true);
                             Member mem = new Member(Joiner);
+                            mem.setUID(userID);
                             FD.getReference().child("Trips").child(IDstring).child("members").child(Joiner).setValue(mem);
                             FD.getReference().child("Users").child(userID).child("trips").child(IDstring).setValue(st);
                             Toast.makeText(join.this, "Join Trip Success", Toast.LENGTH_SHORT).show();
