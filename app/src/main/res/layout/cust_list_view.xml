@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tv"
-    android:textColor="#FFFFFF"
+    android:textColor="#CCFFFFFF"
+    android:padding="8dp"
     android:layout_width="fill_parent"
     android:gravity="center"
     android:textSize="16dp"

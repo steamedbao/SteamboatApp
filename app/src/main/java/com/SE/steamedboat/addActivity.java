@@ -2,8 +2,10 @@ package com.SE.steamedboat;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,6 +43,7 @@ public class addActivity extends AppCompatActivity {
     private Button but_add;
     private EditText activity_name;
     private int TripID;
+    private Button back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +54,21 @@ public class addActivity extends AppCompatActivity {
         TripID = from_home.getIntExtra("TripID",100000);
 
         but_add = (Button) findViewById(R.id.Button_add);
+        back = (Button) findViewById(R.id.discardactivity);
 
         Auth = FirebaseAuth.getInstance();
         FD = FirebaseDatabase.getInstance();
         final FirebaseUser user = Auth.getCurrentUser();
         userID = user.getUid();
         activity_name = (EditText) findViewById(R.id.activityname);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
 
 
         but_add.setOnClickListener(new View.OnClickListener() {
@@ -66,14 +78,21 @@ public class addActivity extends AppCompatActivity {
 
                 String name = activity_name.getText().toString();
 
-                Activity a1 = new Activity(name);
+                if (name!="")//need more checks. but rn cant pass in the values for the others yet
+                {
+                    Activity a1 = new Activity(name);
 
-                Log.v("E_VALUE","--------  Activity Name : "+ a1.getName() + "---------------------------");
+                    Log.v("E_VALUE","--------  Activity Name : "+ a1.getName() + "---------------------------");
 
 
-                myRef = FD.getReference().child("Trips").child(Integer.toString(TripID)).child("activities").child(name);
+                    myRef = FD.getReference().child("Trips").child(Integer.toString(TripID)).child("activities").child(name);
 
-                myRef.setValue(a1);
+                    myRef.setValue(a1);
+                }
+                else
+                {
+
+                    Toast.makeText(addActivity.this, "Please enter all fields!", Toast.LENGTH_SHORT).show();                }
             }
         });
 
@@ -87,5 +106,22 @@ public class addActivity extends AppCompatActivity {
         spinner.setAdapter(adapter);
         
 
+    }
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setIcon(R.drawable.alert)
+                .setTitle("Closing Activity")
+                .setMessage("Are you sure you want to close this activity without saving?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 }

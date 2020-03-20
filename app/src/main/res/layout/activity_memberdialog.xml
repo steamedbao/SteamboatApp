@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/roundbox"
+    android:elevation="5dp"
+    android:padding="30dp"
+    tools:context=".MemberDialog">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name : "
+        android:textSize="15sp"
+        android:fontFamily="@font/montserrat"
+        android:layout_marginTop="0dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:textColor="#FFFFFF"></TextView>
+
+    <TextView
+        android:id="@+id/member_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:fontFamily="@font/montserrat"
+        android:layout_marginTop="0dp"
+        android:layout_marginStart="130dp"
+        android:layout_marginLeft="170dp"
+        android:textColor="#CCFFFFFF"></TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Expense : "
+        android:textSize="15sp"
+        android:fontFamily="@font/montserrat"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:textColor="#FFFFFF"></TextView>
+
+    <TextView
+        android:id="@+id/member_expense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:fontFamily="@font/montserrat"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="130dp"
+        android:layout_marginLeft="170dp"
+        android:textColor="#CCFFFFFF"></TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Paid : "
+        android:textSize="15sp"
+        android:fontFamily="@font/montserrat"
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:textColor="#FFFFFF"></TextView>
+
+    <TextView
+        android:id="@+id/member_paid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:fontFamily="@font/montserrat"
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="130dp"
+        android:layout_marginLeft="170dp"
+        android:textColor="#CCFFFFFF"></TextView>
+
+    <Button
+        android:id="@+id/member_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="220dp"
+        android:layout_marginBottom="38dp"
+        android:background="@drawable/gradient1"
+        android:fontFamily="@font/roboto_condensed_bold"
+        android:textColor="#000000"
+        android:paddingHorizontal="15dp"
+        android:text="Delete"
+        android:textSize="18sp"></Button>
+
+    <Button
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="220dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="38dp"
+        android:background="@drawable/gradient"
+        android:textColor="#000000"
+        android:fontFamily="@font/roboto_condensed_bold"
+        android:paddingHorizontal="15dp"
+        android:text="Back"
+        android:textSize="18sp"></Button>
+
+
+</RelativeLayout>

@@ -1,8 +1,10 @@
 package com.SE.steamedboat;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,6 +36,7 @@ public class create extends AppCompatActivity {
     private DatabaseReference myRef;
     private String userID;
     private int TripID;
+    private Button backButton;
 
 
     @Override
@@ -46,22 +49,16 @@ public class create extends AppCompatActivity {
         myRef = FD.getReference();
         FirebaseUser user = Auth.getCurrentUser();
         userID = user.getUid();
-        Button backButton=findViewById(R.id.discardtrip);
+        backButton=findViewById(R.id.discardtrip);
 
-
-        AuthListen = new FirebaseAuth.AuthStateListener() {
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser mFirebaseUser = Auth.getCurrentUser();
-                if (mFirebaseUser != null) {
-                    Toast.makeText(create.this, "You are logged in", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(create.this, "Please login", Toast.LENGTH_SHORT).show();
-                    GoTo_main();
-                }
-
+            public void onClick(View v) {
+                onBackPressed();
             }
-        };
+        });
+
+
 
         final long[] tripcount = new long[1];
         myRef.addValueEventListener(new ValueEventListener() {
@@ -151,6 +148,24 @@ public class create extends AppCompatActivity {
 
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setIcon(R.drawable.alert)
+                .setTitle("Closing Trip")
+                .setMessage("Are you sure you want to close this Trip without saving?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
     public void GoTo_home(){

@@ -8,9 +8,9 @@
 
     <Button
         android:id="@+id/exitjoin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Back"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+android:background="@drawable/back"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         />
@@ -47,11 +47,12 @@
         android:layout_marginTop="150dp"
         android:fontFamily="@font/roboto"
         android:paddingVertical="10dp"
-        android:background="@drawable/textbox"
         android:paddingHorizontal="10dp"
         android:hint="Trip ID"
-        android:textColor="#242424"
-        android:textColorHint="#242424"/>
+        android:alpha="0.5"
+        android:background="@drawable/roundbox"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#CCFFFFFF"/>
 
     <EditText
         android:id="@+id/pw"
@@ -63,10 +64,11 @@
         android:layout_marginTop="207dp"
         android:layout_marginLeft="31dp"
         android:inputType="textPassword"
-        android:background="@drawable/textbox"
         android:hint="Password"
-        android:textColor="#242424"
-        android:textColorHint="#242424"
+        android:alpha="0.5"
+        android:background="@drawable/roundbox"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#CCFFFFFF"
         android:fontFamily="@font/roboto" />
 
     <EditText
@@ -77,11 +79,12 @@
         android:layout_marginTop="270dp"
         android:layout_marginLeft="31dp"
         android:paddingHorizontal="10dp"
-        android:background="@drawable/textbox"
         android:paddingVertical="10dp"
         android:hint="Your Name"
-        android:textColor="#242424"
-        android:textColorHint="#242424"
+        android:alpha="0.5"
+        android:background="@drawable/roundbox"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#CCFFFFFF"
         android:fontFamily="@font/roboto"/>
 
 
@@ -89,12 +92,12 @@
         android:id="@+id/join_done"
         style="@style/Widget.AppCompat.Button"
         android:layout_width="350dp"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="350dp"
         android:layout_marginBottom="328dp"
         android:textColor="#000000"
-        android:background="#FFAB91"
+        android:background="@drawable/gradient1"
         android:text="JOIN"
         android:ellipsize="none"
         android:padding="5dp"
