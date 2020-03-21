@@ -71,7 +71,7 @@ public class createORjoin extends AppCompatActivity {
         myRef = FD.getReference().child("Users").child(userID).child("trips");
         // ---------------------------------------------
         LV = (ListView) findViewById(R.id.triplist);
-        final ArrayAdapter<String> name_adapter = new ArrayAdapter<String>(this, R.layout.cust_list_view_2, toshow);
+        final ArrayAdapter<String> name_adapter = new ArrayAdapter<String>(this, R.layout.cust_list_view, toshow);
         ST = new SimpleTrip();
         LV.setAdapter(name_adapter);
 

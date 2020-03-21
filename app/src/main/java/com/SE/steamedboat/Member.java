@@ -35,12 +35,20 @@ public class Member implements Serializable {
         return amountPaid;
     }
 
+    protected void addAmountPaid(float amountPaid) {
+        this.amountPaid += amountPaid;
+    }
+
     protected void setAmountPaid(float amountPaid) {
         this.amountPaid = amountPaid;
     }
 
     public float getAmountIncurred() {
         return amountIncurred;
+    }
+
+    protected void addAmountIncurred(float amountIncurred) {
+        this.amountIncurred += amountIncurred;
     }
 
     protected void setAmountIncurred(float amountIncurred) {

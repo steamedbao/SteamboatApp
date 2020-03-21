@@ -13,16 +13,22 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -41,7 +47,7 @@ public class addActivity extends AppCompatActivity {
 
     private Button but_add;
     private Button but_selectmember;
-    private ScrollView memberSV;
+    private ListView memberLV;
     private ArrayList<Member> members = new ArrayList<>();
     private ArrayList<String> memberlist = new ArrayList<>();
     private CharSequence[] membername;
@@ -63,12 +69,20 @@ public class addActivity extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
     private Spinner select_payer;
+    private Member memtemp;
+    private ArrayList<String> selected_names=new ArrayList<>();
+    private ArrayAdapter<String> arrayAdapter;
+    private boolean date_is_set = false;
+    private Calendar cal = Calendar.getInstance();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
-
+        memberLV = findViewById(R.id.LV_mem_names);
+        arrayAdapter = new ArrayAdapter(this,R.layout.cust_list_view_2,selected_names);
+        memberLV.setAdapter(arrayAdapter);
         Intent from_home = getIntent();
         if (from_home.getStringArrayListExtra("memberlist")!=null)
             memberlist = from_home.getStringArrayListExtra("memberlist");
@@ -135,7 +149,6 @@ public class addActivity extends AppCompatActivity {
         but_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar cal = Calendar.getInstance();
                 int year = cal.get(Calendar.YEAR);
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
@@ -161,8 +174,8 @@ public class addActivity extends AppCompatActivity {
                 mDisplayDate.setText(date);
 
                 d1 = new Date(year-1900, month-1, day);
-
-                Log.v("date", "----------------d1:"+d1);
+                date_is_set = true;
+                Log.v("date", "---------  ------------------d1:"+d1);
 
             }
         };
@@ -177,7 +190,7 @@ public class addActivity extends AppCompatActivity {
                 String name = activity_name.getText().toString();
                 exp = Float.parseFloat(expense.getText().toString());
 
-                if (name != "")//need more checks. but rn cant pass in the values for the others yet
+                if (name != "" && expense.getText().length()>0 && date_is_set ==true)//need more checks. but rn cant pass in the values for the others yet
                 {
 
 
@@ -185,7 +198,7 @@ public class addActivity extends AppCompatActivity {
 
                     Log.v("E_VALUE", "--------  Activity Name : " + a1.getName() + "---------------------------");
 
-                    a1.setName(name+"_"+Integer.toString(a1.getId()));
+                    a1.setName(name+"__"+Integer.toString(a1.getId()));
                     a1.setDateTime(d1);
                     a1.setPayer(selected_payer);
                     a1.setActivityExpense(exp);
@@ -196,14 +209,58 @@ public class addActivity extends AppCompatActivity {
                         DatabaseReference memRef;
                         memRef = FD.getReference().child("Trips").child(Integer.toString(TripID)).child("members").child(memberlist.get(memberSelected.get(n)));
                         */
-
                     }
-
                     myRef = FD.getReference().child("Trips").child(Integer.toString(TripID)).child("activities").child(a1.getName());
-
                     myRef.setValue(a1);
 
+                    selected_names = (ArrayList<String>)a1.getParticipant().clone();
 
+                    memtemp = new Member();
+
+                    // this is trying only split evenly !!!!! ----------------
+
+                    FD.getReference().child("Trips").child(Integer.toString(TripID)).child("members").addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            memtemp = dataSnapshot.getValue(Member.class);
+                            if (selected_names.contains(memtemp.getMemberName())){
+                                memtemp.addAmountIncurred(exp/selected_names.size()); // evenly here -----------==========
+                                }
+                            if (memtemp.getMemberName().equals(selected_payer)){
+                                memtemp.addAmountPaid(exp);
+                            }
+                            FD.getReference().child("Trips").child(Integer.toString(TripID)).child("members").child(memtemp.getMemberName()).setValue(memtemp);
+                            Log.v("Member", "----------------updated:"+memtemp.getMemberName()+"-------------------------");
+
+                        }
+
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+                    Toast.makeText(addActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
+
+                    Intent gohome = new Intent (getApplicationContext(), Homepage.class);
+                    gohome.putExtra("TripID", TripID);
+                    startActivity(gohome);
 
 
 
@@ -242,6 +299,7 @@ public class addActivity extends AppCompatActivity {
                         }
                         else{
                             memberSelected.remove((Integer.valueOf(position)));
+
                         }
                     }
 
@@ -258,7 +316,13 @@ public class addActivity extends AppCompatActivity {
                             if (i != memberSelected.size() - 1) {
                                 item = item + ", ";
                             }
+                            selected_names.add(memberlist.get(memberSelected.get(i)));
+                            arrayAdapter.notifyDataSetChanged();
+                            Log.v("Select Member", "----------------size:"+selected_names.size()+ selected_names.get(i) +"-------------------------");
+
                         }
+
+
 // display out the members selected
                     }
                 });

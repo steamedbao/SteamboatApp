@@ -134,6 +134,8 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                 //create string called expense and payment here then pass it to the dialog box throught the below code
 
                 intent.putExtra("namedetail",name);
+                intent.putExtra("TripID",Integer.toString(TripID));
+
                 //intent.putExtra("expensedetail",expense);
                 //intent.putExtra("paymentdetail",payment);
                 startActivity(intent);

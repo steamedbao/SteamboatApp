@@ -29,7 +29,7 @@ public class Activity {
 
     public Activity(String n) {
         name = n;
-        id = (int)(Math.random()*(500000))+100000;
+        id = (int)(Math.random()*(900))+100;
     }
 
     public Activity(){}

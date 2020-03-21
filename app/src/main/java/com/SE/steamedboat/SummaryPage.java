@@ -178,7 +178,7 @@ public class SummaryPage extends AppCompatActivity {
             cur_trans = Math.min(ALowe.get(cur_pos),Math.abs(ALowe.get(cur_neg)));
             ALowe.set(cur_pos,ALowe.get(cur_pos)-cur_trans);
             ALowe.set(cur_neg,ALowe.get(cur_neg)+cur_trans);
-            Solution.add(newMemAL.get(cur_neg)+" pays "+newMemAL.get(cur_pos)+" "+cur_trans + " " +homeCurrency);
+            Solution.add(newMemAL.get(cur_neg)+"  pays  "+newMemAL.get(cur_pos)+"  "+cur_trans + "  " +homeCurrency);
         }
 
         for (index=0;index<Solution.size();index++){
@@ -237,11 +237,11 @@ public class SummaryPage extends AppCompatActivity {
                 oneline = oneline+" ";
             }
 
-            if(ALmember.get(i).getAmountIncurred()-ALmember.get(i).getAmountPaid()>=0){oneline=oneline+" ";}
+            if(ALmember.get(i).getAmountPaid()-ALmember.get(i).getAmountIncurred()>=0){oneline=oneline+" ";}
 
-            ALowe.add(ALmember.get(i).getAmountIncurred()-ALmember.get(i).getAmountPaid());
+            ALowe.add(ALmember.get(i).getAmountPaid()-ALmember.get(i).getAmountIncurred());
 
-            ALtoshow.add(oneline+(ALmember.get(i).getAmountIncurred()-ALmember.get(i).getAmountPaid()));
+            ALtoshow.add(oneline+(ALmember.get(i).getAmountPaid()-ALmember.get(i).getAmountIncurred()));
 
 
         }

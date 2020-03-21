@@ -24,7 +24,7 @@ public class ActivityDialog extends AppCompatActivity {
     private DatabaseReference myRef;
     private DatabaseReference ActRef;
 
-    TextView Name, Split, Expense, Paid;
+    TextView Name, Split, Expense, Paid, Status;
     Button edit;
     Button backToHome;
     Activity thisAct=new Activity();
@@ -49,6 +49,7 @@ public class ActivityDialog extends AppCompatActivity {
         Expense = (TextView) findViewById(R.id.D_act_expense_value);
         Split = (TextView) findViewById(R.id.D_act_split_value);
         Paid = (TextView) findViewById(R.id.D_act_paidby_value);
+        Status = (TextView) findViewById(R.id.textView3);
 
         edit = (Button) findViewById(R.id.D_activity_edit);
         backToHome = (Button) findViewById(R.id.back);
@@ -61,7 +62,9 @@ public class ActivityDialog extends AppCompatActivity {
                 Name.setText(thisAct.getName());
                 Expense.setText(Float.toString(thisAct.getActivityExpense()));
                 Split.setText(Boolean.toString(thisAct.getSplit()));
-                Paid.setText("Cannot get the payer");
+                Paid.setText(thisAct.getPayer());
+                if(thisAct.getStatus()){Status.setText("Pending");}
+                else Status.setText("Settled");
 
             }
 
