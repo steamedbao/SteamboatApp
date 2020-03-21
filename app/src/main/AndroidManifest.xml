@@ -17,6 +17,8 @@
         <activity android:name=".create" />
         <activity android:name=".createORjoin" />
         <activity android:name=".Register" />
+        <activity android:name=".ActivityDialog"
+            android:theme="@style/Theme.AppCompat.Dialog.Alert"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +27,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".MemberDialog"
-            android:theme="@style/Theme.AppCompat.Dialog.Alert"></activity>
+            android:theme="@style/Theme.AppCompat.Dialog.Alert">
+        </activity>
+
 
         <meta-data
             android:name="preloaded_fonts"

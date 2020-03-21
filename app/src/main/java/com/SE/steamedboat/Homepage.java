@@ -51,12 +51,14 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
     private ArrayList<Member> ALmember = new ArrayList<>();
     private ArrayList<String> ALmembernames = new ArrayList<>();
     private ArrayList<String> AL_activity_names = new ArrayList<>();
+    private ArrayList<String> AL_activity_UID = new ArrayList<>();
 
     private TextView TVtripname;
     private ListView LV;
     private ListView LVactivity;
     private Button addMember;
     private Button addActivity;
+    private Button ViewAll;
     private int TripID;
     private TextView TripIDDisplay;
     private TextView TripNameDisplay;
@@ -64,6 +66,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
     private Button back;
     private boolean CVclick=false;
     private int chosenDay, chosenMonth, chosenYear;
+    private ArrayAdapter<String> actAdapter=null;
 
 
     @Override
@@ -106,7 +109,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         userID = user.getUid();
         LV = (ListView) findViewById(R.id.membersLV);
         LVactivity = (ListView) findViewById(R.id.LVactivity);
-        final ArrayAdapter<String> actAdapter = new ArrayAdapter<String>(this, R.layout.cust_list_view, AL_activity_names);
+        actAdapter = new ArrayAdapter<String>(this, R.layout.cust_list_view, AL_activity_names);
         final ArrayAdapter<String> memAdapter = new ArrayAdapter<String>(this, R.layout.cust_list_view, ALmembernames);
         LV.setAdapter(memAdapter);
         LVactivity.setAdapter(actAdapter);
@@ -212,7 +215,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
             });
 
 
-            if(CVclick==false){
+
             TripRef.child("activities").addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull final DataSnapshot dataSnapshot, @Nullable String s) {
@@ -220,8 +223,9 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
 
                     // ------ use for loop to find activity of that date if the calender is clicked
                     Activity a = new Activity();
-                    if (dataSnapshot.hasChildren() )
+                    if (CVclick==false && dataSnapshot.hasChildren() )
                     {   a = dataSnapshot.getValue(Activity.class);
+                        AL_activity_UID.add(a.getName());
                         AL_activity_names.add(a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
                     }
                     // -----------------------------------------------------------
@@ -250,7 +254,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
 
                 }
             });
-        }
+
         }
 
 
@@ -261,6 +265,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 CVclick = true;
                 AL_activity_names.clear();
+                AL_activity_UID.clear();
 
                 chosenDay = dayOfMonth;
                 chosenMonth = month;
@@ -286,6 +291,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                         if (adate.compareTo(cvdate)==0) {
                             Log.v("date", "------------------- " + "true" + "  ---------------------------");
                             Log.v("date",a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
+                            AL_activity_UID.add(a.getName());
                             AL_activity_names.add(a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
 
                         }
@@ -317,11 +323,42 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
             }
         });
 
+        LVactivity.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Call dialog to display detail
+                //create dialog
+                String UID = AL_activity_UID.get(position);
+                Intent intent = new Intent(getApplicationContext(),ActivityDialog.class);
+
+                //create string called expense and payment here then pass it to the dialog box throught the below code
+
+                intent.putExtra("directory",UID);
+                intent.putExtra("TripID",Integer.toString(TripID));
+                //intent.putExtra("expensedetail",expense);
+                //intent.putExtra("paymentdetail",payment);
+                startActivity(intent);
+            }
+        });
+
 
         addMember=findViewById(R.id.addmember);
 
 
         addActivity = findViewById(R.id.addActivity);
+
+        ViewAll = (Button) findViewById(R.id.ViewALL);
+
+        ViewAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CVclick=false;
+                AL_activity_UID.clear();
+                AL_activity_names.clear();
+                Show_all_activities();
+
+            }
+        });
 
         addActivity.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -384,10 +421,50 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
             TVtripname.setText(currentTrip.getTripName());
             Log.v("E_VALUE", "-------------------Home page trip name is set to: "+ currentTrip.getTripName() +"  ---------------------------");
             break;
-
-
         }
+    }
 
+
+    public void Show_all_activities(){
+
+        TripRef.child("activities").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull final DataSnapshot dataSnapshot, @Nullable String s) {
+
+
+                // ------ use for loop to find activity of that date if the calender is clicked
+                Activity a = new Activity();
+                if (CVclick==false && dataSnapshot.hasChildren() )
+                {   a = dataSnapshot.getValue(Activity.class);
+                    AL_activity_UID.add(a.getName());
+                    AL_activity_names.add(a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
+                }
+                // -----------------------------------------------------------
+
+                actAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void Goto_addActivity(int id){
