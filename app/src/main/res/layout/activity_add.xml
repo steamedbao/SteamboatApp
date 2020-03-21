@@ -83,7 +83,7 @@
         android:layout_width="50dp"
         android:layout_height="40dp"
         android:layout_marginStart="140dp"
-        android:layout_marginLeft="80dp"
+        android:layout_marginLeft="85dp"
         android:layout_marginTop="210dp"
         android:background="@drawable/calendar" />
 
@@ -120,8 +120,8 @@
         android:backgroundTint="#FFFFFF"
         android:theme="@style/Spinner"
         style="@style/Widget.AppCompat.Spinner.Underlined"
-        android:textColor="#242424"
-        android:textColorHint="#242424"/>
+        android:textColor="#FF0000"
+        android:textColorHint="#FF0000"/>
 
 
 
@@ -212,15 +212,15 @@
 
     <Spinner
         android:id="@+id/spinner2"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
         android:layout_width="140dp"
         android:layout_height="45dp"
         android:layout_marginStart="145dp"
         android:layout_marginLeft="145dp"
         android:layout_marginTop="600dp"
-        android:entries="@array/splitmethods"
         android:backgroundTint="#FFFFFF"
+        android:entries="@array/splitmethods"
         android:theme="@style/Spinner"
-        style="@style/Widget.AppCompat.Spinner.Underlined"
 
         />
 
@@ -251,5 +251,5 @@
         android:layout_marginTop="400dp" />
 
 
-</RelativeLayout>
 
+</RelativeLayout>

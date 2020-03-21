@@ -262,6 +262,49 @@ public class addActivity extends AppCompatActivity {
         spinner.setAdapter(adapter);
 
 
+        // for selecting splitting method
+        Spinner spinnersplit = (Spinner) findViewById(R.id.spinner2);
+        ArrayAdapter<CharSequence> splitadapter = ArrayAdapter.createFromResource(this,
+                R.array.splitmethods, android.R.layout.simple_spinner_item);
+        splitadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnersplit.setAdapter(splitadapter);
+        splitadapter.notifyDataSetChanged();
+
+
+
+
+        spinnersplit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selected_splitmethod = parent.getSelectedItem().toString();
+                if(selected_splitmethod.equals("Others")){
+
+                    /*
+                    ArrayList<Consumer> consumers = new ArrayList<>();
+                    for(int n=0; n < memberlist.size(); n++){
+                        Consumer c = new Consumer(memberlist.get(n), 0);
+                        consumers.add(c);
+                    }*/
+
+                    Intent gotosplit = new Intent(getApplicationContext(), customise_split.class);
+                    gotosplit.putStringArrayListExtra("memberlist", memberlist);
+                    startActivity(gotosplit);
+
+                    /*Customer_List_Adaptor adapter = new Customer_List_Adaptor(addActivity.this, R.layout.adaptor_spenderamount, consumers);
+                    mListView.setAdapter(adapter);
+
+                     */
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        // for selecting splitting method end
+
+
     }
     @Override
     public void onBackPressed() {
