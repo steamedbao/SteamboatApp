@@ -49,7 +49,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
     private Trip currentTrip;
     private ArrayList<Trip> ALtrip = new ArrayList<>();
     private ArrayList<Member> ALmember = new ArrayList<>();
-    private ArrayList<String> ALmembernames = new ArrayList<>();
+    protected ArrayList<String> ALmembernames = new ArrayList<>();
     private ArrayList<String> AL_activity_names = new ArrayList<>();
 
     private TextView TVtripname;
@@ -82,7 +82,8 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
             @Override
             public void onClick(View v)
             {
-                finish();
+                Intent goback = new Intent(Homepage.this, createORjoin.class);
+                startActivity(goback);
             }});
 
 
@@ -291,7 +292,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         addActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Goto_addActivity(TripID);
+                Goto_addActivity(ALmembernames);
             }
         });
 
@@ -355,9 +356,10 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
 
     }
 
-    public void Goto_addActivity(int id){
-        Intent gotoadd = new Intent(this, addActivity.class);
-        gotoadd.putExtra("TripID", id);
+    public void Goto_addActivity(ArrayList<String> names){
+        Intent gotoadd = new Intent(getApplicationContext(), addActivity.class);
+        ArrayList<String> name = ALmembernames;
+        gotoadd.putExtra("memberlist", name);
         startActivity(gotoadd);
     }
 

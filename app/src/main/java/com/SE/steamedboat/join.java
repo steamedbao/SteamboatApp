@@ -24,7 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-
+//must add code to check if user is already in trip
 public class join extends AppCompatActivity {
 
     private FirebaseDatabase FD;
@@ -49,6 +49,7 @@ public class join extends AppCompatActivity {
     private Button buttonJoin;
     final String[] correctpw = new String[1];
     private boolean correct = false;
+    private Button back;
 
 
     @Override
@@ -67,7 +68,14 @@ public class join extends AppCompatActivity {
         pw = (EditText) findViewById(R.id.pw);
         joiner = (EditText) findViewById(R.id.joiner);
         buttonJoin = (Button) findViewById(R.id.join_done);
+        back = findViewById(R.id.back);
 
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         buttonJoin.setOnClickListener(new View.OnClickListener() {    ////// ADD error handling !!!!!  and now does not prevent existing member join back own trip !!
             @Override
