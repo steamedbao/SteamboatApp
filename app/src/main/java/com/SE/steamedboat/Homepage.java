@@ -67,6 +67,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
     private boolean CVclick=false;
     private int chosenDay, chosenMonth, chosenYear;
     private ArrayAdapter<String> actAdapter=null;
+    private Button viewSummary;
 
 
     @Override
@@ -83,14 +84,24 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         TripName = from_createORjoin.getStringExtra("TripName");
         TripNameDisplay.setText(TripName);
         back = findViewById(R.id.back);
+        viewSummary=findViewById(R.id.checkFinance);
 
-        back.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v)
-            {
-                Intent goback = new Intent(Homepage.this, createORjoin.class);
-                startActivity(goback);
-            }});
+        viewSummary.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   Intent goSummary = new Intent(Homepage.this, SummaryPage.class);
+                   goSummary.putExtra("TripID",Integer.toString(TripID));
+                   startActivity(goSummary);
+               }
+           });
+
+        back.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent goback = new Intent(Homepage.this, createORjoin.class);
+                        startActivity(goback);
+                    }
+                });
 
 
         btnLogout.setOnClickListener(new View.OnClickListener(){
