@@ -5,6 +5,16 @@
     android:layout_height="match_parent"
     android:background="#141414"
     tools:context=".SummaryPage">
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="350dp"
+        android:layout_height="230dp"
+        android:layout_marginLeft="30dp"
+        android:layout_below="@id/trip"
+        android:layout_marginTop="30dp"
+        ></ListView>
+
     <TextView
         android:id="@+id/trip"
         android:layout_width="wrap_content"
@@ -30,59 +40,59 @@
         android:textSize="34sp" />
 
 
-    <ImageButton
-        android:id="@+id/button1"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="160dp"
-        android:layout_marginLeft="30dp"
-        android:background="@drawable/roundbutton2"
-        android:elevation="30dp"
-        android:src="@drawable/summary"
-        android:textSize="22sp"></ImageButton>
-
     <TextView
         android:id="@+id/button2"
-        android:layout_width="235dp"
-        android:layout_height="100dp"
+        android:layout_width="230dp"
+        android:layout_height="90dp"
         android:layout_marginLeft="0dp"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="510dp"
         android:layout_toRightOf="@id/button1"
-        android:gravity="center_vertical"
         android:alpha="0.8"
-        android:fontFamily="@font/roboto"
         android:background="@drawable/roundbutton"
+        android:fontFamily="@font/roboto"
+        android:gravity="center_vertical"
         android:padding="13dp"
         android:text="See the overall statistics of your trip."
         android:textColor="#CCFFFFFF"
         android:textSize="20sp"></TextView>
 
     <ImageButton
+        android:id="@+id/button1"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="510dp"
+        android:background="@drawable/roundbutton2"
+        android:elevation="30dp"
+        android:src="@drawable/summary"
+        android:textSize="22sp"></ImageButton>
+
+    <ImageButton
         android:id="@+id/button3"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="300dp"
-        android:layout_marginLeft="30dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="400dp"
         android:background="@drawable/roundbutton2"
         android:elevation="30dp"
         android:src="@drawable/businesswoman"
-        android:theme="@style/Widget.AppCompat.Button.Borderless"
-        android:textSize="20sp"></ImageButton>
+        android:textSize="20sp"
+        android:theme="@style/Widget.AppCompat.Button.Borderless"></ImageButton>
 
     <TextView
         android:id="@+id/button4"
         android:layout_width="230dp"
-        android:layout_height="100dp"
+        android:layout_height="90dp"
         android:layout_marginLeft="0dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="400dp"
         android:layout_toRightOf="@+id/button3"
         android:alpha="0.8"
-        android:gravity="center_vertical"
-        android:fontFamily="@font/roboto"
         android:background="@drawable/roundbutton"
-        android:text="See individual expenses."
-        android:textColor="#CCFFFFFF"
+        android:fontFamily="@font/roboto"
+        android:gravity="center_vertical"
         android:padding="13dp"
+        android:text="See suggested payment solution."
+        android:textColor="#CCFFFFFF"
         android:textSize="20sp"></TextView>
 
     <Button

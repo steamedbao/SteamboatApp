@@ -35,7 +35,8 @@
         <item name="android:textColor">#CCFFFFFF</item>
         <item name="android:textSize">13sp</item>
         <item name="android:colorBackground">#424242</item>
-
     </style>
+
+
 
 </resources>
