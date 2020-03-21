@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDialogFragment;
 
@@ -33,7 +35,7 @@ public class AddMemberDialog extends AppCompatDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.activity_add_member, null);
+        final View view = inflater.inflate(R.layout.activity_add_member, null);
 
         builder.setView(view)
                 .setTitle("Add Member")
@@ -46,7 +48,8 @@ public class AddMemberDialog extends AppCompatDialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String username = member_name.getText().toString();
-                        listener.applyTexts(username);
+                        if(!TextUtils.isEmpty(member_name.getText().toString()))
+                            listener.applyTexts(username);
                     }
                 });
         member_name = view.findViewById(R.id.inputMemName);
@@ -68,4 +71,6 @@ public class AddMemberDialog extends AppCompatDialogFragment {
     public interface AddMemberDialogListener {
         void applyTexts(String username);
     }
+
+
 }

@@ -1,24 +1,27 @@
 package com.SE.steamedboat;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 import android.util.Log;
 
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.app.AlertDialog;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -26,9 +29,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.sql.Ref;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMemberDialogListener {
@@ -56,6 +61,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
     private TextView TripIDDisplay;
     private TextView TripNameDisplay;
     private String TripName;
+    private Button back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +76,15 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         TripNameDisplay = findViewById(R.id.hometripname);
         TripName = from_createORjoin.getStringExtra("TripName");
         TripNameDisplay.setText(TripName);
+        back = findViewById(R.id.back);
+
+        back.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v)
+            {
+                finish();
+            }});
+
 
         btnLogout.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -89,7 +104,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         LV = (ListView) findViewById(R.id.membersLV);
         LVactivity = (ListView) findViewById(R.id.LVactivity);
         final ArrayAdapter<String> actAdapter = new ArrayAdapter<String>(this, R.layout.cust_list_view, AL_activity_names);
-        final ArrayAdapter<String> memAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, ALmembernames);
+        final ArrayAdapter<String> memAdapter = new ArrayAdapter<String>(this, R.layout.cust_list_view, ALmembernames);
         LV.setAdapter(memAdapter);
         LVactivity.setAdapter(actAdapter);
         TVtripname = (TextView) findViewById(R.id.hometripname);
@@ -97,7 +112,22 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
 
 
 
-        currentTrip = new Trip();
+        LV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Call dialog to display detail
+                //create dialog
+                String name = memAdapter.getItem(position);
+                Intent intent = new Intent(getApplicationContext(),MemberDialog.class);
+
+                //create string called expense and payment here then pass it to the dialog box throught the below code
+
+                intent.putExtra("namedetail",name);
+                //intent.putExtra("expensedetail",expense);
+                //intent.putExtra("paymentdetail",payment);
+                startActivity(intent);
+            }
+        });
 
         Log.v("E_VALUE", "-------------------AL size is: "+ ALtrip.size()+"  ---------------------------");
 
@@ -136,11 +166,12 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
             TripRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    currentTrip = new Trip();
                     currentTrip=dataSnapshot.getValue(Trip.class);
                     ALtrip.add(currentTrip);
                     Log.v("E_VALUE", "-------------AFTER ADD ------AL size is: "+ ALtrip.size()+"  ---------------------------");
 
-                    Log.v("E_VALUE", "-------------------Trip Name is: "+ currentTrip.getTripName() +"  ---------------------------");
+                    //Log.v("E_VALUE", "-------------------Trip Name is: "+ currentTrip.getTripName() +"  ---------------------------");
                     Log.v("E_VALUE", "-------------------dataSnapshot.getValue() is: "+ dataSnapshot.getValue() +"  ---------------------------");
                     TVtripname.setText(currentTrip.getTripName());
                 }
@@ -189,16 +220,40 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
 
             TripRef.child("activities").addChildEventListener(new ChildEventListener() {
                 @Override
-                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                public void onChildAdded(@NonNull final DataSnapshot dataSnapshot, @Nullable String s) {
 
+                    CalendarView cv=(CalendarView)findViewById(R.id.tripCalendar);
 
+                    cv.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                        @Override
+                        public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
 
+                            Activity a = new Activity();
+                            if (dataSnapshot.hasChildren())
+                                a = dataSnapshot.getValue(Activity.class);
+
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+                            String adate = sdf.format(a.getDateTime());
+                            Log.v("date", "------------------- "+ adate +"  ---------------------------");
+
+                            String cvdate = dayOfMonth+"/"+(month+1)+"/"+year;
+                            Log.v("date", "------------------- "+ cvdate +"  ---------------------------");
+
+                            if (adate.compareTo(cvdate)==0) {
+                                Log.v("date", "------------------- " + "true" + "  ---------------------------");
+
+                                AL_activity_names.add(a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
+
+                            }
+                        }
+                    });
                     // ------ use for loop to find activity of that date if the calender is clicked
                     Activity a = new Activity();
-                    a = dataSnapshot.getValue(Activity.class);
+                    if (dataSnapshot.hasChildren())
+                    {   a = dataSnapshot.getValue(Activity.class);
 
-                    AL_activity_names.add(a.getName()+ " " + a.getActivityCurrency() +": " + a.getActivityExpense() +"  " + a.getSplit() );
-
+                    AL_activity_names.add(a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
+                    }
                     // -----------------------------------------------------------
 
                     actAdapter.notifyDataSetChanged();
@@ -262,6 +317,9 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         }
 
     }
+
+
+
     public void openDialog(){
         AddMemberDialog addMemberDialog = new AddMemberDialog();
         addMemberDialog.show(getSupportFragmentManager(),"Add Member");
@@ -281,6 +339,8 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         myRef.setValue(mem);
 
     }
+
+
 
     public void Action(){
 

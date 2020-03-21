@@ -1,6 +1,5 @@
 package com.SE.steamedboat;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,23 +7,21 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import android.content.DialogInterface;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-
-import java.util.ArrayList;
 import java.lang.Boolean;
 
 public class addActivity extends AppCompatActivity {
@@ -36,7 +33,6 @@ public class addActivity extends AppCompatActivity {
     private String userID;
 
     private Button but_add;
-    private Button but_discard;
     private Button but_selectmember;
     private ScrollView memberSV;
     private ArrayList<Member> members = new ArrayList<>();
@@ -48,6 +44,7 @@ public class addActivity extends AppCompatActivity {
 
     private EditText activity_name;
     private int TripID;
+    private Button back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +55,7 @@ public class addActivity extends AppCompatActivity {
         TripID = from_home.getIntExtra("TripID",100000);
 
         but_add = (Button) findViewById(R.id.Button_add);
-        but_discard = (Button) findViewById(R.id.discardactivity);
+        back = (Button) findViewById(R.id.discardactivity);
         but_selectmember = (Button) findViewById(R.id.but_selectmem);
         tripRef = myRef.child("Trips").child(Integer.toString(TripID));
 
@@ -70,6 +67,14 @@ public class addActivity extends AppCompatActivity {
         final FirebaseUser user = Auth.getCurrentUser();
         userID = user.getUid();
         activity_name = (EditText) findViewById(R.id.activityname);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
 
         tripRef.child("members").addChildEventListener(new ChildEventListener() {
             @Override
@@ -115,13 +120,21 @@ public class addActivity extends AppCompatActivity {
 
                 String name = activity_name.getText().toString();
 
-                Activity a1 = new Activity(name);
+                if (name!="")//need more checks. but rn cant pass in the values for the others yet
+                {
+                    Activity a1 = new Activity(name);
 
-                Log.v("E_VALUE","--------  Activity Name : "+ a1.getName() + "---------------------------");
+                    Log.v("E_VALUE","--------  Activity Name : "+ a1.getName() + "---------------------------");
 
 
-                myRef = FD.getReference().child("Trips").child(Integer.toString(TripID)).child("activities").child(name);
+                    myRef = FD.getReference().child("Trips").child(Integer.toString(TripID)).child("activities").child(name);
 
+                    myRef.setValue(a1);
+                }
+                else
+                {
+
+                    Toast.makeText(addActivity.this, "Please enter all fields!", Toast.LENGTH_SHORT).show();                }
                 myRef.setValue(a1);
 
                 gotohome();
@@ -130,12 +143,6 @@ public class addActivity extends AppCompatActivity {
 
         });
 
-        but_discard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gotohome();
-            }
-        });
 
         but_selectmember.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,9 +208,6 @@ public class addActivity extends AppCompatActivity {
             }
         });
 
-
-
-
         Spinner spinner = (Spinner) findViewById(R.id.spinner1);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -215,11 +219,21 @@ public class addActivity extends AppCompatActivity {
         
 
     }
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setIcon(R.drawable.alert)
+                .setTitle("Closing Activity")
+                .setMessage("Are you sure you want to close this activity without saving?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
 
-    public void gotohome(){
-        Intent goback = new Intent(this, Homepage.class);
-        startActivity(goback);
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
-
-
 }

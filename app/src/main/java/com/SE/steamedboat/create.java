@@ -1,8 +1,10 @@
 package com.SE.steamedboat;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +35,8 @@ public class create extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener AuthListen;
     private DatabaseReference myRef;
     private String userID;
+    private int TripID;
+    private Button backButton;
 
 
     @Override
@@ -45,22 +49,16 @@ public class create extends AppCompatActivity {
         myRef = FD.getReference();
         FirebaseUser user = Auth.getCurrentUser();
         userID = user.getUid();
-        Button backButton=findViewById(R.id.discardtrip);
+        backButton=findViewById(R.id.discardtrip);
 
-
-        AuthListen = new FirebaseAuth.AuthStateListener() {
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser mFirebaseUser = Auth.getCurrentUser();
-                if (mFirebaseUser != null) {
-                    Toast.makeText(create.this, "You are logged in", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(create.this, "Please login", Toast.LENGTH_SHORT).show();
-                    GoTo_main();
-                }
-
+            public void onClick(View v) {
+                onBackPressed();
             }
-        };
+        });
+
+
 
         final long[] tripcount = new long[1];
         myRef.addValueEventListener(new ValueEventListener() {
@@ -103,9 +101,10 @@ public class create extends AppCompatActivity {
                 String name = tripname.getText().toString();
                 String pw = password.getText().toString();
                 String create = creater.getText().toString();
+                TripID = Integer.parseInt(trip_count)+100000;
 
                 if( !pw.equals("") && !name.equals("") && !create.equals("")){
-                    Trip t1 = new Trip(name, pw, create);
+                    Trip t1 = new Trip(name, pw, create,TripID);
                     int ID = t1.getTripID();
                     final String id = Integer.toString(ID);
                     com.SE.steamedboat.Member m1 = new Member(create);
@@ -151,8 +150,27 @@ public class create extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setIcon(R.drawable.alert)
+                .setTitle("Closing Trip")
+                .setMessage("Are you sure you want to close this Trip without saving?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+
     public void GoTo_home(){
         Intent gohome = new Intent (this, Homepage.class);
+        gohome.putExtra("TripID", TripID);
         startActivity(gohome);}
 
     public void GoTo_main(){
