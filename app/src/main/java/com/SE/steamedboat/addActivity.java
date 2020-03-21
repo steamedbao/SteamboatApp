@@ -88,12 +88,15 @@ public class addActivity extends AppCompatActivity {
 
                 if (name != "")//need more checks. but rn cant pass in the values for the others yet
                 {
+
+
                     Activity a1 = new Activity(name);
 
                     Log.v("E_VALUE", "--------  Activity Name : " + a1.getName() + "---------------------------");
 
+                    a1.setName(name+"_"+Integer.toString(a1.getId()));
 
-                    myRef = FD.getReference().child("Trips").child(Integer.toString(TripID)).child("activities").child(name);
+                    myRef = FD.getReference().child("Trips").child(Integer.toString(TripID)).child("activities").child(a1.getName());
 
                     myRef.setValue(a1);
                 } else {
