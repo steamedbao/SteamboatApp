@@ -91,6 +91,8 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                public void onClick(View v) {
                    Intent goSummary = new Intent(Homepage.this, SummaryPage.class);
                    goSummary.putExtra("TripID",Integer.toString(TripID));
+                   goSummary.putStringArrayListExtra("Membernames",ALmembernames);
+                   goSummary.putExtra("ALmember", ALmember);
                    startActivity(goSummary);
                }
            });

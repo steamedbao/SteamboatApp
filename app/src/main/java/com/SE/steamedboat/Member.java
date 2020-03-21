@@ -1,6 +1,8 @@
 package com.SE.steamedboat;
 
-public class Member {
+import java.io.Serializable;
+
+public class Member implements Serializable {
     private String memberName;
     private String UID=null;
     private int memberID;
