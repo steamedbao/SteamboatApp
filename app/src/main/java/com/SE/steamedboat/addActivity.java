@@ -1,15 +1,21 @@
 package com.SE.steamedboat;
 
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -21,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class addActivity extends AppCompatActivity {
 
@@ -43,6 +50,12 @@ public class addActivity extends AppCompatActivity {
     private EditText activity_name;
     private int TripID;
     private Button back;
+    private Button but_date;
+    private TextView mDisplayDate;
+    private static final String TAG = "MainActivity";
+    private DatePickerDialog.OnDateSetListener mDateSetListener;
+
+    private Spinner select_payer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +68,7 @@ public class addActivity extends AppCompatActivity {
 
         but_add = (Button) findViewById(R.id.Button_add);
         back = (Button) findViewById(R.id.discardactivity);
-        but_selectmember = (Button) findViewById(R.id.but_selectmem);
+        but_selectmember = findViewById(R.id.but_selectmem);
 
         checkeditems = new boolean[memberlist.size()];
         for (int i=0;i<memberlist.size();i++)
@@ -77,6 +90,68 @@ public class addActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        // for date picker
+        but_date = (Button) findViewById(R.id.datePicker);
+        mDisplayDate = (TextView) findViewById(R.id.selectedDate);
+
+// for spinner
+        select_payer = (Spinner) findViewById(R.id.payername);
+
+
+// for spinner
+
+        ArrayAdapter<String> spinner_adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, memberlist);
+        spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        select_payer.setAdapter(spinner_adapter);
+
+        select_payer.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//display user info
+                String selected_payer = (String) parent.getSelectedItem();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+        but_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(
+                        addActivity.this,
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                        mDateSetListener,
+                        year,month,day);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+
+            }
+        });
+
+        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                month = month + 1;
+                Log.d(TAG, "onDateSet: mm/dd/yyy: " + month + "/" + day + "/" + year);
+
+                String date = month + "/" + day + "/" + year;
+                mDisplayDate.setText(date);
+            }
+        };
+
 
 
         but_add.setOnClickListener(new View.OnClickListener() {
