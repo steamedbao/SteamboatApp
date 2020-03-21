@@ -41,16 +41,15 @@
 
     <TextView
         android:id="@+id/textviewactivityname"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
+        android:layout_width="116dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="150dp"
         android:fontFamily="@font/roboto"
         android:paddingVertical="10dp"
         android:text="Activity Name :"
         android:textColor="#CCFFFFFF"
-        android:textSize="16sp"
-        />
+        android:textSize="16sp" />
 
     <EditText
         android:id="@+id/activityname"
@@ -69,16 +68,15 @@
 
     <TextView
         android:id="@+id/textviewdatetime"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
+        android:layout_width="102dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="210dp"
         android:fontFamily="@font/roboto"
         android:paddingVertical="10dp"
         android:text="Date :"
         android:textColor="#CCFFFFFF"
-        android:textSize="16sp"
-        />
+        android:textSize="16sp" />
 
     <Button
         android:id="@+id/datePicker"
@@ -99,19 +97,17 @@
         android:textSize="16sp" />
 
 
-
     <TextView
         android:id="@+id/textviewpayername"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="270dp"
+        android:layout_width="98dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="31dp"
+        android:layout_marginTop="270dp"
         android:fontFamily="@font/roboto"
         android:paddingVertical="10dp"
         android:text="Payer :"
         android:textColor="#CCFFFFFF"
-        android:textSize="16sp"
-        />
+        android:textSize="16sp" />
 
     <Spinner
         android:id="@+id/payername"
@@ -151,30 +147,28 @@
 
     <TextView
         android:id="@+id/memberselecttextview"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="330dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="31dp"
+        android:layout_marginTop="330dp"
         android:fontFamily="@font/roboto"
         android:paddingVertical="10dp"
         android:text="Select Members :"
         android:textColor="#CCFFFFFF"
-        android:textSize="16sp"
-        />
+        android:textSize="16sp" />
 
 
     <TextView
         android:id="@+id/textviewexpense"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="550dp"
+        android:layout_width="99dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="31dp"
+        android:layout_marginTop="550dp"
         android:fontFamily="@font/roboto"
         android:paddingVertical="10dp"
         android:text="Expense :"
         android:textColor="#CCFFFFFF"
-        android:textSize="16sp"
-        />
+        android:textSize="16sp" />
 
     <EditText
         android:id="@+id/expense"
@@ -206,16 +200,15 @@
 
     <TextView
         android:id="@+id/split"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="600dp"
+        android:layout_width="89dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="31dp"
+        android:layout_marginTop="600dp"
         android:fontFamily="@font/roboto"
         android:paddingVertical="10dp"
         android:text="Split :"
         android:textColor="#CCFFFFFF"
-        android:textSize="16sp"
-        />
+        android:textSize="16sp" />
 
     <Spinner
         android:id="@+id/spinner2"
