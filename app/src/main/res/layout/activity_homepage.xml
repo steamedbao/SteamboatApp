@@ -94,7 +94,7 @@
         android:layout_marginTop="16dp"
         android:textColor="#CCFFFFFF"
         android:textSize="20sp" />
-//id needs to be replaced with actual trip id read from database
+    //id needs to be replaced with actual trip id read from database
 
     <Button
         android:id="@+id/logout"
@@ -150,5 +150,13 @@
         android:layout_marginBottom="3dp"
         android:background="@drawable/roundbox"
         />
+
+    <Button
+        android:id="@+id/ViewALL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="650dp"
+        android:text="Show All" />
 
 </RelativeLayout>
