@@ -41,9 +41,8 @@ public class addActivity extends AppCompatActivity {
     private ScrollView memberSV;
     private ArrayList<Member> members = new ArrayList<>();
     private ArrayList<String> memberlist = new ArrayList<>();
-    private String[] membername;
+    private CharSequence[] membername;
     private DatabaseReference tripRef;
-
     private Boolean[] checkeditems;
     private ArrayList<Integer> memberSelected = new ArrayList<>();
 
@@ -63,7 +62,7 @@ public class addActivity extends AppCompatActivity {
         but_selectmember = (Button) findViewById(R.id.but_selectmem);
         tripRef = myRef.child("Trips").child(Integer.toString(TripID));
 
-        checkeditems = new Boolean[membernames.size()];
+        checkeditems = new Boolean[memberlist.size()];
 
 
         Auth = FirebaseAuth.getInstance();
@@ -80,6 +79,9 @@ public class addActivity extends AppCompatActivity {
                 mm = dataSnapshot.getValue(Member.class);
                 members.add(mm);
                 memberlist.add(mm.getMemberName());
+                for(int i = 0; i < memberlist.size(); i++){
+                    membername[i] = memberlist.get(i);
+                }
                 Log.v("E_lVALUE", "-------------------ADDED MEMBER: "+ mm.getMemberName() +"  ---------------------------");
 
             }
@@ -140,51 +142,56 @@ public class addActivity extends AppCompatActivity {
             public void onClick(View view) {
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(addActivity.this);
                 mBuilder.setTitle("Select the participating members: ");
-                mBuilder.setMultiChoiceItems(membernames, checkeditems, new DialogInterface.OnMultiChoiceClickListener() {
+
+                for(int i = 0; i < memberlist.size(); i++){
+                    membername[i] = memberlist.get(i);
+                    Log.v("E_VALUE","--------  Activity Name : ---------------------------");
+                }
+/*
+            mBuilder.setMultiChoiceItems(membername, checkeditems, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
-/*
+
                         if(isChecked){
                             memberSelected.add(position);
                         }
                         else{
                             memberSelected.remove((Integer.valueOf(position)));
-                        }*/
+                        }
                     }
 
                 });
 
-                mBuilder.setM
-
+*/
                 mBuilder.setCancelable(false);
                 mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
                         String item = "";
                         for (int i = 0; i < memberSelected.size(); i++) {
-                            item = item + membernames.get(memberSelected.get(i));
+                            item = item + membername[memberSelected.get(i)];
                             if (i != memberSelected.size() - 1) {
                                 item = item + ", ";
                             }
                         }
-                        memberSelected.setText(item);
+// display out the members selected
                     }
                 });
 
-                mBuilder.setNegativeButton(R.string.dismiss_label, new DialogInterface.OnClickListener() {
+                mBuilder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
                     }
                 });
 
-                mBuilder.setNeutralButton(R.string.clear_all_label, new DialogInterface.OnClickListener() {
+                mBuilder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
                         for (int i = 0; i < checkeditems.length; i++) {
-                            checkeditems(i) = false;
-                            mUserItems.clear();
-                            mItemSelected.setText("");
+                            checkeditems[i] = false;
+                            memberSelected.clear();
+// clear all display
                         }
                     }
                 });
