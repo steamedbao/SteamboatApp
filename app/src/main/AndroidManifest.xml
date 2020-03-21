@@ -11,14 +11,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Payment_solution"></activity>
         <activity android:name=".addActivity" />
         <activity android:name=".join" />
         <activity android:name=".Homepage" />
         <activity android:name=".create" />
         <activity android:name=".createORjoin" />
         <activity android:name=".Register" />
-        <activity android:name=".ActivityDialog"
-            android:theme="@style/Theme.AppCompat.Dialog.Alert"/>
+        <activity
+            android:name=".ActivityDialog"
+            android:theme="@style/Theme.AppCompat.Dialog.Alert" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,15 +28,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MemberDialog"
-            android:theme="@style/Theme.AppCompat.Dialog.Alert"></activity>
-        <activity android:name=".SummaryPage"></activity>
-
+        <activity
+            android:name=".MemberDialog"
+            android:theme="@style/Theme.AppCompat.Dialog.Alert" />
+        <activity android:name=".SummaryPage" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
     </application>
 
 </manifest>
