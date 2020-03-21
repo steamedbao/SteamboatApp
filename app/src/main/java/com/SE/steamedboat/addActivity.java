@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class addActivity extends AppCompatActivity {
 
@@ -36,6 +37,7 @@ public class addActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener AuthListen;
     private DatabaseReference myRef;
     private String userID;
+    private Calendar cd;
 
     private Button but_add;
     private Button but_selectmember;
@@ -46,6 +48,11 @@ public class addActivity extends AppCompatActivity {
     private DatabaseReference tripRef;
     private boolean[] checkeditems;
     private ArrayList<Integer> memberSelected = new ArrayList<>();
+    private Date d1;
+    private String selected_payer;
+    private EditText expense;
+    private float exp;
+    private String currency;
 
     private EditText activity_name;
     private int TripID;
@@ -65,10 +72,13 @@ public class addActivity extends AppCompatActivity {
         Intent from_home = getIntent();
         if (from_home.getStringArrayListExtra("memberlist")!=null)
             memberlist = from_home.getStringArrayListExtra("memberlist");
+        TripID = from_home.getIntExtra("ID", 1);
 
         but_add = (Button) findViewById(R.id.Button_add);
         back = (Button) findViewById(R.id.discardactivity);
         but_selectmember = findViewById(R.id.but_selectmem);
+        expense = findViewById(R.id.expense);
+        cd = Calendar.getInstance();
 
         checkeditems = new boolean[memberlist.size()];
         for (int i=0;i<memberlist.size();i++)
@@ -111,7 +121,7 @@ public class addActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 //display user info
-                String selected_payer = (String) parent.getSelectedItem();
+                selected_payer = (String) parent.getSelectedItem();
             }
 
             @Override
@@ -149,6 +159,11 @@ public class addActivity extends AppCompatActivity {
 
                 String date = month + "/" + day + "/" + year;
                 mDisplayDate.setText(date);
+
+                d1 = new Date(year-1900, month-1, day);
+
+                Log.v("date", "----------------d1:"+d1);
+
             }
         };
 
@@ -160,6 +175,7 @@ public class addActivity extends AppCompatActivity {
 
 
                 String name = activity_name.getText().toString();
+                exp = Float.parseFloat(expense.getText().toString());
 
                 if (name != "")//need more checks. but rn cant pass in the values for the others yet
                 {
@@ -170,10 +186,28 @@ public class addActivity extends AppCompatActivity {
                     Log.v("E_VALUE", "--------  Activity Name : " + a1.getName() + "---------------------------");
 
                     a1.setName(name+"_"+Integer.toString(a1.getId()));
+                    a1.setDateTime(d1);
+                    a1.setPayer(selected_payer);
+                    a1.setActivityExpense(exp);
+                    a1.setActivityCurrency(currency);
+                    for(int n = 0; n < memberSelected.size(); n++){
+                        a1.addParticipant(memberlist.get(memberSelected.get(n)));
+                        /*
+                        DatabaseReference memRef;
+                        memRef = FD.getReference().child("Trips").child(Integer.toString(TripID)).child("members").child(memberlist.get(memberSelected.get(n)));
+                        */
+
+                    }
 
                     myRef = FD.getReference().child("Trips").child(Integer.toString(TripID)).child("activities").child(a1.getName());
 
                     myRef.setValue(a1);
+
+
+
+
+
+
                 } else {
 
                     Toast.makeText(addActivity.this, "Please enter all fields!", Toast.LENGTH_SHORT).show();
@@ -260,6 +294,18 @@ public class addActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                currency = parent.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
         // for selecting splitting method
