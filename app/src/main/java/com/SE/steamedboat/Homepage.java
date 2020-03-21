@@ -62,6 +62,9 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
     private TextView TripNameDisplay;
     private String TripName;
     private Button back;
+    private boolean CVclick=false;
+    private int chosenDay, chosenMonth, chosenYear;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,27 +142,18 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                     currentTrip=dataSnapshot.getValue(Trip.class);
                     ALtrip.add(currentTrip);
                     Log.v("E_VALUE", "-------------------Trip Name is: "+ currentTrip.getTripName() +"  ---------------------------");
-
                 }
-
                 @Override
                 public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
                 }
-
                 @Override
                 public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
                 }
-
                 @Override
                 public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
                 }
             }); */
 
@@ -218,41 +212,17 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
             });
 
 
+            if(CVclick==false){
             TripRef.child("activities").addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull final DataSnapshot dataSnapshot, @Nullable String s) {
 
-                    CalendarView cv=(CalendarView)findViewById(R.id.tripCalendar);
 
-                    cv.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-                        @Override
-                        public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-
-                            Activity a = new Activity();
-                            if (dataSnapshot.hasChildren())
-                                a = dataSnapshot.getValue(Activity.class);
-
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
-                            String adate = sdf.format(a.getDateTime());
-                            Log.v("date", "------------------- "+ adate +"  ---------------------------");
-
-                            String cvdate = dayOfMonth+"/"+(month+1)+"/"+year;
-                            Log.v("date", "------------------- "+ cvdate +"  ---------------------------");
-
-                            if (adate.compareTo(cvdate)==0) {
-                                Log.v("date", "------------------- " + "true" + "  ---------------------------");
-
-                                AL_activity_names.add(a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
-
-                            }
-                        }
-                    });
                     // ------ use for loop to find activity of that date if the calender is clicked
                     Activity a = new Activity();
-                    if (dataSnapshot.hasChildren())
+                    if (dataSnapshot.hasChildren() )
                     {   a = dataSnapshot.getValue(Activity.class);
-
-                    AL_activity_names.add(a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
+                        AL_activity_names.add(a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
                     }
                     // -----------------------------------------------------------
 
@@ -281,6 +251,71 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                 }
             });
         }
+        }
+
+
+        CalendarView cv=(CalendarView)findViewById(R.id.tripCalendar);
+
+        cv.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                CVclick = true;
+                AL_activity_names.clear();
+
+                chosenDay = dayOfMonth;
+                chosenMonth = month;
+                chosenYear = year;
+
+                TripRef.child("activities").addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        Activity a = new Activity();
+                        if (dataSnapshot.hasChildren())
+                            a = dataSnapshot.getValue(Activity.class);
+
+                        Log.v("date", "--------------When Clicked Calendar , DATA: "+ dataSnapshot.getValue() +"  ---------------------------");
+
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+                        String adate = sdf.format(a.getDateTime());
+                        Log.v("date", "------------------- "+ adate +"  ---------------------------");
+
+                        String cvdate = chosenDay+"/"+(chosenMonth+1)+"/"+chosenYear;
+                        Log.v("date", "------------------- "+ cvdate +"  ---------------------------");
+
+                        if (adate.compareTo(cvdate)==0) {
+                            Log.v("date", "------------------- " + "true" + "  ---------------------------");
+                            Log.v("date",a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
+                            AL_activity_names.add(a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
+
+                        }
+                        actAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
+            }
+        });
 
 
         addMember=findViewById(R.id.addmember);
