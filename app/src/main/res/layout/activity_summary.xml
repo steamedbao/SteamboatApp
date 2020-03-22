@@ -12,14 +12,15 @@
         android:layout_height="230dp"
         android:layout_marginLeft="30dp"
         android:layout_below="@id/trip"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/roundbox"
         ></ListView>
 
     <TextView
         android:id="@+id/trip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="55dp"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="60dp"
         android:text="Trip"
@@ -31,9 +32,10 @@
         android:id="@+id/summary"
         android:layout_width="400dp"
         android:layout_height="58dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="75dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/trip"
+        android:layout_marginTop="50dp"
         android:fontFamily="@font/montserrat"
         android:text="Summary"
         android:textColor="#FFAB91"
@@ -45,8 +47,9 @@
         android:layout_width="230dp"
         android:layout_height="90dp"
         android:layout_marginLeft="0dp"
-        android:layout_marginTop="510dp"
+        android:layout_marginTop="20dp"
         android:layout_toRightOf="@id/button1"
+        android:layout_below="@id/button4"
         android:alpha="0.8"
         android:background="@drawable/roundbutton"
         android:fontFamily="@font/roboto"
@@ -61,30 +64,20 @@
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_marginLeft="40dp"
-        android:layout_marginTop="510dp"
+        android:layout_below="@id/button3"
+        android:layout_marginTop="20dp"
         android:background="@drawable/roundbutton2"
         android:elevation="30dp"
         android:src="@drawable/summary"
         android:textSize="22sp"></ImageButton>
-
-    <ImageButton
-        android:id="@+id/button3"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="400dp"
-        android:background="@drawable/roundbutton2"
-        android:elevation="30dp"
-        android:src="@drawable/businesswoman"
-        android:textSize="20sp"
-        android:theme="@style/Widget.AppCompat.Button.Borderless"></ImageButton>
 
     <TextView
         android:id="@+id/button4"
         android:layout_width="230dp"
         android:layout_height="90dp"
         android:layout_marginLeft="0dp"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/listview"
         android:layout_toRightOf="@+id/button3"
         android:alpha="0.8"
         android:background="@drawable/roundbutton"
@@ -94,6 +87,19 @@
         android:text="See suggested payment solution."
         android:textColor="#CCFFFFFF"
         android:textSize="20sp"></TextView>
+
+    <ImageButton
+        android:id="@+id/button3"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/listview"
+        android:background="@drawable/roundbutton2"
+        android:elevation="30dp"
+        android:src="@drawable/businesswoman"
+        android:textSize="20sp"
+        android:theme="@style/Widget.AppCompat.Button.Borderless"></ImageButton>
 
     <Button
         android:id="@+id/back"
