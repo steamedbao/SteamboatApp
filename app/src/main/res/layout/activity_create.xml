@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="#141414"
     tools:context=".create">
 
     <Button
         android:id="@+id/discardtrip"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:background="@drawable/back"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
@@ -19,7 +19,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="60dp"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="60dp"
         android:text="Create"
@@ -33,7 +33,7 @@
         android:layout_height="58dp"
         android:layout_marginStart="135dp"
         android:layout_marginLeft="135dp"
-        android:layout_marginTop="75dp"
+        android:layout_marginTop="55dp"
         android:fontFamily="@font/montserrat"
         android:text="New Trip"
         android:textColor="#FFAB91"
@@ -47,6 +47,7 @@
         android:layout_marginTop="150dp"
         android:fontFamily="@font/roboto"
         android:paddingVertical="10dp"
+        android:layout_centerHorizontal="true"
         android:alpha="0.5"
         android:background="@drawable/roundbox"
         android:paddingHorizontal="10dp"
@@ -57,6 +58,7 @@
     <EditText
         android:id="@+id/pw"
         android:layout_width="350dp"
+        android:layout_centerHorizontal="true"
         android:height="40dp"
         android:paddingVertical="10dp"
         android:paddingHorizontal="10dp"
@@ -74,6 +76,7 @@
     <EditText
         android:id="@+id/creater"
         android:layout_width="350dp"
+        android:layout_centerHorizontal="true"
         android:height="40dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="270dp"

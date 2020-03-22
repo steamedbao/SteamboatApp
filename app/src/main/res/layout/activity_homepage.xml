@@ -10,13 +10,14 @@
     <CalendarView
         android:id="@+id/tripCalendar"
         android:layout_width="200dp"
-        android:layout_height="310dp"
-        android:layout_marginStart="180dp"
-        android:layout_marginLeft="180dp"
-        android:layout_marginTop="88dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
+        android:layout_height="300dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
         android:background="@drawable/roundbox"
+        android:layout_toRightOf="@id/membersLV"
+        android:layout_below="@id/hometripid"
         android:dateTextAppearance="@style/CalenderViewDateCustomText"
         android:theme="@style/CalenderViewCustom"
         android:weekDayTextAppearance="@style/CalenderViewWeekCustomText"
@@ -28,11 +29,11 @@
         android:elevation="3dp"
         android:layout_width="200dp"
         android:layout_height="29dp"
-        android:layout_marginStart="180dp"
-        android:layout_marginLeft="180dp"
-        android:layout_marginTop="405dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginTop="13dp"
+        android:layout_toRightOf="@id/addmember"
+        android:layout_marginLeft="15dp"
         android:background="@drawable/gradient1"
+        android:layout_below="@id/tripCalendar"
         android:drawableLeft="@drawable/create_trip_icon"
         android:paddingHorizontal="50dp"
         android:fontFamily="@font/roboto_condensed_bold"
@@ -43,9 +44,10 @@
         android:id="@+id/addmember"
         android:layout_width="130dp"
         android:layout_height="30dp"
-        android:layout_marginTop="405dp"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
+        android:layout_below="@id/membersLV"
         android:background="@drawable/gradient1"
         android:drawableLeft="@drawable/create_trip_icon"
         android:paddingHorizontal="15dp"
@@ -56,11 +58,13 @@
 
     <Button
         android:id="@+id/editTrip"
-        android:layout_width="126dp"
-        android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="600dp"
-        android:text="Edit" />
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_toLeftOf="@id/checkFinance"
+        android:layout_marginRight="50dp"
+        android:layout_below="@id/LVactivity"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/edit" />
 
     //i tot we cant delete trip anymore? is this for member
 
@@ -105,46 +109,51 @@
         android:layout_marginTop="600dp"
         android:layout_marginEnd="12dp"
         android:layout_marginRight="12dp"
+        android:clickable="false"
+        android:visibility="invisible"
         android:text="Logout" />
 
     <ListView
         android:id="@+id/membersLV"
         android:layout_width="130dp"
-        android:layout_height="310dp"
+        android:layout_height="300dp"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="88dp"
+        android:layout_below="@id/back"
+        android:layout_marginTop="18dp"
         android:background="@drawable/roundbox"
         android:textColor="#FFFFFF"/>
 
     <Button
         android:id="@+id/back"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
+        android:alpha="0.8"
         android:background="@drawable/back" />
+
 
     <Button
         android:id="@+id/checkFinance"
-        android:layout_width="131dp"
+        android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/LVactivity"
         android:layout_marginBottom="4dp"
-        android:layout_marginTop="600dp"
-        android:layout_marginStart="280dp"
-        android:layout_marginLeft="280dp"
-        android:text="CHECK FINANCE" />
-
+        android:background="@drawable/finance"/>
 
     <ListView
         android:id="@+id/LVactivity"
         android:layout_width="350dp"
         android:layout_height="150dp"
         android:layout_centerHorizontal="true"
+        android:layout_below="@id/addmember"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="440dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="1dp"
         android:layout_marginRight="1dp"
         android:layout_marginBottom="3dp"
@@ -153,10 +162,14 @@
 
     <Button
         android:id="@+id/ViewALL"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="250dp"
-        android:layout_marginTop="650dp"
-        android:text="Show All" />
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="50dp"
+        android:layout_toRightOf="@id/checkFinance"
+        android:layout_marginStart="50dp"
+        android:layout_below="@id/LVactivity"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/view"
+        />
 
 </RelativeLayout>

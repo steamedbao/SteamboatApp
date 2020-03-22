@@ -8,10 +8,11 @@
 
     <ListView
         android:id="@+id/listview"
-        android:layout_width="390dp"
+        android:layout_width="360dp"
         android:layout_height="230dp"
         android:layout_marginLeft="10dp"
         android:layout_below="@id/trip"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:background="@drawable/roundbox"
         ></ListView>
@@ -56,7 +57,7 @@
         android:gravity="center_vertical"
         android:padding="13dp"
         android:text="See the overall statistics of your trip."
-        android:textColor="#CCFFFFFF"
+        android:textColor="#88FFFFFF"
         android:textSize="20sp"></TextView>
 
     <ImageButton
@@ -85,7 +86,7 @@
         android:gravity="center_vertical"
         android:padding="13dp"
         android:text="See suggested payment solution."
-        android:textColor="#CCFFFFFF"
+        android:textColor="#88FFFFFF"
         android:textSize="20sp"></TextView>
 
     <ImageButton
@@ -103,8 +104,8 @@
 
     <Button
         android:id="@+id/back"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:background="@drawable/back"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
