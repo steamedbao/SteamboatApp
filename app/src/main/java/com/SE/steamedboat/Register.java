@@ -1,19 +1,20 @@
 package com.SE.steamedboat;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.sax.StartElementListener;
 import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-
-import android.content.Intent;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 public class Register extends AppCompatActivity {
     EditText emailId, password;
@@ -30,7 +31,7 @@ public class Register extends AppCompatActivity {
         emailId = findViewById(R.id.email1);
         password = findViewById(R.id.password1);
         btnSignUp = findViewById(R.id.register1);
-        tvSignIn = findViewById(R.id.login1);
+        tvSignIn = findViewById(R.id.register1);
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override

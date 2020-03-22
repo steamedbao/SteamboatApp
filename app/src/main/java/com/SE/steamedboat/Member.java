@@ -1,6 +1,8 @@
 package com.SE.steamedboat;
 
-public class Member {
+import java.io.Serializable;
+
+public class Member implements Serializable {
     private String memberName;
     private String UID=null;
     private int memberID;
@@ -33,12 +35,20 @@ public class Member {
         return amountPaid;
     }
 
+    protected void addAmountPaid(float amountPaid) {
+        this.amountPaid += amountPaid;
+    }
+
     protected void setAmountPaid(float amountPaid) {
         this.amountPaid = amountPaid;
     }
 
     public float getAmountIncurred() {
         return amountIncurred;
+    }
+
+    protected void addAmountIncurred(float amountIncurred) {
+        this.amountIncurred += amountIncurred;
     }
 
     protected void setAmountIncurred(float amountIncurred) {

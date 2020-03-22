@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".addActivity" />
+        <activity android:name=".Payment_solution"></activity>
         <activity android:name=".join" />
         <activity android:name=".Homepage" />
         <activity android:name=".create" />
@@ -29,6 +30,7 @@
         <activity android:name=".MemberDialog"
             android:theme="@style/Theme.AppCompat.Dialog.Alert"></activity>
         <activity android:name=".SummaryPage"></activity>
+        <activity android:name=".customise_split"></activity>
 
 
         <meta-data

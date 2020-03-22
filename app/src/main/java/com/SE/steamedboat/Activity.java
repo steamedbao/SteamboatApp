@@ -1,7 +1,5 @@
 package com.SE.steamedboat;
 
-import android.view.SurfaceControl;
-
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -17,10 +15,11 @@ public class Activity {
 
     private String name;
     private int id;
-    private Date dateTime = new Date();
+    private Date dateTime;
     private float activityExpense = 0;
+    private String payer;
     private ArrayList<Transaction> transactions = new ArrayList<>();
-    private ArrayList<Integer> participant = new ArrayList<>();
+    private ArrayList<String> participant = new ArrayList<>();
     private ArrayList<Float> individualExpense= new ArrayList<>();
     private boolean status = true;
     private boolean split = true;
@@ -30,7 +29,7 @@ public class Activity {
 
     public Activity(String n) {
         name = n;
-        id = (int)(Math.random()*(500000))+100000;
+        id = (int)(Math.random()*(900))+100;
     }
 
     public Activity(){}
@@ -55,6 +54,14 @@ public class Activity {
         activityInfo.add(this.transactions);
         return activityInfo;
     };
+
+    public String getPayer() {
+        return payer;
+    }
+
+    public void setPayer(String payer) {
+        this.payer = payer;
+    }
 
     public float getActivityExpense() {
         return activityExpense;
@@ -96,12 +103,12 @@ public class Activity {
         this.transactions = transactions;
     }
 
-    public ArrayList<Integer> getParticipant() {
+    public ArrayList<String> getParticipant() {
         return participant;
     }
 
-    public void setParticipant(ArrayList<Integer> participant) {
-        this.participant = participant;
+    public void addParticipant(String participant) {
+        this.participant.add(participant);
     }
 
     public ArrayList<Float> getIndividualExpense() {
