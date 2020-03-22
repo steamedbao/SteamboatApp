@@ -29,32 +29,33 @@
         android:elevation="3dp"
         android:layout_width="200dp"
         android:layout_height="29dp"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/addmember"
         android:layout_marginLeft="15dp"
         android:background="@drawable/gradient1"
+        android:layout_marginRight="30dp"
         android:layout_below="@id/tripCalendar"
         android:drawableLeft="@drawable/create_trip_icon"
-        android:paddingHorizontal="50dp"
+        android:paddingHorizontal="40dp"
         android:fontFamily="@font/roboto_condensed_bold"
-        android:textSize="15sp"
+        android:textSize="13sp"
         android:text="Acitivity" />
+
 
     <Button
         android:id="@+id/addmember"
         android:layout_width="130dp"
         android:layout_height="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_below="@id/membersLV"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
-        android:layout_below="@id/membersLV"
+        android:layout_marginTop="10dp"
         android:background="@drawable/gradient1"
         android:drawableLeft="@drawable/create_trip_icon"
-        android:paddingHorizontal="15dp"
         android:fontFamily="@font/roboto_condensed_bold"
-        android:textSize="15sp"
-        android:text="Member" />
-
+        android:paddingHorizontal="15dp"
+        android:text="Member"
+        android:textSize="13sp" />
 
     <Button
         android:id="@+id/editTrip"
@@ -115,7 +116,7 @@
 
     <ListView
         android:id="@+id/membersLV"
-        android:layout_width="130dp"
+        android:layout_width="100dp"
         android:layout_height="300dp"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
@@ -148,17 +149,16 @@
     <ListView
         android:id="@+id/LVactivity"
         android:layout_width="350dp"
-        android:layout_height="150dp"
-        android:layout_centerHorizontal="true"
+        android:layout_height="140dp"
         android:layout_below="@id/addmember"
+        android:layout_centerHorizontal="true"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="7dp"
         android:layout_marginEnd="1dp"
         android:layout_marginRight="1dp"
         android:layout_marginBottom="3dp"
-        android:background="@drawable/roundbox"
-        />
+        android:background="@drawable/roundbox" />
 
     <Button
         android:id="@+id/ViewALL"

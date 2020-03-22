@@ -252,11 +252,11 @@
     <ListView
         android:id="@+id/LV_mem_names"
         android:layout_width="346dp"
-        android:layout_height="133dp"
+        android:layout_height="120dp"
         android:layout_marginStart="31dp"
         android:layout_marginLeft="31dp"
         android:layout_below="@id/memberselecttextview"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="10dp" />
 
 
 
