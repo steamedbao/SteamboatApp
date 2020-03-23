@@ -70,7 +70,9 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         addMember = findViewById(R.id.addmember);
         btnLogout = findViewById(R.id.logout);
         TripIDDisplay = findViewById(R.id.hometripid);
-        TripIDDisplay.setText(String.valueOf(TripID));
+        String tripIDdisplay = "ID"+Integer.toString(TripID);
+
+        TripIDDisplay.setText(tripIDdisplay);
         TripNameDisplay = findViewById(R.id.hometripname);
         TripName = from_createORjoin.getStringExtra("TripName");
         TripNameDisplay.setText(TripName);
@@ -133,7 +135,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
 
                 //create string called expense and payment here then pass it to the dialog box throught the below code
 
-                String tripID = "ID"+ Integer.toString(TripID);
+                String tripID = Integer.toString(TripID);
 
                 intent.putExtra("namedetail",name);
                 intent.putExtra("TripID",tripID);
