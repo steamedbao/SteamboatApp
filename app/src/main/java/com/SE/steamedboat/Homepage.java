@@ -79,6 +79,9 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         back = findViewById(R.id.back);
         viewSummary=findViewById(R.id.checkFinance);
 
+        if (AL_activity_names.isEmpty()||ALmembernames.size()<=1)
+            viewSummary.setEnabled(false);
+
         viewSummary.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
@@ -203,6 +206,8 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                     ALmember.add(mm);
                     ALmembernames.add(mm.getMemberName());
                     memAdapter.notifyDataSetChanged();
+                    if (!AL_activity_names.isEmpty())
+                        viewSummary.setEnabled(true);
                     Log.v("E_lVALUE", "-------------------ADDED MEMBER: "+ mm.getMemberName() +"  ---------------------------");
 
                 }
@@ -237,14 +242,17 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
 
                     // ------ use for loop to find activity of that date if the calender is clicked
                     Activity a = new Activity();
+                    String str = "SGD";
                     if (CVclick==false && dataSnapshot.hasChildren() )
                     {   a = dataSnapshot.getValue(Activity.class);
                         AL_activity_UID.add(a.getName());
-                        AL_activity_names.add(a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
+                        AL_activity_names.add(a.getName() + " " + a.getActivityCurrency() + ": " + str + "  " + a.getSplit());
                     }
                     // -----------------------------------------------------------
 
                     actAdapter.notifyDataSetChanged();
+                    if (ALmember.size()>1)
+                        viewSummary.setEnabled(true);
 
                 }
 
@@ -370,7 +378,6 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                 AL_activity_UID.clear();
                 AL_activity_names.clear();
                 Show_all_activities();
-
             }
         });
 

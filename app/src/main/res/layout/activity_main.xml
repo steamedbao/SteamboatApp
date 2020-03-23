@@ -44,6 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="47dp"
         android:layout_below="@id/mainTitle"
+        android:singleLine="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="22dp"
         android:layout_marginEnd="80dp"
@@ -79,6 +80,7 @@
         android:hint="Password"
         android:inputType="textPassword"
         android:textColor="#CCFDFDFD"
+        android:singleLine="true"
         android:textColorHint="#CCFFFFFF"
         android:textSize="20dp" />
 

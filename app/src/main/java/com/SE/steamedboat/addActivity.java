@@ -192,6 +192,7 @@ public class addActivity extends AppCompatActivity {
 
 
                 String name = activity_name.getText().toString();
+                
 
                 if (activity_name.getText()!=null && expense.getText().length()>0 && date_is_set ==true&& selected_payer!=null&&currency!=null&&memberSelected.size()!=0)//need more checks. but rn cant pass in the values for the others yet
                 {
@@ -207,7 +208,7 @@ public class addActivity extends AppCompatActivity {
                     a1.setPayer(selected_payer);
                     exp=exp*rate;
                     a1.setActivityExpense(exp);
-                    a1.setActivityCurrency(currency);
+                    a1.setActivityCurrency("SGD");
                     for (int n = 0; n < memberSelected.size(); n++) {
                         a1.addParticipant(memberlist.get(memberSelected.get(n)));
                         /*

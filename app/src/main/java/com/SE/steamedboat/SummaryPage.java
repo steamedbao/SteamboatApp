@@ -64,6 +64,7 @@ public class SummaryPage extends AppCompatActivity {
     private TextView b4;
     private ListView listView;
     private String homeCurrency = "SGD";
+    private Button back;
 
 
     public void GetMembers(){
@@ -259,6 +260,14 @@ public class SummaryPage extends AppCompatActivity {
         b3 = findViewById(R.id.button3);
         b4 = findViewById(R.id.button4);
 
+        back = findViewById(R.id.back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
 
         b3.setOnClickListener(new View.OnClickListener() {
