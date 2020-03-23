@@ -33,8 +33,7 @@ public class Payment_solution extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent goback = new Intent(Payment_solution.this, SummaryPage.class);
-                startActivity(goback);
+                finish();
             }
         });
 

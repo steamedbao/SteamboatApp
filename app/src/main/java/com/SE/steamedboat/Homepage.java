@@ -72,6 +72,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         TripIDDisplay = findViewById(R.id.hometripid);
         String tripIDdisplay = "ID"+Integer.toString(TripID);
 
+        ViewAll = (Button) findViewById(R.id.ViewALL);
         TripIDDisplay.setText(tripIDdisplay);
         TripNameDisplay = findViewById(R.id.hometripname);
         TripName = from_createORjoin.getStringExtra("TripName");
@@ -79,8 +80,19 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         back = findViewById(R.id.back);
         viewSummary=findViewById(R.id.checkFinance);
 
-        if (AL_activity_names.isEmpty()||ALmembernames.size()<=1)
+        if (AL_activity_names.isEmpty()||ALmembernames.size()<=1) {
             viewSummary.setEnabled(false);
+            ViewAll.setEnabled(false);
+            ViewAll.setBackground(getDrawable(R.drawable.gradient2));
+            viewSummary.setBackground(getDrawable(R.drawable.gradient2));
+        }
+
+        if (!AL_activity_names.isEmpty()&&ALmembernames.size()>1) {
+            viewSummary.setEnabled(true);
+            ViewAll.setEnabled(true);
+            ViewAll.setBackground(getDrawable(R.drawable.gradient1));
+            viewSummary.setBackground(getDrawable(R.drawable.gradient1));
+        }
 
         viewSummary.setOnClickListener(new View.OnClickListener() {
                @Override
@@ -206,9 +218,13 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                     ALmember.add(mm);
                     ALmembernames.add(mm.getMemberName());
                     memAdapter.notifyDataSetChanged();
-                    if (!AL_activity_names.isEmpty())
+                    if (!AL_activity_names.isEmpty()) {
                         viewSummary.setEnabled(true);
-                    Log.v("E_lVALUE", "-------------------ADDED MEMBER: "+ mm.getMemberName() +"  ---------------------------");
+                        ViewAll.setEnabled(true);
+                        ViewAll.setBackground(getDrawable(R.drawable.gradient1));
+                        viewSummary.setBackground(getDrawable(R.drawable.gradient1));
+                    }
+                        Log.v("E_lVALUE", "-------------------ADDED MEMBER: "+ mm.getMemberName() +"  ---------------------------");
 
                 }
 
@@ -251,8 +267,13 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                     // -----------------------------------------------------------
 
                     actAdapter.notifyDataSetChanged();
-                    if (ALmember.size()>1)
+                    if (ALmember.size()>1) {
                         viewSummary.setEnabled(true);
+                        ViewAll.setEnabled(true);
+                        ViewAll.setBackground(getDrawable(R.drawable.gradient1));
+                        viewSummary.setBackground(getDrawable(R.drawable.gradient1));
+
+                    }
 
                 }
 
@@ -369,7 +390,6 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
 
         addActivity = findViewById(R.id.addActivity);
 
-        ViewAll = (Button) findViewById(R.id.ViewALL);
 
         ViewAll.setOnClickListener(new View.OnClickListener() {
             @Override

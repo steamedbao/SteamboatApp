@@ -32,6 +32,7 @@
             android:theme="@style/Theme.AppCompat.Dialog.Alert"></activity>
         <activity android:name=".SummaryPage"></activity>
         <activity android:name=".customise_split"></activity>
+        <activity android:name=".OverallStat"></activity>
 
 
         <meta-data
