@@ -8,7 +8,7 @@
 
     <ListView
         android:id="@+id/listview"
-        android:layout_width="360dp"
+        android:layout_width="400dp"
         android:layout_height="230dp"
         android:layout_marginLeft="10dp"
         android:layout_below="@id/trip"

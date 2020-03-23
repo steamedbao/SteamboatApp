@@ -190,7 +190,7 @@ public class addActivity extends AppCompatActivity {
                 String name = activity_name.getText().toString();
                 exp = Float.parseFloat(expense.getText().toString());
 
-                if (name != "" && expense.getText().length()>0 && date_is_set ==true)//need more checks. but rn cant pass in the values for the others yet
+                if (activity_name.getText()!=null && expense.getText().length()>0 && date_is_set ==true)//need more checks. but rn cant pass in the values for the others yet
                 {
 
 
@@ -256,7 +256,7 @@ public class addActivity extends AppCompatActivity {
                     });
 
 
-                    Toast.makeText(addActivity.this, "ba Successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(addActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
 
                     Intent gohome = new Intent (getApplicationContext(), Homepage.class);
                     gohome.putExtra("TripID", TripID);
