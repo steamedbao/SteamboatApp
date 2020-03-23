@@ -6,8 +6,8 @@ public class Member implements Serializable {
     private String memberName;
     private String UID=null;
     private int memberID;
-    private float amountPaid;
-    private float amountIncurred;
+    private float amountPaid=0;
+    private float amountIncurred=0;
     private boolean host;
     public Member () {};
     public Member (String name) {

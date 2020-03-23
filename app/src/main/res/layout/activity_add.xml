@@ -120,7 +120,7 @@
     <Spinner
         android:id="@+id/payername"
         android:layout_width="140dp"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_marginLeft="145dp"
         android:layout_marginTop="10dp"
         android:paddingHorizontal="10dp"
@@ -128,9 +128,7 @@
         android:backgroundTint="#FFFFFF"
         android:layout_below="@id/datePicker"
         android:theme="@style/Spinner"
-        style="@style/Widget.AppCompat.Spinner.Underlined"
-        android:textColor="#FF0000"
-        android:textColorHint="#FF0000"/>
+        style="@style/Widget.AppCompat.Spinner.Underlined" />
 
 
 
