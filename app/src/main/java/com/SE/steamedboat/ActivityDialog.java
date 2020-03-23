@@ -61,7 +61,11 @@ public class ActivityDialog extends AppCompatActivity {
                 thisAct = dataSnapshot.getValue(Activity.class);
                 Name.setText(thisAct.getName());
                 Expense.setText(Float.toString(thisAct.getActivityExpense()));
-                Split.setText(Boolean.toString(thisAct.getSplit()));
+                if (thisAct.getSplit()==true)
+                    Split.setText("Evenly");
+                else
+                    Split.setText("Customised Splitting");
+
                 Paid.setText(thisAct.getPayer());
                 if(thisAct.getStatus()){Status.setText("Pending");}
                 else Status.setText("Settled");

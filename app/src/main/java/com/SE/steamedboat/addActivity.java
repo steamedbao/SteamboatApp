@@ -313,6 +313,7 @@ public class addActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
                         String item = "";
+                        selected_names.clear();
                         for (int i = 0; i < memberSelected.size(); i++) {
                             item = item + membername[memberSelected.get(i)];
                             if (i != memberSelected.size() - 1) {

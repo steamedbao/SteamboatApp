@@ -130,12 +130,16 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Call dialog to display detail
                 //create dialog
+                Log.v("Click on a name", "-------------------AL for member size is: "+ ALmember.size()+"  ---------------------------");
+
                 String name = memAdapter.getItem(position);
                 Intent intent = new Intent(getApplicationContext(),MemberDialog.class);
 
                 //create string called expense and payment here then pass it to the dialog box throught the below code
 
                 String tripID = Integer.toString(TripID);
+
+                intent.putExtra("Member",ALmember.get(position));
 
                 intent.putExtra("namedetail",name);
                 intent.putExtra("TripID",tripID);
@@ -146,7 +150,6 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
             }
         });
 
-        Log.v("E_VALUE", "-------------------AL size is: "+ ALtrip.size()+"  ---------------------------");
 
         if (ALtrip.size()==0){
 
