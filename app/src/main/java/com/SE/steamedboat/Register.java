@@ -53,7 +53,7 @@ public class Register extends AppCompatActivity {
                             if (!task.isSuccessful()) {
                                 Toast.makeText(Register.this, "Sign up unsuccessful, please try again!", Toast.LENGTH_SHORT).show();
                             } else {
-                                startActivity(new Intent(Register.this, Homepage.class));
+                                startActivity(new Intent(Register.this, createORjoin.class));
                             }
 
                         }
