@@ -27,44 +27,54 @@
     <Button
         android:id="@+id/addActivity"
         android:elevation="3dp"
-        android:layout_width="200dp"
-        android:layout_height="29dp"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@id/addmember"
-        android:layout_marginLeft="15dp"
-        android:background="@drawable/gradient1"
-        android:layout_marginRight="30dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="130dp"
+        android:layout_marginLeft="200dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/plus"
+        android:layout_marginRight="50dp"
         android:layout_below="@id/tripCalendar"
-        android:drawableLeft="@drawable/create_trip_icon"
         android:paddingHorizontal="40dp"
         android:fontFamily="@font/roboto_condensed_bold"
         android:textSize="13sp"
-        android:text="Acitivity" />
+        />
+
+    <TextView
+        android:id="@+id/memberstextview"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="Members"
+        android:layout_below="@id/back"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="30dp"
+        android:textColor="#CCFFFFFF"
+        />
 
 
     <Button
         android:id="@+id/addmember"
-        android:layout_width="130dp"
+        android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_below="@id/membersLV"
-        android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/gradient1"
-        android:drawableLeft="@drawable/create_trip_icon"
+        android:layout_below="@id/memberstextview"
+        android:layout_marginStart="95dp"
+        android:layout_marginLeft="95dp"
+        android:layout_marginTop="235dp"
+        android:background="@drawable/adduser"
         android:fontFamily="@font/roboto_condensed_bold"
         android:paddingHorizontal="15dp"
-        android:text="Member"
         android:textSize="13sp" />
 
     <Button
         android:id="@+id/editTrip"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_toLeftOf="@id/checkFinance"
-        android:layout_marginRight="50dp"
-        android:layout_below="@id/LVactivity"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+  android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
         android:layout_marginTop="15dp"
+        android:backgroundTint="#CCFFFFFF"
+        android:visibility="invisible"
+        android:clickable="false"
         android:background="@drawable/edit" />
 
     //i tot we cant delete trip anymore? is this for member
@@ -117,11 +127,11 @@
     <ListView
         android:id="@+id/membersLV"
         android:layout_width="100dp"
-        android:layout_height="300dp"
+        android:layout_height="280dp"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
         android:layout_below="@id/back"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="38dp"
         android:background="@drawable/roundbox"
         android:textColor="#FFFFFF"/>
 
@@ -138,38 +148,56 @@
 
     <Button
         android:id="@+id/checkFinance"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="30dp"
+        android:paddingHorizontal="10dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/LVactivity"
+        android:layout_alignParentRight="true"
         android:layout_marginBottom="4dp"
-        android:background="@drawable/finance"/>
+        android:text="Expense Summary"
+        android:textColor="#CCFFFFFF"
+        android:background="@drawable/gradient1"/>
 
     <ListView
         android:id="@+id/LVactivity"
-        android:layout_width="350dp"
+        android:layout_width="400dp"
         android:layout_height="140dp"
-        android:layout_below="@id/addmember"
-        android:layout_centerHorizontal="true"
+        android:layout_below="@id/activitytextview"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="7dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginRight="1dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
         android:layout_marginBottom="3dp"
         android:background="@drawable/roundbox" />
 
+    <TextView
+        android:id="@+id/activitytextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Activities "
+        android:layout_below="@id/membersLV"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
+        android:textColor="#CCFFFFFF"
+        />
+
     <Button
         android:id="@+id/ViewALL"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginLeft="50dp"
-        android:layout_toRightOf="@id/checkFinance"
-        android:layout_marginStart="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
         android:layout_below="@id/LVactivity"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/view"
+        android:layout_marginTop="10dp"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/gradient1"
+        android:text="All activities"
+
         />
 
 </RelativeLayout>

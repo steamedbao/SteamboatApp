@@ -256,7 +256,7 @@ public class addActivity extends AppCompatActivity {
                     });
 
 
-                    Toast.makeText(addActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(addActivity.this, "ba Successfully", Toast.LENGTH_SHORT).show();
 
                     Intent gohome = new Intent (getApplicationContext(), Homepage.class);
                     gohome.putExtra("TripID", TripID);
