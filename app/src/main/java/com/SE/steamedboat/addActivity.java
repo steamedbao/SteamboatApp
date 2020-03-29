@@ -186,6 +186,11 @@ public class addActivity extends AppCompatActivity {
         };
 
 
+
+
+
+
+
         but_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
