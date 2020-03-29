@@ -172,7 +172,7 @@ public class SummaryPage extends AppCompatActivity {
 
         while (even==false){
 
-            if (ALowe.get(cur_pos)<=0){
+            if (ALowe.get(cur_pos)<=0.01){
                 cur_pos++;
                 if (cur_pos==cur_neg)
                 {even=true;}
@@ -271,6 +271,8 @@ public class SummaryPage extends AppCompatActivity {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                sum=0;
                 for (int i=0;i<ALmember.size();i++)
                 {
                     sum += ALmember.get(i).getAmountPaid();
@@ -281,6 +283,7 @@ public class SummaryPage extends AppCompatActivity {
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sum=0;
                 for (int i=0;i<ALmember.size();i++)
                 {
                     sum += ALmember.get(i).getAmountPaid();
