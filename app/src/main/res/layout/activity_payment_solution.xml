@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#141414"
+    android:background="@drawable/gradient2"
     tools:context=".Payment_solution">
     <TextView
         android:id="@+id/trip"
@@ -32,18 +32,19 @@
     <ListView
         android:id="@+id/summaryLv"
         android:layout_width="350dp"
-        android:layout_height="500dp"
+        android:layout_height="450dp"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="150dp"
         android:background="@drawable/roundbox"
-        android:textColor="#FFFFFF" />
+        android:alpha="0.5"
+        android:textColor="#CCFFFFFF" />
 
     <Button
         android:id="@+id/back"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:background="@drawable/back"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"

@@ -68,7 +68,7 @@ public class join extends AppCompatActivity {
         pw = (EditText) findViewById(R.id.pw);
         joiner = (EditText) findViewById(R.id.joiner);
         buttonJoin = (Button) findViewById(R.id.join_done);
-        back = findViewById(R.id.back);
+        back = findViewById(R.id.exitjoin);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override

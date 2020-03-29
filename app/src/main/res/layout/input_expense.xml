@@ -8,13 +8,13 @@
     tools:context=".AddMemberDialog">
 
     <EditText
-        android:id="@+id/inputMemName"
+        android:id="@+id/input_expense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:singleLine="true"
-        android:hint="New Member's Name"
+        android:hint="Input the expense"
         android:fontFamily="@font/roboto"
-        android:inputType="textPersonName" />
+        android:inputType="text|number" />
 
 </RelativeLayout>

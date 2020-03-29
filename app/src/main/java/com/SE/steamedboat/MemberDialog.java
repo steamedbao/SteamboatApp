@@ -3,6 +3,7 @@ package com.SE.steamedboat;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -28,6 +29,7 @@ public class MemberDialog extends AppCompatActivity {
     private DatabaseReference memRef;
     private String TripID;
     private Member thisMem;
+    private String name;
     TextView memberExpense;
     TextView memberPaid;
 
@@ -37,12 +39,23 @@ public class MemberDialog extends AppCompatActivity {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_memberdialog);
         Intent intent = getIntent();
-        String name = intent.getStringExtra("namedetail");
+        name = intent.getStringExtra("namedetail");
         TripID = intent.getStringExtra("TripID");
+        thisMem = (Member)intent.getSerializableExtra("Member");
+
+
+        memberName = (TextView) findViewById(R.id.member_name);
+        memberName.setText(name);
+        memberExpense = findViewById(R.id.member_expense);
+        memberPaid = findViewById(R.id.member_paid);
+        memberExpense.setText(Float.toString(thisMem.getAmountIncurred()));
+        memberPaid.setText(Float.toString(thisMem.getAmountPaid()));
 
         FD = FirebaseDatabase.getInstance();
         myRef = FD.getReference();
         memRef = myRef.child("Trips").child(TripID).child("members").child(name);
+        Log.v("Directory","-----------memRef is---------"+memRef);
+        /*
         memberName = (TextView) findViewById(R.id.member_name);
         memberName.setText(name);
         memberExpense = findViewById(R.id.member_expense);
@@ -61,11 +74,7 @@ public class MemberDialog extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
+        */
 
         deleteMem = (Button) findViewById(R.id.member_delete);
         backToHome = (Button) findViewById(R.id.back);
@@ -95,6 +104,9 @@ public class MemberDialog extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //delete
+
+                        Log.v("Try to delete","-----------memRef is---------"+memRef);
+
                         finish();
                     }
 

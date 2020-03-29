@@ -24,7 +24,7 @@ public class ActivityDialog extends AppCompatActivity {
     private DatabaseReference myRef;
     private DatabaseReference ActRef;
 
-    TextView Name, Split, Expense, Paid, Status;
+    TextView Name, Split, Expense, Paid, Status, Currency;
     Button edit;
     Button backToHome;
     Activity thisAct=new Activity();
@@ -53,6 +53,7 @@ public class ActivityDialog extends AppCompatActivity {
 
         edit = (Button) findViewById(R.id.D_activity_edit);
         backToHome = (Button) findViewById(R.id.back);
+        Currency = findViewById(R.id.textView5);
 
 
         ActRef.addValueEventListener(new ValueEventListener() {
@@ -61,7 +62,13 @@ public class ActivityDialog extends AppCompatActivity {
                 thisAct = dataSnapshot.getValue(Activity.class);
                 Name.setText(thisAct.getName());
                 Expense.setText(Float.toString(thisAct.getActivityExpense()));
-                Split.setText(Boolean.toString(thisAct.getSplit()));
+                Currency.setText(thisAct.getActivityCurrency());
+
+                if (thisAct.getSplit()==true)
+                    Split.setText("Evenly");
+                else
+                    Split.setText("Customised Splitting");
+
                 Paid.setText(thisAct.getPayer());
                 if(thisAct.getStatus()){Status.setText("Pending");}
                 else Status.setText("Settled");

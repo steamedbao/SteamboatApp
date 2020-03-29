@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -37,7 +38,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
     private DatabaseReference myRef;
     private DatabaseReference TripRef;
     private String userID;
-    private Trip currentTrip;
+    private Trip currentTrip = new Trip();
     private ArrayList<Trip> ALtrip = new ArrayList<>();
     private ArrayList<Member> ALmember = new ArrayList<>();
     protected ArrayList<String> ALmembernames = new ArrayList<>();
@@ -59,6 +60,8 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
     private int chosenDay, chosenMonth, chosenYear;
     private ArrayAdapter<String> actAdapter=null;
     private Button viewSummary;
+    private String homeCurrency = "SGD";
+    DecimalFormat numberFormat = new DecimalFormat("#.00");
 
 
     @Override
@@ -70,12 +73,66 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         addMember = findViewById(R.id.addmember);
         btnLogout = findViewById(R.id.logout);
         TripIDDisplay = findViewById(R.id.hometripid);
-        TripIDDisplay.setText(String.valueOf(TripID));
+        String tripIDdisplay = "ID"+Integer.toString(TripID);
+
+        ViewAll = (Button) findViewById(R.id.ViewALL);
+        TripIDDisplay.setText(tripIDdisplay);
         TripNameDisplay = findViewById(R.id.hometripname);
         TripName = from_createORjoin.getStringExtra("TripName");
         TripNameDisplay.setText(TripName);
         back = findViewById(R.id.back);
         viewSummary=findViewById(R.id.checkFinance);
+
+        Auth = FirebaseAuth.getInstance();
+        FD = FirebaseDatabase.getInstance();
+        myRef = FD.getReference();
+        FirebaseUser user = Auth.getCurrentUser();
+        userID = user.getUid();
+        LV = (ListView) findViewById(R.id.membersLV);
+        LVactivity = (ListView) findViewById(R.id.LVactivity);
+        actAdapter = new ArrayAdapter<String>(this, R.layout.cust_list_view, AL_activity_names);
+        final ArrayAdapter<String> memAdapter = new ArrayAdapter<String>(this, R.layout.cust_list_view, ALmembernames);
+        LV.setAdapter(memAdapter);
+        LVactivity.setAdapter(actAdapter);
+        TVtripname = (TextView) findViewById(R.id.hometripname);
+        TripRef = myRef.child("Trips").child(Integer.toString(TripID));
+
+        TripRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                currentTrip=dataSnapshot.getValue(Trip.class);
+                ALtrip.add(currentTrip);
+                Log.v("E_VALUE", "-------------AFTER ADD ------AL size is: "+ ALtrip.size()+"  ---------------------------");
+
+                //Log.v("E_VALUE", "-------------------Trip Name is: "+ currentTrip.getTripName() +"  ---------------------------");
+                Log.v("E_VALUE", "-------------------dataSnapshot.getValue() is: "+ dataSnapshot.getValue() +"  ---------------------------");
+                TVtripname.setText(currentTrip.getTripName());
+                homeCurrency = currentTrip.getHomeCurrency();
+                Log.v("E_VALUE", "-------------------Home Currency is: "+ homeCurrency +"  ---------------------------");
+
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        if (AL_activity_names.isEmpty()||ALmembernames.size()<=1) {
+            viewSummary.setEnabled(false);
+            ViewAll.setEnabled(false);
+            ViewAll.setBackground(getDrawable(R.drawable.gradient2));
+            viewSummary.setBackground(getDrawable(R.drawable.gradient2));
+        }
+
+        if (!AL_activity_names.isEmpty()&&ALmembernames.size()>1) {
+            viewSummary.setEnabled(true);
+            ViewAll.setEnabled(true);
+            ViewAll.setBackground(getDrawable(R.drawable.gradient1));
+            viewSummary.setBackground(getDrawable(R.drawable.gradient1));
+        }
 
         viewSummary.setOnClickListener(new View.OnClickListener() {
                @Override
@@ -107,19 +164,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
             }
 
         });
-        Auth = FirebaseAuth.getInstance();
-        FD = FirebaseDatabase.getInstance();
-        myRef = FD.getReference();
-        FirebaseUser user = Auth.getCurrentUser();
-        userID = user.getUid();
-        LV = (ListView) findViewById(R.id.membersLV);
-        LVactivity = (ListView) findViewById(R.id.LVactivity);
-        actAdapter = new ArrayAdapter<String>(this, R.layout.cust_list_view, AL_activity_names);
-        final ArrayAdapter<String> memAdapter = new ArrayAdapter<String>(this, R.layout.cust_list_view, ALmembernames);
-        LV.setAdapter(memAdapter);
-        LVactivity.setAdapter(actAdapter);
-        TVtripname = (TextView) findViewById(R.id.hometripname);
-        TripRef = myRef.child("Trips").child(Integer.toString(TripID));
+
 
 
 
@@ -128,13 +173,19 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Call dialog to display detail
                 //create dialog
+                Log.v("Click on a name", "-------------------AL for member size is: "+ ALmember.size()+"  ---------------------------");
+
                 String name = memAdapter.getItem(position);
                 Intent intent = new Intent(getApplicationContext(),MemberDialog.class);
 
                 //create string called expense and payment here then pass it to the dialog box throught the below code
 
+                String tripID = Integer.toString(TripID);
+
+                intent.putExtra("Member",ALmember.get(position));
+
                 intent.putExtra("namedetail",name);
-                intent.putExtra("TripID",Integer.toString(TripID));
+                intent.putExtra("TripID",tripID);
 
                 //intent.putExtra("expensedetail",expense);
                 //intent.putExtra("paymentdetail",payment);
@@ -142,15 +193,16 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
             }
         });
 
-        Log.v("E_VALUE", "-------------------AL size is: "+ ALtrip.size()+"  ---------------------------");
 
-        if (ALtrip.size()==0){
 
             /*TripRef.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    currentTrip = new Trip();
                     currentTrip=dataSnapshot.getValue(Trip.class);
                     ALtrip.add(currentTrip);
+                    TVtripname.setText(currentTrip.getTripName());
+                    homeCurrency = currentTrip.getHomeCurrency();
                     Log.v("E_VALUE", "-------------------Trip Name is: "+ currentTrip.getTripName() +"  ---------------------------");
                 }
                 @Override
@@ -165,27 +217,10 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                 }
-            }); */
-
-            TripRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    currentTrip = new Trip();
-                    currentTrip=dataSnapshot.getValue(Trip.class);
-                    ALtrip.add(currentTrip);
-                    Log.v("E_VALUE", "-------------AFTER ADD ------AL size is: "+ ALtrip.size()+"  ---------------------------");
-
-                    //Log.v("E_VALUE", "-------------------Trip Name is: "+ currentTrip.getTripName() +"  ---------------------------");
-                    Log.v("E_VALUE", "-------------------dataSnapshot.getValue() is: "+ dataSnapshot.getValue() +"  ---------------------------");
-                    TVtripname.setText(currentTrip.getTripName());
-                }
+            });*/
 
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                }
-            });
 
             TripRef.child("members").addChildEventListener(new ChildEventListener() {
                 @Override
@@ -196,7 +231,13 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                     ALmember.add(mm);
                     ALmembernames.add(mm.getMemberName());
                     memAdapter.notifyDataSetChanged();
-                    Log.v("E_lVALUE", "-------------------ADDED MEMBER: "+ mm.getMemberName() +"  ---------------------------");
+                    if (!AL_activity_names.isEmpty()) {
+                        viewSummary.setEnabled(true);
+                        ViewAll.setEnabled(true);
+                        ViewAll.setBackground(getDrawable(R.drawable.gradient1));
+                        viewSummary.setBackground(getDrawable(R.drawable.gradient1));
+                    }
+                        Log.v("E_lVALUE", "-------------------ADDED MEMBER: "+ mm.getMemberName() +"  ---------------------------");
 
                 }
 
@@ -230,14 +271,26 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
 
                     // ------ use for loop to find activity of that date if the calender is clicked
                     Activity a = new Activity();
-                    if (CVclick==false && dataSnapshot.hasChildren() )
+
+                    String str;
+
+                    if (CVclick==false && dataSnapshot.hasChildren())
                     {   a = dataSnapshot.getValue(Activity.class);
                         AL_activity_UID.add(a.getName());
-                        AL_activity_names.add(a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
+                        if (a.getSplit()){str = "Even split";}
+                        else {str = "Custom split";}
+                        AL_activity_names.add(a.getName() + " Payer: "+a.getPayer()+ ", "+homeCurrency+": "+numberFormat.format(a.getHomeWorth())+ ", " + str);
                     }
                     // -----------------------------------------------------------
 
                     actAdapter.notifyDataSetChanged();
+                    if (ALmember.size()>1) {
+                        viewSummary.setEnabled(true);
+                        ViewAll.setEnabled(true);
+                        ViewAll.setBackground(getDrawable(R.drawable.gradient1));
+                        viewSummary.setBackground(getDrawable(R.drawable.gradient1));
+
+                    }
 
                 }
 
@@ -262,7 +315,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                 }
             });
 
-        }
+
 
 
         CalendarView cv=(CalendarView)findViewById(R.id.tripCalendar);
@@ -299,7 +352,11 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                             Log.v("date", "------------------- " + "true" + "  ---------------------------");
                             Log.v("date",a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
                             AL_activity_UID.add(a.getName());
-                            AL_activity_names.add(a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
+                            String str;
+                            if (a.getSplit()){str = "Even split";}
+                            else {str = "Custom split";}
+                            AL_activity_names.add(a.getName() + " Payer: "+a.getPayer()+ ", "+homeCurrency+": "+numberFormat.format(a.getHomeWorth())+ ", " + str);
+                            //AL_activity_names.add(a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
 
                         }
                         actAdapter.notifyDataSetChanged();
@@ -354,7 +411,6 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
 
         addActivity = findViewById(R.id.addActivity);
 
-        ViewAll = (Button) findViewById(R.id.ViewALL);
 
         ViewAll.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -363,7 +419,6 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                 AL_activity_UID.clear();
                 AL_activity_names.clear();
                 Show_all_activities();
-
             }
         });
 
@@ -389,6 +444,8 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         while (ALtrip.size()!=0) {
 
             TVtripname.setText(currentTrip.getTripName());
+            homeCurrency = currentTrip.getHomeCurrency();
+
             Log.v("E_VALUE", "-------------------Home page trip name is set to: "+ currentTrip.getTripName() +"  ---------------------------");
             break;
 
@@ -426,6 +483,8 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         while (ALtrip.size()!=0) {
 
             TVtripname.setText(currentTrip.getTripName());
+            homeCurrency = currentTrip.getHomeCurrency();
+
             Log.v("E_VALUE", "-------------------Home page trip name is set to: "+ currentTrip.getTripName() +"  ---------------------------");
             break;
         }
@@ -444,7 +503,10 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                 if (CVclick==false && dataSnapshot.hasChildren() )
                 {   a = dataSnapshot.getValue(Activity.class);
                     AL_activity_UID.add(a.getName());
-                    AL_activity_names.add(a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
+                    String str;
+                    if (a.getSplit()) str = "Evenly split";
+                    else str = "Custom split";
+                    AL_activity_names.add(a.getName() + " Payer: "+a.getPayer()+ ", "+homeCurrency+": "+numberFormat.format(a.getHomeWorth())+ ", " + str);
                 }
                 // -----------------------------------------------------------
 
@@ -479,6 +541,8 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         ArrayList<String> name = ALmembernames;
         gotoadd.putExtra("memberlist", name);
         gotoadd.putExtra("ID", TripID);
+        gotoadd.putExtra("HC",currentTrip.getHomeCurrency());
+        Log.v("Home Currenct","----------------------------------"+ currentTrip.getHomeCurrency());
         startActivity(gotoadd);
     }
 

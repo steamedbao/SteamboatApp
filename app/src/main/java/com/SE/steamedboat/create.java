@@ -9,9 +9,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +39,10 @@ public class create extends AppCompatActivity {
     private String userID;
     private int TripID;
     private Button backButton;
-
+    private Spinner spinner3;
+    String currency;
+    String trip_count;
+    String DBtrip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,15 +65,18 @@ public class create extends AppCompatActivity {
 
 
 
-        final long[] tripcount = new long[1];
+        final long[] tripcount = new long[2];
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 long No_of_trips = dataSnapshot.child("Users").child(userID).child("trips").getChildrenCount();
+                long DB_total_trips = dataSnapshot.child("Trips").getChildrenCount();
+
                 // Map<String,String> map = dataSnapshot.child("Users").child(userID).getValue(Map.class);
                 Log.v("E_VALUE","--------  Data : "+ No_of_trips + "---------------------------");
                 tripcount[0] = No_of_trips;
+                tripcount[1] = DB_total_trips;
                 Log.v("E_VALUE","--------  Data : "+ tripcount[0] + "---------------------------");
 
             }
@@ -77,6 +85,27 @@ public class create extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        spinner3 = (Spinner) findViewById(R.id.homespinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.currency, R.layout.spinnerview);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner3.setAdapter(adapter);
+
+        spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                currency = parent.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
@@ -95,26 +124,28 @@ public class create extends AppCompatActivity {
 
                 Log.v("E_VALUE","--------  Data : "+ tripcount[0] + "---------------------------");
 
-                String trip_count = Long.toString(tripcount[0]);
-                Log.v("E_VALUE","--------  Data : "+ trip_count + "---------------------------");
+                trip_count = Long.toString(tripcount[0]);
+                DBtrip = Long.toString(tripcount[1]+100000);
+                Log.v("E_VALUE","--------  Data : "+ DBtrip + "---------------------------");
 
                 String name = tripname.getText().toString();
                 String pw = password.getText().toString();
                 String create = creater.getText().toString();
-                TripID = Integer.parseInt(trip_count)+100000;
+                TripID = Integer.parseInt(DBtrip);
+
 
                 if( !pw.equals("") && !name.equals("") && !create.equals("")){
                     Trip t1 = new Trip(name, pw, create,TripID);
                     int ID = t1.getTripID();
-                    final String id = Integer.toString(ID);
                     com.SE.steamedboat.Member m1 = new Member(create);
                     m1.setUID(userID);
                     m1.setHost(true);
                     t1.addMember(m1);
                     t1.setCreaterUID(userID);
+                    t1.setHomeCurrency(currency);
                     com.SE.steamedboat.SimpleTrip s1 = new SimpleTrip (name,ID,true);
-                    myRef.child("Trips").child(id).setValue(t1);
-                    myRef.child("Trips").child(id).child("members").child(create).setValue(m1);
+                    myRef.child("Trips").child(DBtrip).setValue(t1);
+                    myRef.child("Trips").child(DBtrip).child("members").child(create).setValue(m1);
                     myRef.child("Users").child(userID).child("trips").child(trip_count).setValue(s1);
 
                     //myRef.child("Users").child(userID).child("trips").child(trip_count).child("TripName").setValue(create);
@@ -136,8 +167,8 @@ public class create extends AppCompatActivity {
                     */
 
 
-
-                    GoTo_home();}
+                    GoTo_home();
+                }
 
                 else{
                     Toast.makeText(create.this, "Make sure all fields are entered", Toast.LENGTH_SHORT).show();

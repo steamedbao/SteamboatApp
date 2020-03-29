@@ -24,6 +24,7 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -31,7 +32,7 @@ import java.util.FormatFlagsConversionMismatchException;
 import java.util.List;
 
 public class SummaryPage extends AppCompatActivity {
-    private String TripID;
+    private String TripID="0000";
     private FirebaseDatabase FD;
     private FirebaseAuth Auth;
     private FirebaseAuth.AuthStateListener AuthListen;
@@ -64,7 +65,10 @@ public class SummaryPage extends AppCompatActivity {
     private TextView b4;
     private ListView listView;
     private String homeCurrency = "SGD";
-
+    private Button back;
+    float sum=0;
+    int size = 0;
+    DecimalFormat numberFormat = new DecimalFormat("#.00");
 
     public void GetMembers(){
 
@@ -80,6 +84,8 @@ public class SummaryPage extends AppCompatActivity {
                 Log.v("Members", "---------------Name: "+ mm.getMemberName()+ " Overpaid/Owe: "+
                         (mm.getAmountPaid()-mm.getAmountIncurred())+"---------------------------");
                 ALtoshow.add(mm.getMemberName());
+
+
 
             }
 
@@ -166,7 +172,7 @@ public class SummaryPage extends AppCompatActivity {
 
         while (even==false){
 
-            if (ALowe.get(cur_pos)<=0){
+            if (ALowe.get(cur_pos)<=0.01){
                 cur_pos++;
                 if (cur_pos==cur_neg)
                 {even=true;}
@@ -214,6 +220,12 @@ public class SummaryPage extends AppCompatActivity {
 
         memCount = ALmember.size();
 
+        if (memCount<=1)
+        {
+            b3.setEnabled(false);
+            b4.setEnabled(false);
+        }
+
         ALtoshow.add("Name     Incurred    Paid    Expects +/-");
 
         for (int i=0;i<memCount;i++ ){
@@ -225,14 +237,14 @@ public class SummaryPage extends AppCompatActivity {
                 oneline = oneline+" ";
             }
 
-            oneline = oneline+Float.toString(ALmember.get(i).getAmountIncurred());
-            int spacecount2 = Math.max(1,(10-Float.toString(ALmember.get(i).getAmountIncurred()).length()));
+            oneline = oneline+numberFormat.format(ALmember.get(i).getAmountIncurred());
+            int spacecount2 = Math.max(1,(10-numberFormat.format(ALmember.get(i).getAmountIncurred()).length()));
             for (int space = 0; space<spacecount2;space++){
                 oneline = oneline+" ";
             }
 
-            oneline = oneline+Float.toString(ALmember.get(i).getAmountPaid());
-            int spacecount3 = Math.max(1,(10-Float.toString(ALmember.get(i).getAmountPaid()).length()));
+            oneline = oneline+numberFormat.format(ALmember.get(i).getAmountPaid());
+            int spacecount3 = Math.max(1,(10-numberFormat.format(ALmember.get(i).getAmountPaid()).length()));
             for (int space = 0; space<spacecount3;space++){
                 oneline = oneline+" ";
             }
@@ -241,7 +253,7 @@ public class SummaryPage extends AppCompatActivity {
 
             ALowe.add(ALmember.get(i).getAmountPaid()-ALmember.get(i).getAmountIncurred());
 
-            ALtoshow.add(oneline+(ALmember.get(i).getAmountPaid()-ALmember.get(i).getAmountIncurred()));
+            ALtoshow.add(oneline+numberFormat.format((ALmember.get(i).getAmountPaid()-ALmember.get(i).getAmountIncurred())));
 
 
         }
@@ -256,9 +268,42 @@ public class SummaryPage extends AppCompatActivity {
         b1 = findViewById(R.id.button1);
         b2 = findViewById(R.id.button2);
 
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                sum=0;
+                for (int i=0;i<ALmember.size();i++)
+                {
+                    sum += ALmember.get(i).getAmountPaid();
+                }
+                show_stat(currentTrip.getCreaterName(),sum,ALmember.size());
+            }
+        });
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sum=0;
+                for (int i=0;i<ALmember.size();i++)
+                {
+                    sum += ALmember.get(i).getAmountPaid();
+                }
+                show_stat(currentTrip.getCreaterName(),sum,ALmember.size());
+            }
+        });
+
+
         b3 = findViewById(R.id.button3);
         b4 = findViewById(R.id.button4);
 
+        back = findViewById(R.id.back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
 
         b3.setOnClickListener(new View.OnClickListener() {
@@ -289,6 +334,16 @@ public class SummaryPage extends AppCompatActivity {
         Intent go_to_sum = new Intent(getApplicationContext(), Payment_solution.class);
         go_to_sum.putStringArrayListExtra("sol",als);
         startActivity(go_to_sum);
+    }
+
+    public void show_stat(String name, float sum,int size){
+        Intent go_to_stat = new Intent(getApplicationContext(), OverallStat.class);
+        go_to_stat.putExtra("name",name);
+        String str1 = Float.toString(sum);
+        String str2 = Integer.toString(size);
+        go_to_stat.putExtra("sum",str1);
+        go_to_stat.putExtra("size",str2);
+        startActivity(go_to_stat);
     }
 
 

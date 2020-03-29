@@ -9,7 +9,6 @@
 
 
     <solid android:color="#242424"
-        android:alpha="0.6"
         ></solid>
 
 </shape>

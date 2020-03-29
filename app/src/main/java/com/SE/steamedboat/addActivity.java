@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,7 +37,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class addActivity extends AppCompatActivity {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class addActivity extends AppCompatActivity implements Custom_expense_dialog.ExpenseDialogListener{
 
     private FirebaseDatabase FD;
     private FirebaseAuth Auth;
@@ -58,7 +65,7 @@ public class addActivity extends AppCompatActivity {
     private String selected_payer;
     private EditText expense;
     private float exp;
-    private String currency;
+    private String currency="SGD";
 
     private EditText activity_name;
     private int TripID;
@@ -67,26 +74,39 @@ public class addActivity extends AppCompatActivity {
     private TextView mDisplayDate;
     private static final String TAG = "MainActivity";
     private DatePickerDialog.OnDateSetListener mDateSetListener;
-
+    private String HomeCurrency;
     private Spinner select_payer;
     private Member memtemp;
-    private ArrayList<String> selected_names=new ArrayList<>();
+    private ArrayList<String> selected_names = new ArrayList<>();
     private ArrayAdapter<String> arrayAdapter;
     private boolean date_is_set = false;
     private Calendar cal = Calendar.getInstance();
-
+    private JsonPlaceHolderApi jsonPlaceHolderApi;
+    private float rate=1;
+    private String exp_got_from_dialog;
+    private int LV_pos=0;
+    private ArrayList<Float> ALexp = new ArrayList<>();
+    private ArrayList<String> ALdisplay = new ArrayList<>();
+    private boolean custom_split=false;
+    private float baseRate = 1;
+    private float quotedRate = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.v("check rate", "------------------------ line 94 rate is: " +rate);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
         memberLV = findViewById(R.id.LV_mem_names);
-        arrayAdapter = new ArrayAdapter(this,R.layout.cust_list_view_2,selected_names);
+        arrayAdapter = new ArrayAdapter(this, R.layout.cust_list_view_2, ALdisplay);
         memberLV.setAdapter(arrayAdapter);
         Intent from_home = getIntent();
-        if (from_home.getStringArrayListExtra("memberlist")!=null)
+        if (from_home.getStringArrayListExtra("memberlist") != null)
             memberlist = from_home.getStringArrayListExtra("memberlist");
         TripID = from_home.getIntExtra("ID", 1);
+        HomeCurrency = from_home.getStringExtra("HC");
+        Log.v("check rate", "------------------------ line 106 rate is: " + rate);
+        Log.v("check rate", "------------------------ line 107 home currency is: " +HomeCurrency);
 
         but_add = (Button) findViewById(R.id.Button_add);
         back = (Button) findViewById(R.id.discardactivity);
@@ -95,14 +115,13 @@ public class addActivity extends AppCompatActivity {
         cd = Calendar.getInstance();
 
         checkeditems = new boolean[memberlist.size()];
-        for (int i=0;i<memberlist.size();i++)
-        {
+        for (int i = 0; i < memberlist.size(); i++) {
             checkeditems[i] = false;
         }
 
         Auth = FirebaseAuth.getInstance();
         FD = FirebaseDatabase.getInstance();
-        tripRef=FD.getReference().child("Trips").child(Integer.toString(TripID));
+        tripRef = FD.getReference().child("Trips").child(Integer.toString(TripID));
 
         final FirebaseUser user = Auth.getCurrentUser();
         userID = user.getUid();
@@ -126,7 +145,7 @@ public class addActivity extends AppCompatActivity {
 // for spinner
 
         ArrayAdapter<String> spinner_adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, memberlist);
+                R.layout.spinnerview, memberlist);
         spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         select_payer.setAdapter(spinner_adapter);
@@ -145,7 +164,6 @@ public class addActivity extends AppCompatActivity {
         });
 
 
-
         but_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,7 +175,7 @@ public class addActivity extends AppCompatActivity {
                         addActivity.this,
                         android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                         mDateSetListener,
-                        year,month,day);
+                        year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
 
@@ -173,12 +191,36 @@ public class addActivity extends AppCompatActivity {
                 String date = month + "/" + day + "/" + year;
                 mDisplayDate.setText(date);
 
-                d1 = new Date(year-1900, month-1, day);
+                d1 = new Date(year - 1900, month - 1, day);
                 date_is_set = true;
-                Log.v("date", "---------  ------------------d1:"+d1);
+                Log.v("date", "---------  ------------------d1:" + d1);
 
             }
         };
+
+
+
+        memberLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Call dialog to display detail
+                //create dialog
+                if (custom_split){
+                String name = arrayAdapter.getItem(position);
+                Log.v("Dialog inputs", "----------------------------- name is "+ name + "-------------------------");
+                LV_pos=position;
+
+                openExpDialog();}
+
+
+                //create string called expense and payment here then pass it to the dialog box throught the below code
+
+
+
+                //intent.putExtra("expensedetail",expense);
+                //intent.putExtra("paymentdetail",payment);
+            }
+        });
 
 
 
@@ -188,22 +230,36 @@ public class addActivity extends AppCompatActivity {
 
 
                 String name = activity_name.getText().toString();
-                exp = Float.parseFloat(expense.getText().toString());
 
-                if (name != "" && expense.getText().length()>0 && date_is_set ==true)//need more checks. but rn cant pass in the values for the others yet
+                float indiv_total=0;
+                for (int i = 0; i<ALexp.size();i++){
+                    indiv_total += ALexp.get(i);
+                }
+
+                if (Math.abs((exp-indiv_total))>1){
+                    Toast.makeText(addActivity.this, "Please make sure sum of individual expenses = total", Toast.LENGTH_SHORT).show();
+                }
+
+                else if (activity_name.getText()!=null && expense.getText().length()>0 && date_is_set ==true&& selected_payer!=null&&currency!=null&&memberSelected.size()!=0)//need more checks. but rn cant pass in the values for the others yet
                 {
 
-
+                    setRate();
                     Activity a1 = new Activity(name);
 
                     Log.v("E_VALUE", "--------  Activity Name : " + a1.getName() + "---------------------------");
 
-                    a1.setName(name+"__"+Integer.toString(a1.getId()));
+                    exp = Float.parseFloat(expense.getText().toString());
+                    a1.setName(name + "__" + Integer.toString(a1.getId()));
                     a1.setDateTime(d1);
                     a1.setPayer(selected_payer);
-                    a1.setActivityExpense(exp);
                     a1.setActivityCurrency(currency);
-                    for(int n = 0; n < memberSelected.size(); n++){
+                    a1.setActivityExpense(exp);
+                    a1.setExchangeRate(rate);
+                    a1.setHomeWorth(exp*rate);
+                    Log.v("check rate", "------------------------ line 253 rate is: " +rate);
+                    a1.setSplit((!custom_split));
+
+                    for (int n = 0; n < memberSelected.size(); n++) {
                         a1.addParticipant(memberlist.get(memberSelected.get(n)));
                         /*
                         DatabaseReference memRef;
@@ -213,7 +269,7 @@ public class addActivity extends AppCompatActivity {
                     myRef = FD.getReference().child("Trips").child(Integer.toString(TripID)).child("activities").child(a1.getName());
                     myRef.setValue(a1);
 
-                    selected_names = (ArrayList<String>)a1.getParticipant().clone();
+                    selected_names = (ArrayList<String>) a1.getParticipant().clone();
 
                     memtemp = new Member();
 
@@ -223,14 +279,15 @@ public class addActivity extends AppCompatActivity {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                             memtemp = dataSnapshot.getValue(Member.class);
-                            if (selected_names.contains(memtemp.getMemberName())){
-                                memtemp.addAmountIncurred(exp/selected_names.size()); // evenly here -----------==========
-                                }
-                            if (memtemp.getMemberName().equals(selected_payer)){
-                                memtemp.addAmountPaid(exp);
+
+                            if (selected_names.contains(memtemp.getMemberName())) {
+                                memtemp.addAmountIncurred(rate*ALexp.get(selected_names.indexOf(memtemp.getMemberName()))); // according to ALexp here -----------==========
+                            }
+                            if (memtemp.getMemberName().equals(selected_payer)) {
+                                memtemp.addAmountPaid(rate*exp);
                             }
                             FD.getReference().child("Trips").child(Integer.toString(TripID)).child("members").child(memtemp.getMemberName()).setValue(memtemp);
-                            Log.v("Member", "----------------updated:"+memtemp.getMemberName()+"-------------------------");
+                            Log.v("Member", "----------------updated:" + memtemp.getMemberName() + "-------------------------");
 
                         }
 
@@ -258,11 +315,9 @@ public class addActivity extends AppCompatActivity {
 
                     Toast.makeText(addActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
 
-                    Intent gohome = new Intent (getApplicationContext(), Homepage.class);
+                    Intent gohome = new Intent(getApplicationContext(), Homepage.class);
                     gohome.putExtra("TripID", TripID);
                     startActivity(gohome);
-
-
 
 
                 } else {
@@ -282,7 +337,7 @@ public class addActivity extends AppCompatActivity {
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(addActivity.this);
                 mBuilder.setTitle("Select the participating members: ");
 
-                membername= new String[memberlist.size()];
+                membername = new String[memberlist.size()];
 
                 // ArrayList to Array Conversion
                 for (int j = 0; j < memberlist.size(); j++) {
@@ -294,10 +349,9 @@ public class addActivity extends AppCompatActivity {
                 mBuilder.setMultiChoiceItems(membername, checkeditems, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
-                        if(isChecked){
+                        if (isChecked) {
                             memberSelected.add(position);
-                        }
-                        else{
+                        } else {
                             memberSelected.remove((Integer.valueOf(position)));
 
                         }
@@ -311,14 +365,23 @@ public class addActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
                         String item = "";
+                        selected_names.clear();
+                        ALdisplay.clear();
+                        ALexp.clear();
+
+                        if (expense.getText().length()>0){
+                            exp = Float.parseFloat(expense.getText().toString());}
+
                         for (int i = 0; i < memberSelected.size(); i++) {
                             item = item + membername[memberSelected.get(i)];
                             if (i != memberSelected.size() - 1) {
                                 item = item + ", ";
                             }
                             selected_names.add(memberlist.get(memberSelected.get(i)));
+                            ALexp.add(exp/memberSelected.size());
+                            ALdisplay.add(memberlist.get(memberSelected.get(i))+",   expense: "+Float.toString(exp/memberSelected.size()));
                             arrayAdapter.notifyDataSetChanged();
-                            Log.v("Select Member", "----------------size:"+selected_names.size()+ selected_names.get(i) +"-------------------------");
+                            Log.v("Select Member", "----------------size:" + selected_names.size() + selected_names.get(i) + "-------------------------");
 
                         }
 
@@ -326,6 +389,8 @@ public class addActivity extends AppCompatActivity {
 // display out the members selected
                     }
                 });
+
+
 
                 mBuilder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
                     @Override
@@ -350,19 +415,32 @@ public class addActivity extends AppCompatActivity {
             }
         });
 
+
         Spinner spinner = (Spinner) findViewById(R.id.spinner1);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.currency, android.R.layout.simple_spinner_item);
+                R.array.currency, R.layout.spinnerview);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
                 currency = parent.getSelectedItem().toString();
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("https://api.exchangeratesapi.io/")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+
+                getQuoted(currency);// pass in string from select spinner
+                getBase(HomeCurrency);
+                rate = (quotedRate/baseRate);
+                Log.v("check rate", "------------------------ line 452 rate  is: " +rate);
+
             }
 
             @Override
@@ -372,38 +450,41 @@ public class addActivity extends AppCompatActivity {
         });
 
 
+
+
+
         // for selecting splitting method
         Spinner spinnersplit = (Spinner) findViewById(R.id.spinner2);
         ArrayAdapter<CharSequence> splitadapter = ArrayAdapter.createFromResource(this,
-                R.array.splitmethods, android.R.layout.simple_spinner_item);
+                R.array.splitmethods, R.layout.spinnerview);
         splitadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnersplit.setAdapter(splitadapter);
         splitadapter.notifyDataSetChanged();
-
-
 
 
         spinnersplit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selected_splitmethod = parent.getSelectedItem().toString();
-                if(selected_splitmethod.equals("Others")){
-
+                if (selected_splitmethod.equals("Others")) {
                     /*
                     ArrayList<Consumer> consumers = new ArrayList<>();
                     for(int n=0; n < memberlist.size(); n++){
                         Consumer c = new Consumer(memberlist.get(n), 0);
                         consumers.add(c);
                     }*/
-
-                    Intent gotosplit = new Intent(getApplicationContext(), customise_split.class);
-                    gotosplit.putStringArrayListExtra("memberlist", memberlist);
-                    startActivity(gotosplit);
+                    custom_split = true;
 
                     /*Customer_List_Adaptor adapter = new Customer_List_Adaptor(addActivity.this, R.layout.adaptor_spenderamount, consumers);
                     mListView.setAdapter(adapter);
 
                      */
+                }
+
+                if (selected_splitmethod.equals("Evenly")) {
+
+                    custom_split = false;
+
                 }
             }
 
@@ -416,14 +497,14 @@ public class addActivity extends AppCompatActivity {
 
 
     }
+
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)
                 .setIcon(R.drawable.alert)
                 .setTitle("Closing Activity")
                 .setMessage("Are you sure you want to close this activity without saving?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                {
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
@@ -432,5 +513,94 @@ public class addActivity extends AppCompatActivity {
                 })
                 .setNegativeButton("No", null)
                 .show();
+    }
+
+    public void setRate()
+    {
+        rate = quotedRate/baseRate;
+        if(HomeCurrency==currency){rate=1;}
+        Log.v("check rate", "------------------------ line 517 rate is: " +rate);
+
+    }
+
+
+    @Override
+    public void applyText(String inputexp) {
+        exp_got_from_dialog = inputexp;
+        Log.v("Dialog inputs", "-----------------------------the exp is "+ exp_got_from_dialog + "-------------------------");
+
+        String name = selected_names.get(LV_pos);
+        ALexp.set(LV_pos,Float.parseFloat(inputexp));
+
+        String newString = name+" expense: "+inputexp;
+        //selected_names.remove(position);
+
+        ALdisplay.set(LV_pos, newString);
+
+        arrayAdapter.notifyDataSetChanged();
+
+        Log.v("Dialog inputs", "----------------------------- in AL new String is "+ arrayAdapter.getItem(LV_pos) + "-------------------------");
+
+    }
+
+    public void openExpDialog(){
+        Custom_expense_dialog expense_dialog = new Custom_expense_dialog();
+        expense_dialog.show(getSupportFragmentManager(),"expense dialog");
+    }
+
+    private void getQuoted(String currency) {
+        Call<CurrencyExchange2> call = jsonPlaceHolderApi.getCurrencyExchange2(currency);
+
+        call.enqueue(new Callback<CurrencyExchange2>() {
+            @Override
+            public void onResponse(Call<CurrencyExchange2> call, Response<CurrencyExchange2> response) {
+//                if(!response.isSuccessful()){
+//                    System.out.println("Response:");
+//                    System.out.println(response);
+//                    textViewResult.setText("Code: " + response.code());
+//                    return;
+//                }
+
+
+                //System.out.println("Page Found!!!!!!!!!!!!!");
+
+                CurrencyExchange2 CurrencyRates = response.body();
+                Log.v("check rate", "------------------------ line 94 rate is: " +CurrencyRates.getRates());
+                quotedRate = CurrencyRates.getRates();
+            }
+
+            @Override
+            public void onFailure(Call<CurrencyExchange2> call, Throwable t) {
+                Toast.makeText(addActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getBase(String currency) {
+        Call<CurrencyExchange2> call = jsonPlaceHolderApi.getCurrencyExchange2(currency);
+
+        call.enqueue(new Callback<CurrencyExchange2>() {
+            @Override
+            public void onResponse(Call<CurrencyExchange2> call, Response<CurrencyExchange2> response) {
+//                if(!response.isSuccessful()){
+//                    System.out.println("Response:");
+//                    System.out.println(response);
+//                    textViewResult.setText("Code: " + response.code());
+//                    return;
+//                }
+
+
+                //System.out.println("Page Found!!!!!!!!!!!!!");
+
+                CurrencyExchange2 CurrencyRates = response.body();
+                Log.v("check rate", "------------------------ line 94 rate is: " +CurrencyRates.getRates());
+                baseRate = CurrencyRates.getRates();
+            }
+
+            @Override
+            public void onFailure(Call<CurrencyExchange2> call, Throwable t) {
+                Toast.makeText(addActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
