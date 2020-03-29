@@ -9,9 +9,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +39,8 @@ public class create extends AppCompatActivity {
     private String userID;
     private int TripID;
     private Button backButton;
+    private Spinner spinner3;
+    String currency;
 
 
     @Override
@@ -81,6 +85,27 @@ public class create extends AppCompatActivity {
             }
         });
 
+        spinner3 = (Spinner) findViewById(R.id.homespinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.currency, R.layout.spinnerview);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner3.setAdapter(adapter);
+
+        spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                currency = parent.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         Button create_done = (Button) findViewById(R.id.create_done);
 
@@ -112,6 +137,7 @@ public class create extends AppCompatActivity {
                     m1.setHost(true);
                     t1.addMember(m1);
                     t1.setCreaterUID(userID);
+                    t1.setHomeCurrency(currency);
                     com.SE.steamedboat.SimpleTrip s1 = new SimpleTrip (name,ID,true);
                     myRef.child("Trips").child(id).setValue(t1);
                     myRef.child("Trips").child(id).child("members").child(create).setValue(m1);
