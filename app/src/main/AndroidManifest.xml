@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.SE.steamedboat">
 
-
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -12,15 +11,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".EditActivity"></activity>
         <activity android:name=".addActivity" />
-        <activity android:name=".Payment_solution"></activity>
+        <activity android:name=".Payment_solution" />
         <activity android:name=".join" />
         <activity android:name=".Homepage" />
         <activity android:name=".create" />
         <activity android:name=".createORjoin" />
         <activity android:name=".Register" />
-        <activity android:name=".ActivityDialog"
-            android:theme="@style/Theme.AppCompat.Dialog.Alert"/>
+        <activity
+            android:name=".ActivityDialog"
+            android:theme="@style/Theme.AppCompat.Dialog.Alert" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,17 +29,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MemberDialog"
-            android:theme="@style/Theme.AppCompat.Dialog.Alert"></activity>
-        <activity android:name=".SummaryPage"></activity>
-        <activity android:name=".customise_split"></activity>
-        <activity android:name=".OverallStat"></activity>
-
+        <activity
+            android:name=".MemberDialog"
+            android:theme="@style/Theme.AppCompat.Dialog.Alert" />
+        <activity android:name=".SummaryPage" />
+        <activity android:name=".customise_split" />
+        <activity android:name=".OverallStat" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
     </application>
 
 </manifest>

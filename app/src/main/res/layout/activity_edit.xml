@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#141414"
+    tools:context=".create">
+
+    <Button
+        android:id="@+id/discardactivity"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/back"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        />
+
+    <TextView
+        android:id="@+id/activity"
+        android:layout_width="400dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/montserrat"
+        android:text="Existing Activity"
+        android:textColor="#FFAB91"
+        android:textSize="34sp" />
+
+    <TextView
+        android:id="@+id/add"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/montserrat"
+        android:text="Edit"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/textviewactivityname"
+        android:layout_width="116dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_below="@id/add"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/roboto"
+        android:paddingVertical="10dp"
+        android:text="Activity Name :"
+        android:textColor="#CCFFFFFF"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/activityname"
+        android:layout_width="235dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/activity"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/textviewactivityname"
+        android:fontFamily="@font/roboto"
+        android:paddingVertical="10dp"
+        android:alpha="0.5"
+        android:singleLine="true"
+        android:background="@drawable/roundbox"
+        android:paddingHorizontal="10dp"
+        android:hint="Tap to enter"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#CCFFFFFF"/>
+
+    <TextView
+        android:id="@+id/textviewdatetime"
+        android:layout_width="102dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textviewactivityname"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/roboto"
+        android:paddingVertical="10dp"
+        android:text="Date :"
+        android:textColor="#CCFFFFFF"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/datePicker"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="140dp"
+        android:layout_below="@id/activityname"
+        android:layout_marginLeft="85dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/calendar" />
+
+    <TextView
+        android:id="@+id/selectedDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/activityname"
+        android:layout_marginLeft="210dp"
+        android:layout_marginTop="23dp"
+        android:textColor="#CCFFFFFF"
+        android:textColorHint="#88FFFFFF"
+        android:hint="Click to select"
+        android:textSize="16sp" />
+
+
+    <TextView
+        android:id="@+id/textviewpayername"
+        android:layout_width="98dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="31dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/textviewdatetime"
+        android:fontFamily="@font/roboto"
+        android:paddingVertical="10dp"
+        android:text="Payer :"
+        android:textColor="#CCFFFFFF"
+        android:textSize="16sp" />
+
+    <Spinner
+        android:id="@+id/payername"
+        android:layout_width="140dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="145dp"
+        android:layout_marginTop="10dp"
+        android:paddingHorizontal="10dp"
+        android:entries="@array/members"
+        android:backgroundTint="#FFFFFF"
+        android:layout_below="@id/datePicker"
+        android:theme="@style/Spinner"
+        style="@style/Widget.AppCompat.Spinner.Underlined" />
+
+
+
+    <Button
+        android:id="@+id/Button_add"
+        android:layout_width="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:textColor="#000000"
+        android:background="@drawable/tick"
+        android:ellipsize="none"
+        android:padding="5dp"
+        android:radius="30dp"
+        android:textSize="24sp"
+        android:fontFamily="@font/roboto_condensed_bold"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+    <TextView
+        android:id="@+id/memberselecttextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="31dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/split"
+        android:fontFamily="@font/roboto"
+        android:paddingVertical="10dp"
+        android:text="Involved Members :"
+        android:textColor="#CCFFFFFF"
+        android:textSize="16sp" />
+
+
+    <TextView
+        android:id="@+id/textviewexpense"
+        android:layout_width="99dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="31dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/textviewpayername"
+        android:fontFamily="@font/roboto"
+        android:paddingVertical="10dp"
+        android:text="Expense :"
+        android:textColor="#CCFFFFFF"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/expense"
+        android:layout_width="90dp"
+        android:layout_height="40dp"
+        android:layout_toRightOf="@id/textviewexpense"
+        android:layout_marginLeft="15dp"
+        android:layout_below="@id/textviewpayername"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/roboto"
+        android:paddingVertical="10dp"
+        android:alpha="0.5"
+        android:singleLine="true"
+        android:background="@drawable/roundbox"
+        android:paddingHorizontal="10dp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#CCFFFFFF"/>
+
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="130dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@id/expense"
+        android:entries="@array/currency"
+        android:layout_below="@id/textviewpayername"
+        android:backgroundTint="#FFFFFF"
+        android:theme="@style/Spinner"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+
+        />
+
+    <TextView
+        android:id="@+id/split"
+        android:layout_width="89dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="31dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/textviewexpense"
+        android:fontFamily="@font/roboto"
+        android:paddingVertical="10dp"
+        android:text="Split :"
+        android:textColor="#CCFFFFFF"
+        android:textSize="16sp" />
+
+    <Spinner
+        android:id="@+id/spinner2"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:layout_width="140dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="145dp"
+        android:layout_marginLeft="145dp"
+        android:layout_below="@id/expense"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#FFFFFF"
+        android:entries="@array/splitmethods"
+        android:theme="@style/Spinner"
+
+        />
+
+    <Button
+        android:id="@+id/but_selectmem"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/memberselecttextview"
+        android:layout_below="@id/spinner2"
+        android:background="@drawable/member"
+        android:layout_marginTop="10dp"/>
+
+
+    <ListView
+        android:id="@+id/LV_mem_names"
+        android:layout_width="346dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginLeft="31dp"
+        android:layout_below="@id/memberselecttextview"
+        android:layout_marginTop="0dp"
+        android:layout_height="180dp"
+        />
+
+
+
+</RelativeLayout>

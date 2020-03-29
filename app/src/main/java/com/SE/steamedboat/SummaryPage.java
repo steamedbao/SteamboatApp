@@ -157,34 +157,45 @@ public class SummaryPage extends AppCompatActivity {
             int oldindex = ALClone.indexOf(temp);
             newMemAL.add(ALmemnames.get(oldindex));
         }
+        float checkSum = 0;
 
         for (index=0;index<memCount;index++){
             Log.v("", "-------------- NewALmem: " + newMemAL.get(index)+"-------------");
             Log.v("", "-------------- ALowe: " + ALowe.get(index)+"-------------");
+            checkSum+=ALowe.get(index);
         }
 
         String mem_positive;
         String mem_negative;
         int cur_pos=0;
         int cur_neg=memCount-1;
-        Float cur_trans;
+        float cur_trans;
+        Solution.clear();
+        if(Math.abs(checkSum)>0.1){
+            Solution.add("Please make sure your sums of all expenses and payments add up");
+            Solution.add("Now for all members, total expense != total amount paid, please check !");
+        }
 
+        else {
+            while (even == false) {
 
-        while (even==false){
+                if (ALowe.get(cur_pos) <= 0.01) {
+                    cur_pos++;
+                    if (cur_pos == cur_neg) {
+                        even = true;
+                    }
+                    continue;
+                }
 
-            if (ALowe.get(cur_pos)<=0.01){
-                cur_pos++;
-                if (cur_pos==cur_neg)
-                {even=true;}
-                continue;
+                if (ALowe.get(cur_neg) == 0) {
+                    cur_neg--;
+                }
+
+                cur_trans = Math.min(ALowe.get(cur_pos), Math.abs(ALowe.get(cur_neg)));
+                ALowe.set(cur_pos, ALowe.get(cur_pos) - cur_trans);
+                ALowe.set(cur_neg, ALowe.get(cur_neg) + cur_trans);
+                Solution.add(newMemAL.get(cur_neg) + "  pays  " + newMemAL.get(cur_pos) + "  " + cur_trans + "  " + homeCurrency);
             }
-
-            if (ALowe.get(cur_neg)==0){cur_neg--;}
-
-            cur_trans = Math.min(ALowe.get(cur_pos),Math.abs(ALowe.get(cur_neg)));
-            ALowe.set(cur_pos,ALowe.get(cur_pos)-cur_trans);
-            ALowe.set(cur_neg,ALowe.get(cur_neg)+cur_trans);
-            Solution.add(newMemAL.get(cur_neg)+"  pays  "+newMemAL.get(cur_pos)+"  "+cur_trans + "  " +homeCurrency);
         }
 
         for (index=0;index<Solution.size();index++){

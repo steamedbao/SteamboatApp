@@ -3,20 +3,26 @@ package com.SE.steamedboat;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class ActivityDialog extends AppCompatActivity {
 
@@ -30,6 +36,14 @@ public class ActivityDialog extends AppCompatActivity {
     Activity thisAct=new Activity();
     String UID;
     String TripID;
+    Member temp = new Member();
+    ArrayList<String> Participants = new ArrayList<>();
+    ArrayList<Float> Expenses = new ArrayList<>();
+    ArrayList<Float> TotalExp = new ArrayList<>();
+    Float PayerTotalPaid;
+    String HC;
+    Trip tempTrip = new Trip();
+    ArrayList<String> memberAL = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,24 +69,84 @@ public class ActivityDialog extends AppCompatActivity {
         backToHome = (Button) findViewById(R.id.back);
         Currency = findViewById(R.id.textView5);
 
+        myRef.child("Trips").child(TripID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                tempTrip = dataSnapshot.getValue(Trip.class);
+                HC = tempTrip.getHomeCurrency();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         ActRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 thisAct = dataSnapshot.getValue(Activity.class);
-                Name.setText(thisAct.getName());
-                Expense.setText(Float.toString(thisAct.getActivityExpense()));
-                Currency.setText(thisAct.getActivityCurrency());
+                if (thisAct!=null){
+                    Name.setText(thisAct.getName());
+                    Expense.setText(Float.toString(thisAct.getActivityExpense()));
+                    Currency.setText(thisAct.getActivityCurrency());
+                    Participants = thisAct.getParticipant();
+                    Expenses = thisAct.getIndividualExpense();
 
-                if (thisAct.getSplit()==true)
-                    Split.setText("Evenly");
-                else
-                    Split.setText("Customised Splitting");
+                    float zero =0;
+                    for (int i =0;i<Expenses.size();i++){
+                        TotalExp.add(zero);
+                    }
 
-                Paid.setText(thisAct.getPayer());
-                if(thisAct.getStatus()){Status.setText("Pending");}
-                else Status.setText("Settled");
+                    if (thisAct.getSplit()==true)
+                        Split.setText("Evenly");
+                    else
+                        Split.setText("Customised Splitting");
 
+                    Paid.setText(thisAct.getPayer());
+                    if(thisAct.getStatus()){Status.setText("Pending");}
+                    else Status.setText("Settled");
+
+                    myRef.child("Trips").child(TripID).child("members").addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                            temp = dataSnapshot.getValue(Member.class);
+                            memberAL.add(temp.getMemberName());
+                            if (Participants.contains(temp.getMemberName()))
+                            {
+                                int index = Participants.indexOf(temp.getMemberName());
+                                TotalExp.set(index,temp.getAmountIncurred());
+                                if (thisAct.getPayer().equals(temp.getMemberName())){
+                                    PayerTotalPaid = temp.getAmountPaid();
+                                }
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                    Log.v("Updating AL","-----------------Total Expenses size is" + TotalExp.size());
+
+                }
             }
 
             @Override
@@ -87,6 +161,9 @@ public class ActivityDialog extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 /// put your own code here ------------------------------
+
+                onBackPressed();
+
             }
         });
 
@@ -101,13 +178,45 @@ public class ActivityDialog extends AppCompatActivity {
     public void onBackPressed() {
         new AlertDialog.Builder(this)
                 .setIcon(R.drawable.alert)
-                .setTitle("Deleting Member")
-                .setMessage("Are you sure you want to delete this member permanently?")
+                .setTitle("Edit Activity")
+                .setMessage("Confirm to edit this activity by replacing it with a new one?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener()
                 {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //delete
+
+
+
+                        Intent gotoedit = new Intent(getApplicationContext(), EditActivity.class);
+                        gotoedit.putStringArrayListExtra("Participants",Participants);
+                        gotoedit.putExtra("Exp",thisAct.getActivityExpense());
+                        gotoedit.putExtra("Payer",thisAct.getPayer());
+                        gotoedit.putExtra("Date",thisAct.getDateTime());
+                        gotoedit.putExtra("Indiv_exp",Expenses);
+                        gotoedit.putExtra("Currency", thisAct.getActivityCurrency());
+                        gotoedit.putExtra("name", thisAct.getName());
+
+                        gotoedit.putExtra("ID",Integer.parseInt(TripID));
+                        gotoedit.putExtra("HC", HC);
+                        gotoedit.putStringArrayListExtra("memberlist",memberAL);
+
+                        for (int i =0; i<Participants.size();i++){
+                            Log.v("Updating DB","-----------------Expenses size is" + Expenses.size());
+                            myRef.child("Trips").child(TripID).child("members").child(Participants.get(i)).child("amountIncurred").setValue(TotalExp.get(i)-Expenses.get(i)*thisAct.getExchangeRate());
+
+                            if (thisAct.getPayer().equals(Participants.get(i))){
+                                myRef.child("Trips").child(TripID).child("members").child(Participants.get(i)).child("amountPaid").setValue(PayerTotalPaid-thisAct.getHomeWorth());
+
+                            }
+                        }
+
+                        myRef.child("Trips").child(TripID).child("activities").child(thisAct.getName()).removeValue();
+
+                        /*if (from_home.getStringArrayListExtra("memberlist") != null)
+                            memberlist = from_home.getStringArrayListExtra("memberlist");
+                        TripID = from_home.getIntExtra("ID", 1);
+                        HomeCurrency = from_home.getStringExtra("HC");*/
+                        startActivity(gotoedit);
                         finish();
                     }
 

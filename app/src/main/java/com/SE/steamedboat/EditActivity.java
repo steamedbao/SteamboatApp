@@ -43,7 +43,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class addActivity extends AppCompatActivity implements Custom_expense_dialog.ExpenseDialogListener{
+public class EditActivity extends AppCompatActivity implements Custom_expense_dialog.ExpenseDialogListener{
 
     private FirebaseDatabase FD;
     private FirebaseAuth Auth;
@@ -90,6 +90,7 @@ public class addActivity extends AppCompatActivity implements Custom_expense_dia
     private boolean custom_split=false;
     private float baseRate = 1;
     private float quotedRate = 1;
+    private String activityname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,14 +106,32 @@ public class addActivity extends AppCompatActivity implements Custom_expense_dia
             memberlist = from_home.getStringArrayListExtra("memberlist");
         TripID = from_home.getIntExtra("ID", 1);
         HomeCurrency = from_home.getStringExtra("HC");
-        Log.v("check rate", "------------------------ line 106 rate is: " + rate);
-        Log.v("check rate", "------------------------ line 107 home currency is: " +HomeCurrency);
+        activityname = from_home.getStringExtra("name");
+
+       /* gotoedit.putStringArrayListExtra("Participants",Participants);
+        gotoedit.putExtra("Exp",thisAct.getActivityExpense());
+        gotoedit.putExtra("Payer",thisAct.getPayer());
+        gotoedit.putExtra("Date",thisAct.getDateTime());
+        gotoedit.putExtra("Indiv_exp",thisAct.getIndividualExpense());
+        gotoedit.putExtra("Currency", thisAct.getActivityCurrency());*/
+
+       selected_names = from_home.getStringArrayListExtra("Participants");
+        ALexp = (ArrayList<Float>)from_home.getSerializableExtra("Indiv_exp");
+        exp = from_home.getFloatExtra("Exp", 0);
+        selected_payer = from_home.getStringExtra("Payer");
+        currency = from_home.getStringExtra("Currency");
+        d1 = (Date)from_home.getSerializableExtra("Date");
+        date_is_set = true;
 
         but_add = (Button) findViewById(R.id.Button_add);
         back = (Button) findViewById(R.id.discardactivity);
         but_selectmember = findViewById(R.id.but_selectmem);
         expense = findViewById(R.id.expense);
         cd = Calendar.getInstance();
+        expense.setText(Float.toString(exp));
+        mDisplayDate = (TextView) findViewById(R.id.selectedDate);
+        mDisplayDate.setText(d1.toString());
+
 
         checkeditems = new boolean[memberlist.size()];
         for (int i = 0; i < memberlist.size(); i++) {
@@ -125,7 +144,17 @@ public class addActivity extends AppCompatActivity implements Custom_expense_dia
 
         final FirebaseUser user = Auth.getCurrentUser();
         userID = user.getUid();
+
         activity_name = (EditText) findViewById(R.id.activityname);
+        activity_name.setText(activityname);
+
+        if (expense.getText().length()>0){
+            exp = Float.parseFloat(expense.getText().toString());}
+
+        for (int i = 0; i < selected_names.size(); i++) {
+            ALdisplay.add(selected_names.get(i)+",   expense: "+Float.toString(ALexp.get(i)));
+            arrayAdapter.notifyDataSetChanged();
+        }
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,7 +165,7 @@ public class addActivity extends AppCompatActivity implements Custom_expense_dia
 
         // for date picker
         but_date = (Button) findViewById(R.id.datePicker);
-        mDisplayDate = (TextView) findViewById(R.id.selectedDate);
+
 
 // for spinner
         select_payer = (Spinner) findViewById(R.id.payername);
@@ -172,7 +201,7 @@ public class addActivity extends AppCompatActivity implements Custom_expense_dia
                 int day = cal.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog dialog = new DatePickerDialog(
-                        addActivity.this,
+                        EditActivity.this,
                         android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                         mDateSetListener,
                         year, month, day);
@@ -206,11 +235,11 @@ public class addActivity extends AppCompatActivity implements Custom_expense_dia
                 //Call dialog to display detail
                 //create dialog
                 if (custom_split){
-                String name = arrayAdapter.getItem(position);
-                Log.v("Dialog inputs", "----------------------------- name is "+ name + "-------------------------");
-                LV_pos=position;
+                    String name = arrayAdapter.getItem(position);
+                    Log.v("Dialog inputs", "----------------------------- name is "+ name + "-------------------------");
+                    LV_pos=position;
 
-                openExpDialog();}
+                    openExpDialog();}
 
 
                 //create string called expense and payment here then pass it to the dialog box throught the below code
@@ -237,7 +266,7 @@ public class addActivity extends AppCompatActivity implements Custom_expense_dia
                 }
 
                 if (Math.abs((exp-indiv_total))>1){
-                    Toast.makeText(addActivity.this, "Please make sure sum of individual expenses = total", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditActivity.this, "Please make sure sum of individual expenses = total", Toast.LENGTH_SHORT).show();
                 }
 
                 else if (activity_name.getText()!=null && expense.getText().length()>0 && date_is_set ==true&& selected_payer!=null&&currency!=null&&memberSelected.size()!=0)//need more checks. but rn cant pass in the values for the others yet
@@ -314,7 +343,7 @@ public class addActivity extends AppCompatActivity implements Custom_expense_dia
                     });
 
 
-                    Toast.makeText(addActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
 
                     Intent gohome = new Intent(getApplicationContext(), Homepage.class);
                     gohome.putExtra("TripID", TripID);
@@ -323,7 +352,7 @@ public class addActivity extends AppCompatActivity implements Custom_expense_dia
 
                 } else {
 
-                    Toast.makeText(addActivity.this, "Please enter all fields!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditActivity.this, "Please enter all fields!", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -335,7 +364,7 @@ public class addActivity extends AppCompatActivity implements Custom_expense_dia
         but_selectmember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(addActivity.this);
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(EditActivity.this);
                 mBuilder.setTitle("Select the participating members: ");
 
                 membername = new String[memberlist.size()];
@@ -572,7 +601,7 @@ public class addActivity extends AppCompatActivity implements Custom_expense_dia
 
             @Override
             public void onFailure(Call<CurrencyExchange2> call, Throwable t) {
-                Toast.makeText(addActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -600,7 +629,7 @@ public class addActivity extends AppCompatActivity implements Custom_expense_dia
 
             @Override
             public void onFailure(Call<CurrencyExchange2> call, Throwable t) {
-                Toast.makeText(addActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
