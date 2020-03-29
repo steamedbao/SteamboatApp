@@ -24,6 +24,7 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -67,6 +68,7 @@ public class SummaryPage extends AppCompatActivity {
     private Button back;
     float sum=0;
     int size = 0;
+    DecimalFormat numberFormat = new DecimalFormat("#.00");
 
     public void GetMembers(){
 
@@ -235,14 +237,14 @@ public class SummaryPage extends AppCompatActivity {
                 oneline = oneline+" ";
             }
 
-            oneline = oneline+Float.toString(ALmember.get(i).getAmountIncurred());
-            int spacecount2 = Math.max(1,(10-Float.toString(ALmember.get(i).getAmountIncurred()).length()));
+            oneline = oneline+numberFormat.format(ALmember.get(i).getAmountIncurred());
+            int spacecount2 = Math.max(1,(10-numberFormat.format(ALmember.get(i).getAmountIncurred()).length()));
             for (int space = 0; space<spacecount2;space++){
                 oneline = oneline+" ";
             }
 
-            oneline = oneline+Float.toString(ALmember.get(i).getAmountPaid());
-            int spacecount3 = Math.max(1,(10-Float.toString(ALmember.get(i).getAmountPaid()).length()));
+            oneline = oneline+numberFormat.format(ALmember.get(i).getAmountPaid());
+            int spacecount3 = Math.max(1,(10-numberFormat.format(ALmember.get(i).getAmountPaid()).length()));
             for (int space = 0; space<spacecount3;space++){
                 oneline = oneline+" ";
             }
@@ -251,7 +253,7 @@ public class SummaryPage extends AppCompatActivity {
 
             ALowe.add(ALmember.get(i).getAmountPaid()-ALmember.get(i).getAmountIncurred());
 
-            ALtoshow.add(oneline+(ALmember.get(i).getAmountPaid()-ALmember.get(i).getAmountIncurred()));
+            ALtoshow.add(oneline+numberFormat.format((ALmember.get(i).getAmountPaid()-ALmember.get(i).getAmountIncurred())));
 
 
         }

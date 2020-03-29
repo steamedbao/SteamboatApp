@@ -69,7 +69,7 @@
         android:id="@+id/editTrip"
         android:layout_width="40dp"
         android:layout_height="40dp"
-  android:layout_alignParentRight="true"
+        android:layout_alignParentRight="true"
         android:layout_marginRight="30dp"
         android:layout_marginTop="15dp"
         android:backgroundTint="#CCFFFFFF"

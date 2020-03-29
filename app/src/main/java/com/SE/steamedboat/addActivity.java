@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -42,7 +43,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class addActivity extends AppCompatActivity {
+public class addActivity extends AppCompatActivity implements Custom_expense_dialog.ExpenseDialogListener{
 
     private FirebaseDatabase FD;
     private FirebaseAuth Auth;
@@ -64,7 +65,7 @@ public class addActivity extends AppCompatActivity {
     private String selected_payer;
     private EditText expense;
     private float exp;
-    private String currency;
+    private String currency="SGD";
 
     private EditText activity_name;
     private int TripID;
@@ -73,7 +74,7 @@ public class addActivity extends AppCompatActivity {
     private TextView mDisplayDate;
     private static final String TAG = "MainActivity";
     private DatePickerDialog.OnDateSetListener mDateSetListener;
-
+    private String HomeCurrency;
     private Spinner select_payer;
     private Member memtemp;
     private ArrayList<String> selected_names = new ArrayList<>();
@@ -81,19 +82,31 @@ public class addActivity extends AppCompatActivity {
     private boolean date_is_set = false;
     private Calendar cal = Calendar.getInstance();
     private JsonPlaceHolderApi jsonPlaceHolderApi;
-    private float rate=0;
+    private float rate=1;
+    private String exp_got_from_dialog;
+    private int LV_pos=0;
+    private ArrayList<Float> ALexp = new ArrayList<>();
+    private ArrayList<String> ALdisplay = new ArrayList<>();
+    private boolean custom_split=false;
+    private float baseRate = 1;
+    private float quotedRate = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.v("check rate", "------------------------ line 94 rate is: " +rate);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
         memberLV = findViewById(R.id.LV_mem_names);
-        arrayAdapter = new ArrayAdapter(this, R.layout.cust_list_view_2, selected_names);
+        arrayAdapter = new ArrayAdapter(this, R.layout.cust_list_view_2, ALdisplay);
         memberLV.setAdapter(arrayAdapter);
         Intent from_home = getIntent();
         if (from_home.getStringArrayListExtra("memberlist") != null)
             memberlist = from_home.getStringArrayListExtra("memberlist");
         TripID = from_home.getIntExtra("ID", 1);
+        HomeCurrency = from_home.getStringExtra("HC");
+        Log.v("check rate", "------------------------ line 106 rate is: " + rate);
+        Log.v("check rate", "------------------------ line 107 home currency is: " +HomeCurrency);
 
         but_add = (Button) findViewById(R.id.Button_add);
         back = (Button) findViewById(R.id.discardactivity);
@@ -187,7 +200,27 @@ public class addActivity extends AppCompatActivity {
 
 
 
+        memberLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Call dialog to display detail
+                //create dialog
+                if (custom_split){
+                String name = arrayAdapter.getItem(position);
+                Log.v("Dialog inputs", "----------------------------- name is "+ name + "-------------------------");
+                LV_pos=position;
 
+                openExpDialog();}
+
+
+                //create string called expense and payment here then pass it to the dialog box throught the below code
+
+
+
+                //intent.putExtra("expensedetail",expense);
+                //intent.putExtra("paymentdetail",payment);
+            }
+        });
 
 
 
@@ -197,12 +230,20 @@ public class addActivity extends AppCompatActivity {
 
 
                 String name = activity_name.getText().toString();
-                
 
-                if (activity_name.getText()!=null && expense.getText().length()>0 && date_is_set ==true&& selected_payer!=null&&currency!=null&&memberSelected.size()!=0)//need more checks. but rn cant pass in the values for the others yet
+                float indiv_total=0;
+                for (int i = 0; i<ALexp.size();i++){
+                    indiv_total += ALexp.get(i);
+                }
+
+                if (Math.abs((exp-indiv_total))>1){
+                    Toast.makeText(addActivity.this, "Please make sure sum of individual expenses = total", Toast.LENGTH_SHORT).show();
+                }
+
+                else if (activity_name.getText()!=null && expense.getText().length()>0 && date_is_set ==true&& selected_payer!=null&&currency!=null&&memberSelected.size()!=0)//need more checks. but rn cant pass in the values for the others yet
                 {
 
-
+                    setRate();
                     Activity a1 = new Activity(name);
 
                     Log.v("E_VALUE", "--------  Activity Name : " + a1.getName() + "---------------------------");
@@ -211,9 +252,13 @@ public class addActivity extends AppCompatActivity {
                     a1.setName(name + "__" + Integer.toString(a1.getId()));
                     a1.setDateTime(d1);
                     a1.setPayer(selected_payer);
-                    exp=exp*rate;
+                    a1.setActivityCurrency(currency);
                     a1.setActivityExpense(exp);
-                    a1.setActivityCurrency("SGD");
+                    a1.setExchangeRate(rate);
+                    a1.setHomeWorth(exp*rate);
+                    Log.v("check rate", "------------------------ line 253 rate is: " +rate);
+                    a1.setSplit((!custom_split));
+
                     for (int n = 0; n < memberSelected.size(); n++) {
                         a1.addParticipant(memberlist.get(memberSelected.get(n)));
                         /*
@@ -234,11 +279,12 @@ public class addActivity extends AppCompatActivity {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                             memtemp = dataSnapshot.getValue(Member.class);
+
                             if (selected_names.contains(memtemp.getMemberName())) {
-                                memtemp.addAmountIncurred(exp / selected_names.size()); // evenly here -----------==========
+                                memtemp.addAmountIncurred(rate*ALexp.get(selected_names.indexOf(memtemp.getMemberName()))); // according to ALexp here -----------==========
                             }
                             if (memtemp.getMemberName().equals(selected_payer)) {
-                                memtemp.addAmountPaid(exp);
+                                memtemp.addAmountPaid(rate*exp);
                             }
                             FD.getReference().child("Trips").child(Integer.toString(TripID)).child("members").child(memtemp.getMemberName()).setValue(memtemp);
                             Log.v("Member", "----------------updated:" + memtemp.getMemberName() + "-------------------------");
@@ -320,12 +366,20 @@ public class addActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int which) {
                         String item = "";
                         selected_names.clear();
+                        ALdisplay.clear();
+                        ALexp.clear();
+
+                        if (expense.getText().length()>0){
+                            exp = Float.parseFloat(expense.getText().toString());}
+
                         for (int i = 0; i < memberSelected.size(); i++) {
                             item = item + membername[memberSelected.get(i)];
                             if (i != memberSelected.size() - 1) {
                                 item = item + ", ";
                             }
                             selected_names.add(memberlist.get(memberSelected.get(i)));
+                            ALexp.add(exp/memberSelected.size());
+                            ALdisplay.add(memberlist.get(memberSelected.get(i))+",   expense: "+Float.toString(exp/memberSelected.size()));
                             arrayAdapter.notifyDataSetChanged();
                             Log.v("Select Member", "----------------size:" + selected_names.size() + selected_names.get(i) + "-------------------------");
 
@@ -335,6 +389,8 @@ public class addActivity extends AppCompatActivity {
 // display out the members selected
                     }
                 });
+
+
 
                 mBuilder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
                     @Override
@@ -359,12 +415,6 @@ public class addActivity extends AppCompatActivity {
             }
         });
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.exchangeratesapi.io/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner1);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -374,13 +424,23 @@ public class addActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
-
-        getCurrencyExchange(currency);// pass in string from select spinner
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
                 currency = parent.getSelectedItem().toString();
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("https://api.exchangeratesapi.io/")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+
+                getQuoted(currency);// pass in string from select spinner
+                getBase(HomeCurrency);
+                rate = (quotedRate/baseRate);
+                Log.v("check rate", "------------------------ line 452 rate  is: " +rate);
+
             }
 
             @Override
@@ -388,6 +448,9 @@ public class addActivity extends AppCompatActivity {
 
             }
         });
+
+
+
 
 
         // for selecting splitting method
@@ -404,22 +467,24 @@ public class addActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selected_splitmethod = parent.getSelectedItem().toString();
                 if (selected_splitmethod.equals("Others")) {
-
                     /*
                     ArrayList<Consumer> consumers = new ArrayList<>();
                     for(int n=0; n < memberlist.size(); n++){
                         Consumer c = new Consumer(memberlist.get(n), 0);
                         consumers.add(c);
                     }*/
-
-                    Intent gotosplit = new Intent(getApplicationContext(), customise_split.class);
-                    gotosplit.putStringArrayListExtra("memberlist", memberlist);
-                    startActivity(gotosplit);
+                    custom_split = true;
 
                     /*Customer_List_Adaptor adapter = new Customer_List_Adaptor(addActivity.this, R.layout.adaptor_spenderamount, consumers);
                     mListView.setAdapter(adapter);
 
                      */
+                }
+
+                if (selected_splitmethod.equals("Evenly")) {
+
+                    custom_split = false;
+
                 }
             }
 
@@ -450,12 +515,40 @@ public class addActivity extends AppCompatActivity {
                 .show();
     }
 
-    public void setRate(float rate)
+    public void setRate()
     {
-        this.rate=rate;
+        rate = quotedRate/baseRate;
+        if(HomeCurrency==currency){rate=1;}
+        Log.v("check rate", "------------------------ line 517 rate is: " +rate);
+
     }
 
-    private void getCurrencyExchange(String currency) {
+
+    @Override
+    public void applyText(String inputexp) {
+        exp_got_from_dialog = inputexp;
+        Log.v("Dialog inputs", "-----------------------------the exp is "+ exp_got_from_dialog + "-------------------------");
+
+        String name = selected_names.get(LV_pos);
+        ALexp.set(LV_pos,Float.parseFloat(inputexp));
+
+        String newString = name+" expense: "+inputexp;
+        //selected_names.remove(position);
+
+        ALdisplay.set(LV_pos, newString);
+
+        arrayAdapter.notifyDataSetChanged();
+
+        Log.v("Dialog inputs", "----------------------------- in AL new String is "+ arrayAdapter.getItem(LV_pos) + "-------------------------");
+
+    }
+
+    public void openExpDialog(){
+        Custom_expense_dialog expense_dialog = new Custom_expense_dialog();
+        expense_dialog.show(getSupportFragmentManager(),"expense dialog");
+    }
+
+    private void getQuoted(String currency) {
         Call<CurrencyExchange2> call = jsonPlaceHolderApi.getCurrencyExchange2(currency);
 
         call.enqueue(new Callback<CurrencyExchange2>() {
@@ -472,10 +565,36 @@ public class addActivity extends AppCompatActivity {
                 //System.out.println("Page Found!!!!!!!!!!!!!");
 
                 CurrencyExchange2 CurrencyRates = response.body();
+                Log.v("check rate", "------------------------ line 94 rate is: " +CurrencyRates.getRates());
+                quotedRate = CurrencyRates.getRates();
+            }
 
-                setRate(CurrencyRates.getRates());
+            @Override
+            public void onFailure(Call<CurrencyExchange2> call, Throwable t) {
+                Toast.makeText(addActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getBase(String currency) {
+        Call<CurrencyExchange2> call = jsonPlaceHolderApi.getCurrencyExchange2(currency);
+
+        call.enqueue(new Callback<CurrencyExchange2>() {
+            @Override
+            public void onResponse(Call<CurrencyExchange2> call, Response<CurrencyExchange2> response) {
+//                if(!response.isSuccessful()){
+//                    System.out.println("Response:");
+//                    System.out.println(response);
+//                    textViewResult.setText("Code: " + response.code());
+//                    return;
+//                }
 
 
+                //System.out.println("Page Found!!!!!!!!!!!!!");
+
+                CurrencyExchange2 CurrencyRates = response.body();
+                Log.v("check rate", "------------------------ line 94 rate is: " +CurrencyRates.getRates());
+                baseRate = CurrencyRates.getRates();
             }
 
             @Override
