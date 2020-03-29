@@ -93,24 +93,56 @@
         android:textColorHint="#CCFFFFFF"
         android:fontFamily="@font/roboto"/>
 
+    <TextView
+        android:id="@+id/homecurrency"
+        android:layout_width="wrap_content"
+        android:singleLine="true"
+        android:height="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="31dp"
+        android:paddingHorizontal="10dp"
+        android:layout_below="@id/creater"
+        android:alpha="0.5"
+        android:paddingVertical="10dp"
+        android:text="Home Currency :"
+        android:textColor="#FFFFFF"
+        android:textSize="17sp"
+        android:fontFamily="@font/roboto"/>
+
+    <Spinner
+        android:id="@+id/homespinner"
+        android:layout_width="130dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/creater"
+        android:layout_toRightOf="@+id/homecurrency"
+        android:entries="@array/currency"
+        android:backgroundTint="#FFFFFF"
+        android:theme="@style/Spinner"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+
+        />
 
     <Button
         android:id="@+id/create_done"
         style="@style/Widget.AppCompat.Button"
         android:layout_width="350dp"
         android:layout_height="70dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="350dp"
+        android:layout_marginTop="400dp"
         android:layout_marginBottom="328dp"
-        android:textColor="#000000"
         android:background="@drawable/gradient1"
-        android:text="CREATE"
         android:ellipsize="none"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/roboto_condensed_bold"
         android:padding="5dp"
         android:radius="30dp"
-        android:textSize="24sp"
-        android:fontFamily="@font/roboto_condensed_bold"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+        android:text="CREATE"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColor="#000000"
+        android:textSize="24sp" />
 
 
 </RelativeLayout>
