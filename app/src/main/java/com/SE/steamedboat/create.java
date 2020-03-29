@@ -41,7 +41,8 @@ public class create extends AppCompatActivity {
     private Button backButton;
     private Spinner spinner3;
     String currency;
-
+    String trip_count;
+    String DBtrip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,15 +65,18 @@ public class create extends AppCompatActivity {
 
 
 
-        final long[] tripcount = new long[1];
+        final long[] tripcount = new long[2];
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 long No_of_trips = dataSnapshot.child("Users").child(userID).child("trips").getChildrenCount();
+                long DB_total_trips = dataSnapshot.child("Trips").getChildrenCount();
+
                 // Map<String,String> map = dataSnapshot.child("Users").child(userID).getValue(Map.class);
                 Log.v("E_VALUE","--------  Data : "+ No_of_trips + "---------------------------");
                 tripcount[0] = No_of_trips;
+                tripcount[1] = DB_total_trips;
                 Log.v("E_VALUE","--------  Data : "+ tripcount[0] + "---------------------------");
 
             }
@@ -120,18 +124,19 @@ public class create extends AppCompatActivity {
 
                 Log.v("E_VALUE","--------  Data : "+ tripcount[0] + "---------------------------");
 
-                String trip_count = Long.toString(tripcount[0]);
-                Log.v("E_VALUE","--------  Data : "+ trip_count + "---------------------------");
+                trip_count = Long.toString(tripcount[0]);
+                DBtrip = Long.toString(tripcount[1]+100000);
+                Log.v("E_VALUE","--------  Data : "+ DBtrip + "---------------------------");
 
                 String name = tripname.getText().toString();
                 String pw = password.getText().toString();
                 String create = creater.getText().toString();
-                TripID = Integer.parseInt(trip_count)+100000;
+                TripID = Integer.parseInt(DBtrip);
+
 
                 if( !pw.equals("") && !name.equals("") && !create.equals("")){
                     Trip t1 = new Trip(name, pw, create,TripID);
                     int ID = t1.getTripID();
-                    final String id = Integer.toString(ID);
                     com.SE.steamedboat.Member m1 = new Member(create);
                     m1.setUID(userID);
                     m1.setHost(true);
@@ -139,8 +144,8 @@ public class create extends AppCompatActivity {
                     t1.setCreaterUID(userID);
                     t1.setHomeCurrency(currency);
                     com.SE.steamedboat.SimpleTrip s1 = new SimpleTrip (name,ID,true);
-                    myRef.child("Trips").child(id).setValue(t1);
-                    myRef.child("Trips").child(id).child("members").child(create).setValue(m1);
+                    myRef.child("Trips").child(DBtrip).setValue(t1);
+                    myRef.child("Trips").child(DBtrip).child("members").child(create).setValue(m1);
                     myRef.child("Users").child(userID).child("trips").child(trip_count).setValue(s1);
 
                     //myRef.child("Users").child(userID).child("trips").child(trip_count).child("TripName").setValue(create);
@@ -162,7 +167,8 @@ public class create extends AppCompatActivity {
                     */
 
 
-                    GoTo_home();}
+                    GoTo_home();
+                }
 
                 else{
                     Toast.makeText(create.this, "Make sure all fields are entered", Toast.LENGTH_SHORT).show();
