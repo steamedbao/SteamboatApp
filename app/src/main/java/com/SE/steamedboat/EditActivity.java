@@ -97,7 +97,7 @@ public class EditActivity extends AppCompatActivity implements Custom_expense_di
         Log.v("check rate", "------------------------ line 94 rate is: " +rate);
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add);
+        setContentView(R.layout.activity_edit);
         memberLV = findViewById(R.id.LV_mem_names);
         arrayAdapter = new ArrayAdapter(this, R.layout.cust_list_view_2, ALdisplay);
         memberLV.setAdapter(arrayAdapter);

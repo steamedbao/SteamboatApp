@@ -14,6 +14,7 @@
         android:layout_below="@id/trip"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
+        android:alpha="1.0"
         android:background="@drawable/roundbox"
         ></ListView>
 

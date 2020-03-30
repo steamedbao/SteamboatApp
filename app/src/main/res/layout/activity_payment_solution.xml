@@ -38,7 +38,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="150dp"
         android:background="@drawable/roundbox"
-        android:alpha="0.5"
+        android:alpha="0.8"
         android:textColor="#CCFFFFFF" />
 
     <Button
