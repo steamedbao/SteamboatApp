@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.SE.steamedboat.Entity.Consumer;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;

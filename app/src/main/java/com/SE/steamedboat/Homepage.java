@@ -15,6 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.SE.steamedboat.Entity.Activity;
+import com.SE.steamedboat.Entity.Member;
+import com.SE.steamedboat.Entity.Trip;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -61,6 +64,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
     private ArrayAdapter<String> actAdapter=null;
     private Button viewSummary;
     private String homeCurrency = "SGD";
+    private Button inactiveTrip;
     DecimalFormat numberFormat = new DecimalFormat("#.00");
 
 
@@ -82,6 +86,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         TripNameDisplay.setText(TripName);
         back = findViewById(R.id.back);
         viewSummary=findViewById(R.id.checkFinance);
+        inactiveTrip= findViewById(R.id.editTrip);
 
         Auth = FirebaseAuth.getInstance();
         FD = FirebaseDatabase.getInstance();
@@ -96,6 +101,13 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         LVactivity.setAdapter(actAdapter);
         TVtripname = (TextView) findViewById(R.id.hometripname);
         TripRef = myRef.child("Trips").child(Integer.toString(TripID));
+
+        if (TripRef.child("ongoing").equals(false))
+        {
+            addMember.setEnabled(false);
+            addActivity.setEnabled(false);
+
+        }
 
         TripRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -154,18 +166,16 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                 });
 
 
-        btnLogout.setOnClickListener(new View.OnClickListener(){
+        inactiveTrip.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v)
             {
-                FirebaseAuth.getInstance().signOut();
-                Intent intToMain = new Intent(Homepage.this, MainActivity.class);
-                startActivity(intToMain);
+                TripRef.child("ongoing").setValue(false);
+                Intent intToCreate = new Intent(Homepage.this, createORjoin.class);
+                startActivity(intToCreate);
             }
 
         });
-
-
 
 
         LV.setOnItemClickListener(new AdapterView.OnItemClickListener() {

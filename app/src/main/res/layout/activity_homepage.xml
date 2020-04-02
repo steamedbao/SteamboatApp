@@ -73,19 +73,10 @@
         android:layout_marginRight="30dp"
         android:layout_marginTop="15dp"
         android:backgroundTint="#CCFFFFFF"
-        android:visibility="invisible"
-        android:clickable="false"
-        android:background="@drawable/edit" />
+        android:background="@drawable/shutdown" />
 
     //i tot we cant delete trip anymore? is this for member
 
-    <Button
-        android:id="@+id/deleteTrip"
-        android:layout_width="143dp"
-        android:layout_height="42dp"
-        android:layout_marginBottom="4dp"
-        android:text="DELETE"
-        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/hometripname"
