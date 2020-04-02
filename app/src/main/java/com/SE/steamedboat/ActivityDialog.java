@@ -32,6 +32,7 @@ public class ActivityDialog extends AppCompatActivity {
 
     TextView Name, Split, Expense, Paid, Status, Currency;
     Button edit;
+    Button settle;
     Button backToHome;
     Activity thisAct=new Activity();
     String UID;
@@ -66,6 +67,7 @@ public class ActivityDialog extends AppCompatActivity {
         Status = (TextView) findViewById(R.id.textView3);
 
         edit = (Button) findViewById(R.id.D_activity_edit);
+        settle = (Button) findViewById(R.id.d_activity_settle);
         backToHome = (Button) findViewById(R.id.back);
         Currency = findViewById(R.id.textView5);
 
@@ -167,6 +169,18 @@ public class ActivityDialog extends AppCompatActivity {
             }
         });
 
+        settle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /// put your own code here ------------------------------
+
+                // set activity status to false
+                myRef.child("Trips").child(TripID).child("activities").child(thisAct.getName()).child("status").setValue(false);
+                finish();
+
+            }
+        });
+
         backToHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,8 +198,6 @@ public class ActivityDialog extends AppCompatActivity {
                 {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-
 
                         Intent gotoedit = new Intent(getApplicationContext(), EditActivity.class);
                         gotoedit.putStringArrayListExtra("Participants",Participants);
