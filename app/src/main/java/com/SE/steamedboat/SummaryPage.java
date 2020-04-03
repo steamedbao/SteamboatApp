@@ -224,11 +224,6 @@ public class SummaryPage extends AppCompatActivity {
 
         memCount = ALmember.size();
 
-        if (memCount<=1)
-        {
-            b3.setEnabled(false);
-            b4.setEnabled(false);
-        }
 
         ALtoshow.add("Name     Incurred    Paid    Expects +/-");
 
@@ -267,11 +262,11 @@ public class SummaryPage extends AppCompatActivity {
 
         }
 
-        Generate_payment_solution();
+        if(ALmember.size()>1) Generate_payment_solution();
 
         b1 = findViewById(R.id.button1);
         b2 = findViewById(R.id.button2);
-
+        GetMembers2();
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -284,6 +279,7 @@ public class SummaryPage extends AppCompatActivity {
                 show_stat(currentTrip.getCreaterName(),sum,ALmember.size());
             }
         });
+
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -299,6 +295,12 @@ public class SummaryPage extends AppCompatActivity {
 
         b3 = findViewById(R.id.button3);
         b4 = findViewById(R.id.button4);
+
+        if (memCount<=1)
+        {
+            b3.setEnabled(false);
+            b4.setEnabled(false);
+        }
 
         back = findViewById(R.id.back);
 

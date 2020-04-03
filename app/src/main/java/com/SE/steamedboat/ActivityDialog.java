@@ -170,7 +170,7 @@ public class ActivityDialog extends AppCompatActivity {
             public void onClick(View v) {
                 /// put your own code here ------------------------------
 
-                onBackPressed();
+                onEditPressed();
 
             }
         });
@@ -195,8 +195,8 @@ public class ActivityDialog extends AppCompatActivity {
             }
         });
     }
-    @Override
-    public void onBackPressed() {
+
+    public void onEditPressed() {
         new AlertDialog.Builder(this)
                 .setIcon(R.drawable.alert)
                 .setTitle("Edit Activity")

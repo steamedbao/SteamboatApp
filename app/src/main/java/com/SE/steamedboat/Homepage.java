@@ -68,6 +68,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
     private String homeCurrency = "SGD";
     private Button inactiveTrip;
     private int pos;
+    private String daystr;
     DecimalFormat numberFormat = new DecimalFormat("#.00");
 
 
@@ -140,10 +141,6 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
             }
         });
 
-        if (AL_activity_names.isEmpty()||ALmembernames.size()<=1) {
-            viewSummary.setEnabled(false);
-            viewSummary.setBackground(getDrawable(R.drawable.gradient2));
-        }
 
 
         if (!AL_activity_names.isEmpty()&&ALmembernames.size()>1) {
@@ -308,8 +305,8 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                     if (CVclick==false && dataSnapshot.hasChildren())
                     {   a = dataSnapshot.getValue(Activity.class);
                         AL_activity_UID.add(a.getName());
-                        if (a.getSplit()){str = "Even split";}
-                        else {str = "Custom split";}
+                        if (a.getStatus()){str = "Pending";}
+                        else {str = "Settled";}
                         AL_activity_names.add(a.getName() + " Payer: "+a.getPayer()+ ", "+homeCurrency+": "+numberFormat.format(a.getHomeWorth())+ ", " + str);
                     }
                     // -----------------------------------------------------------
@@ -359,6 +356,13 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                 AL_activity_UID.clear();
 
                 chosenDay = dayOfMonth;
+
+                daystr =Integer.toString(chosenDay);
+
+                if (chosenDay<10){
+                    daystr="0"+daystr;
+                }
+
                 chosenMonth = month;
                 chosenYear = year;
 
@@ -370,22 +374,22 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                         if (dataSnapshot.hasChildren())
                             a = dataSnapshot.getValue(Activity.class);
 
-                        Log.v("date", "--------------When Clicked Calendar , DATA: "+ dataSnapshot.getValue() +"  ---------------------------");
+                        //Log.v("date", "--------------When Clicked Calendar , DATA: "+ dataSnapshot.getValue() +"  ---------------------------");
 
                         SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
                         String adate = sdf.format(a.getDateTime());
-                        Log.v("date", "------------------- "+ adate +"  ---------------------------");
+                        Log.v("Activity date", "------------------- "+ adate +"  ---------------------------");
 
-                        String cvdate = chosenDay+"/"+(chosenMonth+1)+"/"+chosenYear;
-                        Log.v("date", "------------------- "+ cvdate +"  ---------------------------");
+                        String cvdate = daystr+"/"+(chosenMonth+1)+"/"+chosenYear;
+                        Log.v("CV date", "------------------- "+ cvdate +"  ---------------------------");
 
                         if (adate.compareTo(cvdate)==0) {
-                            Log.v("date", "------------------- " + "true" + "  ---------------------------");
-                            Log.v("date",a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
+                            //Log.v("date", "------------------- " + "true" + "  ---------------------------");
+                            //Log.v("date",a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
                             AL_activity_UID.add(a.getName());
                             String str;
-                            if (a.getSplit()){str = "Even split";}
-                            else {str = "Custom split";}
+                            if (a.getStatus()){str = "Pending";}
+                            else {str = "Settled";}
                             AL_activity_names.add(a.getName() + " Payer: "+a.getPayer()+ ", "+homeCurrency+": "+numberFormat.format(a.getHomeWorth())+ ", " + str);
                             //AL_activity_names.add(a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
 
@@ -535,8 +539,8 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                 {   a = dataSnapshot.getValue(Activity.class);
                     AL_activity_UID.add(a.getName());
                     String str;
-                    if (a.getSplit()) str = "Evenly split";
-                    else str = "Custom split";
+                    if (a.getStatus()){str = "Pending";}
+                    else {str = "Settled";}
                     AL_activity_names.add(a.getName() + " Payer: "+a.getPayer()+ ", "+homeCurrency+": "+numberFormat.format(a.getHomeWorth())+ ", " + str);
                 }
                 // -----------------------------------------------------------
