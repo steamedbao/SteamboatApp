@@ -149,7 +149,7 @@
         android:layout_below="@id/LVactivity"
         android:layout_toRightOf="@id/ViewALL"
         android:layout_marginBottom="4dp"
-        android:text="Expense Summary"
+        android:text="Summary"
         android:textColor="#CCFFFFFF"
         android:background="@drawable/gradient1"/>
 
