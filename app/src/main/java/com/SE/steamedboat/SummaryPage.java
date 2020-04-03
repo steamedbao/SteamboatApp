@@ -80,8 +80,6 @@ public class SummaryPage extends AppCompatActivity {
                         (mm.getAmountPaid()-mm.getAmountIncurred())+"---------------------------");
                 ALtoshow.add(mm.getMemberName());
 
-
-
             }
 
             @Override

@@ -162,7 +162,7 @@ public class createORjoin extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.v("E_VALUE", "-------------------CLICKED AT POS: "+ position +" ---------------------------");
 
-                GoTo_home(IDlist.get(position));
+                GoTo_home(IDlist.get(position),position);
             }
         });
 
@@ -211,9 +211,10 @@ public class createORjoin extends AppCompatActivity {
         Intent gojoin = new Intent (this, join.class);
         startActivity(gojoin);}
 
-    public void GoTo_home(int id){
+    public void GoTo_home(int id, int pos){
         Intent gohome = new Intent (this, Homepage.class);
         gohome.putExtra("TripID", id);
+        gohome.putExtra("Position",pos);
         startActivity(gohome);}
 
     /*                                                         FK this if involved APP will always quit and quit

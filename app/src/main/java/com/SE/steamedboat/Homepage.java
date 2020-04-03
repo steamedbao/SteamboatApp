@@ -65,6 +65,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
     private Button viewSummary;
     private String homeCurrency = "SGD";
     private Button inactiveTrip;
+    private int pos;
     DecimalFormat numberFormat = new DecimalFormat("#.00");
 
 
@@ -74,6 +75,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         setContentView(R.layout.activity_homepage);
         Intent from_createORjoin = getIntent();
         TripID = from_createORjoin.getIntExtra("TripID",100000);
+        pos = from_createORjoin.getIntExtra("Position",0);
         addMember = findViewById(R.id.addmember);
         btnLogout = findViewById(R.id.logout);
         TripIDDisplay = findViewById(R.id.hometripid);
@@ -102,18 +104,22 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         TVtripname = (TextView) findViewById(R.id.hometripname);
         TripRef = myRef.child("Trips").child(Integer.toString(TripID));
 
-        if (TripRef.child("ongoing").equals(false))
-        {
-            addMember.setEnabled(false);
-            addActivity.setEnabled(false);
 
-        }
 
         TripRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 currentTrip=dataSnapshot.getValue(Trip.class);
+
+                if (!currentTrip.isOngoing())
+                {
+                    addMember.setEnabled(false);
+                    addMember.setBackground(getDrawable(R.drawable.gradient2));
+                    addActivity.setEnabled(false);
+                    addActivity.setBackground(getDrawable(R.drawable.gradient2));
+
+                }
                 ALtrip.add(currentTrip);
                 Log.v("E_VALUE", "-------------AFTER ADD ------AL size is: "+ ALtrip.size()+"  ---------------------------");
 
@@ -134,10 +140,9 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
 
         if (AL_activity_names.isEmpty()||ALmembernames.size()<=1) {
             viewSummary.setEnabled(false);
-            ViewAll.setEnabled(false);
-            ViewAll.setBackground(getDrawable(R.drawable.gradient2));
             viewSummary.setBackground(getDrawable(R.drawable.gradient2));
         }
+        
 
         if (!AL_activity_names.isEmpty()&&ALmembernames.size()>1) {
             viewSummary.setEnabled(true);
@@ -171,6 +176,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
             public void onClick(View v)
             {
                 TripRef.child("ongoing").setValue(false);
+                myRef.child("Users").child(userID).child("trips").child(Integer.toString(pos)).child("ongoing").setValue(false);
                 Intent intToCreate = new Intent(Homepage.this, createORjoin.class);
                 startActivity(intToCreate);
             }
