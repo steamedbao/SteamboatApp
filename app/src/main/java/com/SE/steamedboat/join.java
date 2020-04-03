@@ -139,6 +139,8 @@ public class join extends AppCompatActivity {
     public void GoTo_home(int id){
         Intent gohome = new Intent (this, Homepage.class);
         gohome.putExtra("TripID", id);
-        startActivity(gohome);}
+        startActivity(gohome);
+        finish();
+    }
 
 }
