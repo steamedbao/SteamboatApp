@@ -27,7 +27,7 @@ public class Custom_expense_dialog extends AppCompatDialogFragment {
 
 
         builder.setView(view)
-                .setTitle("Add Member")
+                .setTitle("Input Expense")
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

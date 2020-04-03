@@ -1,4 +1,7 @@
-package com.SE.steamedboat;
+package com.SE.steamedboat.Entity;
+
+import com.SE.steamedboat.Entity.Activity;
+import com.SE.steamedboat.Entity.Member;
 
 import java.util.ArrayList;
 
@@ -12,7 +15,7 @@ public class Trip {
     private String homeCurrency; // TBC if we use ENUM
     private ArrayList<String> UIDinvolved = null;
     private ArrayList<Member> members = null;
-    private ArrayList<com.SE.steamedboat.Activity> activities=null;
+    private ArrayList<Activity> activities=null;
 
 
     public String getCreaterUID() {

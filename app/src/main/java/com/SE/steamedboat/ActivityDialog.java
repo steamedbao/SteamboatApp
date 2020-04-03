@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +14,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.SE.steamedboat.Entity.Activity;
+import com.SE.steamedboat.Entity.Member;
+import com.SE.steamedboat.Entity.Trip;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,6 +34,7 @@ public class ActivityDialog extends AppCompatActivity {
 
     TextView Name, Split, Expense, Paid, Status, Currency;
     Button edit;
+    Button settle;
     Button backToHome;
     Activity thisAct=new Activity();
     String UID;
@@ -40,6 +43,7 @@ public class ActivityDialog extends AppCompatActivity {
     ArrayList<String> Participants = new ArrayList<>();
     ArrayList<Float> Expenses = new ArrayList<>();
     ArrayList<Float> TotalExp = new ArrayList<>();
+    ArrayList<Float> Totalpaid = new ArrayList<>();
     Float PayerTotalPaid;
     String HC;
     Trip tempTrip = new Trip();
@@ -66,6 +70,7 @@ public class ActivityDialog extends AppCompatActivity {
         Status = (TextView) findViewById(R.id.textView3);
 
         edit = (Button) findViewById(R.id.D_activity_edit);
+        settle = (Button) findViewById(R.id.d_activity_settle);
         backToHome = (Button) findViewById(R.id.back);
         Currency = findViewById(R.id.textView5);
 
@@ -96,7 +101,9 @@ public class ActivityDialog extends AppCompatActivity {
                     float zero =0;
                     for (int i =0;i<Expenses.size();i++){
                         TotalExp.add(zero);
+                        Totalpaid.add(zero);
                     }
+
 
                     if (thisAct.getSplit()==true)
                         Split.setText("Evenly");
@@ -116,6 +123,7 @@ public class ActivityDialog extends AppCompatActivity {
                             {
                                 int index = Participants.indexOf(temp.getMemberName());
                                 TotalExp.set(index,temp.getAmountIncurred());
+                                Totalpaid.set(index, temp.getAmountPaid());
                                 if (thisAct.getPayer().equals(temp.getMemberName())){
                                     PayerTotalPaid = temp.getAmountPaid();
                                 }
@@ -167,6 +175,19 @@ public class ActivityDialog extends AppCompatActivity {
             }
         });
 
+        settle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /// put your own code here ------------------------------
+
+                // set activity status to false
+
+                settle();
+
+
+            }
+        });
+
         backToHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,8 +205,6 @@ public class ActivityDialog extends AppCompatActivity {
                 {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-
 
                         Intent gotoedit = new Intent(getApplicationContext(), EditActivity.class);
                         gotoedit.putStringArrayListExtra("Participants",Participants);
@@ -224,4 +243,49 @@ public class ActivityDialog extends AppCompatActivity {
                 .setNegativeButton("No", null)
                 .show();
     }
+
+    public void settle(){
+
+        new AlertDialog.Builder(this)
+                .setIcon(R.drawable.alert)
+                .setTitle("Settle Activity")
+                .setMessage("Confirm to settle this activity?")
+                .setPositiveButton("Yes",new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        myRef.child("Trips").child(TripID).child("activities").child(thisAct.getName()).child("status").setValue(false);
+
+        for (int i =0; i<Participants.size();i++){
+            Log.v("Updating DB","-----------------Expenses size is" + Expenses.size());
+
+            if (thisAct.getPayer().equals(Participants.get(i))){
+                Log.v("settle","-----------------amount updated after settling is (for payer)" + (PayerTotalPaid - (thisAct.getHomeWorth() - Expenses.get(i)*thisAct.getExchangeRate())));
+
+                myRef.child("Trips").child(TripID).child("members").child(Participants.get(i)).child("amountPaid").setValue(PayerTotalPaid - (thisAct.getHomeWorth() - Expenses.get(i)*thisAct.getExchangeRate()));
+                //myRef.child("Trips").child(TripID).child("members").child(Participants.get(i)).child("amountPaid").setValue(8888);
+            }
+            else{
+                Log.v("settle","-----------------amount updated after settling is (for payee)" + (Totalpaid.get(i) + Expenses.get(i)*thisAct.getExchangeRate()));
+               // myRef.child("Trips").child(TripID).child("members").child(Participants.get(i)).child("amountPaid").setValue(7777);
+                myRef.child("Trips").child(TripID).child("members").child(Participants.get(i)).child("amountPaid").setValue(Totalpaid.get(i) + Expenses.get(i)*thisAct.getExchangeRate());
+            }
+
+
+        }
+
+        Intent gohome = new Intent (getApplicationContext(), Homepage.class);
+        gohome.putExtra("TripID", Integer.parseInt(TripID));
+        startActivity(gohome);
+
+                    }
+
+                })
+                .setNegativeButton("No", null)
+
+                .show();
+
+    }
+
 }

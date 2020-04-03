@@ -1,4 +1,4 @@
-package com.SE.steamedboat;
+package com.SE.steamedboat.Entity;
 
 import java.io.Serializable;
 
@@ -35,11 +35,11 @@ public class Member implements Serializable {
         return amountPaid;
     }
 
-    protected void addAmountPaid(float amountPaid) {
+    public void addAmountPaid(float amountPaid) {
         this.amountPaid += amountPaid;
     }
 
-    protected void setAmountPaid(float amountPaid) {
+    public void setAmountPaid(float amountPaid) {
         this.amountPaid = amountPaid;
     }
 
@@ -47,11 +47,11 @@ public class Member implements Serializable {
         return amountIncurred;
     }
 
-    protected void addAmountIncurred(float amountIncurred) {
+    public void addAmountIncurred(float amountIncurred) {
         this.amountIncurred += amountIncurred;
     }
 
-    protected void setAmountIncurred(float amountIncurred) {
+    public void setAmountIncurred(float amountIncurred) {
         this.amountIncurred = amountIncurred;
     }
 

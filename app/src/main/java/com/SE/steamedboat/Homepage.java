@@ -15,6 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.SE.steamedboat.Entity.Activity;
+import com.SE.steamedboat.Entity.Member;
+import com.SE.steamedboat.Entity.Trip;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -61,6 +64,8 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
     private ArrayAdapter<String> actAdapter=null;
     private Button viewSummary;
     private String homeCurrency = "SGD";
+    private Button inactiveTrip;
+    private int pos;
     private String daystr;
     DecimalFormat numberFormat = new DecimalFormat("#.00");
 
@@ -71,6 +76,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         setContentView(R.layout.activity_homepage);
         Intent from_createORjoin = getIntent();
         TripID = from_createORjoin.getIntExtra("TripID",100000);
+        pos = from_createORjoin.getIntExtra("Position",0);
         addMember = findViewById(R.id.addmember);
         btnLogout = findViewById(R.id.logout);
         TripIDDisplay = findViewById(R.id.hometripid);
@@ -83,6 +89,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         TripNameDisplay.setText(TripName);
         back = findViewById(R.id.back);
         viewSummary=findViewById(R.id.checkFinance);
+        inactiveTrip= findViewById(R.id.editTrip);
 
         Auth = FirebaseAuth.getInstance();
         FD = FirebaseDatabase.getInstance();
@@ -98,11 +105,22 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         TVtripname = (TextView) findViewById(R.id.hometripname);
         TripRef = myRef.child("Trips").child(Integer.toString(TripID));
 
+
+
         TripRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 currentTrip=dataSnapshot.getValue(Trip.class);
+
+                if (!currentTrip.isOngoing())
+                {
+                    addMember.setEnabled(false);
+                    addMember.setBackground(getDrawable(R.drawable.gradient2));
+                    addActivity.setEnabled(false);
+                    addActivity.setBackground(getDrawable(R.drawable.gradient2));
+
+                }
                 ALtrip.add(currentTrip);
                 Log.v("E_VALUE", "-------------AFTER ADD ------AL size is: "+ ALtrip.size()+"  ---------------------------");
 
@@ -123,10 +141,9 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
 
         if (AL_activity_names.isEmpty()||ALmembernames.size()<=1) {
             viewSummary.setEnabled(false);
-            ViewAll.setEnabled(false);
-            ViewAll.setBackground(getDrawable(R.drawable.gradient2));
             viewSummary.setBackground(getDrawable(R.drawable.gradient2));
         }
+
 
         if (!AL_activity_names.isEmpty()&&ALmembernames.size()>1) {
             viewSummary.setEnabled(true);
@@ -155,18 +172,17 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                 });
 
 
-        btnLogout.setOnClickListener(new View.OnClickListener(){
+        inactiveTrip.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v)
             {
-                FirebaseAuth.getInstance().signOut();
-                Intent intToMain = new Intent(Homepage.this, MainActivity.class);
-                startActivity(intToMain);
+                TripRef.child("ongoing").setValue(false);
+                myRef.child("Users").child(userID).child("trips").child(Integer.toString(pos)).child("ongoing").setValue(false);
+                Intent intToCreate = new Intent(Homepage.this, createORjoin.class);
+                startActivity(intToCreate);
             }
 
         });
-
-
 
 
         LV.setOnItemClickListener(new AdapterView.OnItemClickListener() {

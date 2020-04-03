@@ -7,6 +7,8 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.SE.steamedboat.Entity.Consumer;
+
 import java.util.ArrayList;
 
 public class customise_split extends AppCompatActivity {

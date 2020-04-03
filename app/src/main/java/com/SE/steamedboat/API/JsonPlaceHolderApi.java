@@ -1,4 +1,6 @@
-package com.SE.steamedboat;
+package com.SE.steamedboat.API;
+
+import com.SE.steamedboat.CurrencyExchange2;
 
 import java.util.List;
 import java.util.Map;

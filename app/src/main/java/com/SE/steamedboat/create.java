@@ -14,12 +14,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import com.SE.steamedboat.Entity.Member;
+import com.SE.steamedboat.Entity.SimpleTrip;
+import com.SE.steamedboat.Entity.Trip;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,8 +26,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
 
 
 public class create extends AppCompatActivity {
@@ -137,13 +134,13 @@ public class create extends AppCompatActivity {
                 if( !pw.equals("") && !name.equals("") && !create.equals("")){
                     Trip t1 = new Trip(name, pw, create,TripID);
                     int ID = t1.getTripID();
-                    com.SE.steamedboat.Member m1 = new Member(create);
+                    Member m1 = new Member(create);
                     m1.setUID(userID);
                     m1.setHost(true);
                     t1.addMember(m1);
                     t1.setCreaterUID(userID);
                     t1.setHomeCurrency(currency);
-                    com.SE.steamedboat.SimpleTrip s1 = new SimpleTrip (name,ID,true);
+                    SimpleTrip s1 = new SimpleTrip (name,ID,true);
                     myRef.child("Trips").child(DBtrip).setValue(t1);
                     myRef.child("Trips").child(DBtrip).child("members").child(create).setValue(m1);
                     myRef.child("Users").child(userID).child("trips").child(trip_count).setValue(s1);

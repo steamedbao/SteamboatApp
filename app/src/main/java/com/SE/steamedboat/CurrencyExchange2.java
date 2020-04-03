@@ -1,6 +1,6 @@
 package com.SE.steamedboat;
 
-import android.provider.Telephony;
+import com.SE.steamedboat.API.Rate;
 
 public class CurrencyExchange2 {
     private String base;
