@@ -75,8 +75,8 @@
         android:layout_below="@id/LVactivity"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="18dp"
-        android:layout_marginRight="15dp"
-        android:layout_toRightOf="@+id/checkFinance"
+        android:layout_marginRight="30dp"
+    android:layout_alignParentRight="true"
         android:background="@drawable/shutdown" />
 
     <TextView

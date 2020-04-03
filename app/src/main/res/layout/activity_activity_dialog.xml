@@ -118,13 +118,12 @@
 
     <Button
         android:id="@+id/D_activity_edit"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="340dp"
         android:background="@drawable/gradient1"
         android:fontFamily="@font/roboto_condensed_bold"
-        android:paddingHorizontal="15dp"
         android:text="Edit"
         android:textColor="#000000"
         android:textSize="18sp"
@@ -133,14 +132,13 @@
 
     <Button
         android:id="@+id/d_activity_settle"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="340dp"
         android:background="@drawable/gradient1"
         android:fontFamily="@font/roboto_condensed_bold"
-        android:paddingHorizontal="15dp"
         android:text="settle"
         android:textColor="#000000"
         android:textSize="18sp"
@@ -149,13 +147,12 @@
 
     <Button
         android:id="@+id/back"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="340dp"
         android:background="@drawable/gradient1"
         android:fontFamily="@font/roboto_condensed_bold"
-        android:paddingHorizontal="15dp"
         android:text="Back"
         android:textColor="#000000"
         android:textSize="18sp"
