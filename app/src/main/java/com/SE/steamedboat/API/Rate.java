@@ -1,4 +1,4 @@
-package com.SE.steamedboat;
+package com.SE.steamedboat.API;
 
 
 import com.google.gson.annotations.Expose;

@@ -1,15 +1,13 @@
 package com.SE.steamedboat;
 
 import android.os.Bundle;
-import android.sax.StartElementListener;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.*;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import com.SE.steamedboat.Entity.Member;
+import com.SE.steamedboat.Entity.Trip;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -26,10 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.FormatFlagsConversionMismatchException;
-import java.util.List;
 
 public class SummaryPage extends AppCompatActivity {
     private String TripID="0000";

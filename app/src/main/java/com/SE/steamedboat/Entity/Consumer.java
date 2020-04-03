@@ -1,4 +1,4 @@
-package com.SE.steamedboat;
+package com.SE.steamedboat.Entity;
 
 public class Consumer {
     private String name;
