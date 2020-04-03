@@ -65,20 +65,19 @@
         android:paddingHorizontal="15dp"
         android:textSize="13sp" />
 
+    //i tot we cant delete trip anymore? is this for member
+
+
     <Button
         android:id="@+id/editTrip"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_toRightOf="@id/ViewALL"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
         android:layout_below="@id/LVactivity"
-        android:backgroundTint="#CCFFFFFF"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginRight="15dp"
+        android:layout_toRightOf="@+id/checkFinance"
         android:background="@drawable/shutdown" />
-
-    //i tot we cant delete trip anymore? is this for member
-
 
     <TextView
         android:id="@+id/hometripname"
@@ -144,11 +143,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="10dp"
         android:paddingHorizontal="10dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/LVactivity"
-        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/ViewALL"
         android:layout_marginBottom="4dp"
         android:text="Expense Summary"
         android:textColor="#CCFFFFFF"

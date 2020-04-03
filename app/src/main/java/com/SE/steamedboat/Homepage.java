@@ -1,5 +1,6 @@
 package com.SE.steamedboat;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.SE.steamedboat.Entity.Activity;
@@ -142,7 +144,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
             viewSummary.setEnabled(false);
             viewSummary.setBackground(getDrawable(R.drawable.gradient2));
         }
-        
+
 
         if (!AL_activity_names.isEmpty()&&ALmembernames.size()>1) {
             viewSummary.setEnabled(true);
@@ -174,11 +176,24 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
         inactiveTrip.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v)
-            {
-                TripRef.child("ongoing").setValue(false);
-                myRef.child("Users").child(userID).child("trips").child(Integer.toString(pos)).child("ongoing").setValue(false);
-                Intent intToCreate = new Intent(Homepage.this, createORjoin.class);
-                startActivity(intToCreate);
+            { new AlertDialog.Builder(Homepage.this)
+                    .setIcon(R.drawable.alert)
+                    .setTitle("Ending Trip")
+                    .setMessage("Are you sure you want to end this trip?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            TripRef.child("ongoing").setValue(false);
+                            myRef.child("Users").child(userID).child("trips").child(Integer.toString(pos)).child("ongoing").setValue(false);
+                            Intent intToCreate = new Intent(Homepage.this, createORjoin.class);
+                            startActivity(intToCreate);
+                        }
+
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+
             }
 
         });
