@@ -61,6 +61,7 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
     private ArrayAdapter<String> actAdapter=null;
     private Button viewSummary;
     private String homeCurrency = "SGD";
+    private String daystr;
     DecimalFormat numberFormat = new DecimalFormat("#.00");
 
 
@@ -328,6 +329,13 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                 AL_activity_UID.clear();
 
                 chosenDay = dayOfMonth;
+
+                daystr =Integer.toString(chosenDay);
+
+                if (chosenDay<10){
+                    daystr="0"+daystr;
+                }
+
                 chosenMonth = month;
                 chosenYear = year;
 
@@ -339,18 +347,18 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                         if (dataSnapshot.hasChildren())
                             a = dataSnapshot.getValue(Activity.class);
 
-                        Log.v("date", "--------------When Clicked Calendar , DATA: "+ dataSnapshot.getValue() +"  ---------------------------");
+                        //Log.v("date", "--------------When Clicked Calendar , DATA: "+ dataSnapshot.getValue() +"  ---------------------------");
 
                         SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
                         String adate = sdf.format(a.getDateTime());
-                        Log.v("date", "------------------- "+ adate +"  ---------------------------");
+                        Log.v("Activity date", "------------------- "+ adate +"  ---------------------------");
 
-                        String cvdate = chosenDay+"/"+(chosenMonth+1)+"/"+chosenYear;
-                        Log.v("date", "------------------- "+ cvdate +"  ---------------------------");
+                        String cvdate = daystr+"/"+(chosenMonth+1)+"/"+chosenYear;
+                        Log.v("CV date", "------------------- "+ cvdate +"  ---------------------------");
 
                         if (adate.compareTo(cvdate)==0) {
-                            Log.v("date", "------------------- " + "true" + "  ---------------------------");
-                            Log.v("date",a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
+                            //Log.v("date", "------------------- " + "true" + "  ---------------------------");
+                            //Log.v("date",a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
                             AL_activity_UID.add(a.getName());
                             String str;
                             if (a.getSplit()){str = "Even split";}
