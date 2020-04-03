@@ -139,10 +139,10 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
             }
         });
 
-        if (AL_activity_names.isEmpty()||ALmembernames.size()<=1) {
+        /*if (AL_activity_names.isEmpty()||ALmembernames.size()==0) {
             viewSummary.setEnabled(false);
             viewSummary.setBackground(getDrawable(R.drawable.gradient2));
-        }
+        }*/
 
 
         if (!AL_activity_names.isEmpty()&&ALmembernames.size()>1) {
@@ -294,8 +294,8 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                     if (CVclick==false && dataSnapshot.hasChildren())
                     {   a = dataSnapshot.getValue(Activity.class);
                         AL_activity_UID.add(a.getName());
-                        if (a.getSplit()){str = "Even split";}
-                        else {str = "Custom split";}
+                        if (a.getStatus()){str = "Pending";}
+                        else {str = "Settled";}
                         AL_activity_names.add(a.getName() + " Payer: "+a.getPayer()+ ", "+homeCurrency+": "+numberFormat.format(a.getHomeWorth())+ ", " + str);
                     }
                     // -----------------------------------------------------------
@@ -377,8 +377,8 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                             //Log.v("date",a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
                             AL_activity_UID.add(a.getName());
                             String str;
-                            if (a.getSplit()){str = "Even split";}
-                            else {str = "Custom split";}
+                            if (a.getStatus()){str = "Pending";}
+                            else {str = "Settled";}
                             AL_activity_names.add(a.getName() + " Payer: "+a.getPayer()+ ", "+homeCurrency+": "+numberFormat.format(a.getHomeWorth())+ ", " + str);
                             //AL_activity_names.add(a.getName() + " " + a.getActivityCurrency() + ": " + a.getActivityExpense() + "  " + a.getSplit());
 
@@ -528,8 +528,8 @@ public class Homepage extends AppCompatActivity implements AddMemberDialog.AddMe
                 {   a = dataSnapshot.getValue(Activity.class);
                     AL_activity_UID.add(a.getName());
                     String str;
-                    if (a.getSplit()) str = "Evenly split";
-                    else str = "Custom split";
+                    if (a.getStatus()){str = "Pending";}
+                    else {str = "Settled";}
                     AL_activity_names.add(a.getName() + " Payer: "+a.getPayer()+ ", "+homeCurrency+": "+numberFormat.format(a.getHomeWorth())+ ", " + str);
                 }
                 // -----------------------------------------------------------
